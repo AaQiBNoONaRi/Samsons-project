@@ -1,0 +1,102 @@
+<!-- ===================================================
+     💎 PREMIUM DYNAMIC GLASSMORPHIC SIDEBAR COMPONENT
+     =================================================== -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h2>Admin Panel</h2>
+        <!-- Close icon for mobile -->
+        <button id="hamburgerMenuClose" class="hamburger-menu" aria-label="Close Sidebar">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <div class="sidebar-menu">
+        <a href="{{ url_for('admin.admin_dashboard') }}" class="menu-item{% if request.path == '/viaadmin/dashboard' %} active{% endif %}">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="{{ url_for('admin.products') }}" class="menu-item{% if '/viaadmin/products' in request.path or '/viaadmin/add/product' in request.path or '/viaadmin/edit/product' in request.path %} active{% endif %}">
+            <i class="fas fa-shopping-bag"></i>
+            <span>Products</span>
+        </a>
+        <a href="{{ url_for('admin.list_items') }}" class="menu-item{% if request.path == '/viaadmin/list_items' %} active{% endif %}">
+            <i class="fas fa-list"></i>
+            <span>List</span>
+        </a>
+        <a href="{{ url_for('admin.marketing') }}" class="menu-item{% if request.path == '/viaadmin/marketing' %} active{% endif %}">
+            <i class="fas fa-bullhorn"></i>
+            <span>Marketing</span>
+        </a>
+        <a href="{{ url_for('admin.costumers') }}" class="menu-item{% if request.path == '/viaadmin/costumers' %} active{% endif %}">
+            <i class="fas fa-users"></i>
+            <span>Customers</span>
+        </a>
+        <a href="{{ url_for('admin.orders') }}" class="menu-item{% if '/viaadmin/orders' in request.path or '/viaadmin/edit-order' in request.path %} active{% endif %}">
+            <i class="fas fa-list-alt"></i>
+            <span>Orders</span>
+        </a>
+        <a href="{{ url_for('admin.analytics') }}" class="menu-item{% if request.path == '/viaadmin/analytics' %} active{% endif %}">
+            <i class="fas fa-chart-line"></i>
+            <span>Analytics</span>
+        </a>
+        <a href="{{ url_for('admin.admin_queries') }}" class="menu-item{% if request.path == '/viaadmin/queries' %} active{% endif %}">
+            <i class="fas fa-envelope-open-text"></i>
+            <span>Queries</span>
+        </a>
+    </div>
+</div>
+
+<!-- Auto-contained slideout & floating button JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const sidebar = document.getElementById("sidebar");
+    const closeBtn = document.getElementById("hamburgerMenuClose");
+
+    if (!sidebar) return;
+
+    // Check if floating mobile toggle button exists; if not, dynamically spawn it
+    let toggleBtn = document.getElementById("sidebarToggle");
+    if (!toggleBtn) {
+        toggleBtn = document.createElement("button");
+        toggleBtn.id = "sidebarToggle";
+        toggleBtn.className = "sidebar-toggle-btn";
+        toggleBtn.setAttribute("aria-label", "Toggle Navigation");
+        toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        document.body.appendChild(toggleBtn);
+    }
+
+    // Toggle sidebar on floating burger click
+    toggleBtn.addEventListener("click", function(e) {
+        e.stopPropagation();
+        document.body.classList.toggle("sidebar-open");
+    });
+
+    // Toggle sidebar on local hamburger menu button click if it exists
+    const localToggleBtn = document.getElementById("hamburgerMenuOpen");
+    if (localToggleBtn) {
+        localToggleBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            document.body.classList.add("sidebar-open");
+        });
+    }
+
+    // Close sidebar on close button click
+    if (closeBtn) {
+        closeBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            document.body.classList.remove("sidebar-open");
+        });
+    }
+
+    // Auto-dismiss mobile sidebar when clicking outside of it
+    document.addEventListener("click", function(event) {
+        const isClickInsideSidebar = sidebar.contains(event.target);
+        const isClickInsideToggle = (toggleBtn && toggleBtn.contains(event.target)) || 
+                                    (localToggleBtn && localToggleBtn.contains(event.target));
+
+        if (!isClickInsideSidebar && !isClickInsideToggle && document.body.classList.contains("sidebar-open")) {
+            document.body.classList.remove("sidebar-open");
+        }
+    });
+});
+</script>

@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Perfume List | Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/list.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/sidebar.css') }}">
+    <style>
+        body { background: #f0f4ff; }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 60%, #4f46e5 100%);
+            color: white;
+            padding: 1.4rem 2rem;
+            border-radius: 14px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 32px rgba(79, 70, 229, 0.25);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .page-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 0.5px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .page-header p {
+            margin: 2px 0 0 0;
+            opacity: 0.75;
+            font-size: 0.85rem;
+        }
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header-user img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .header-user span {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Stat card */
+        .stat-cards {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            flex: 1;
+            min-width: 140px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border-left: 4px solid #6366f1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .stat-card .stat-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+        }
+        .stat-card .stat-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+        .stat-card .stat-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .filter-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 8px;
+            border: 1.5px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+        }
+        .toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-box {
+            position: relative;
+        }
+        .search-box i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 13px;
+        }
+        .search-box input {
+            padding: 7px 12px 7px 32px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+            width: 200px;
+            transition: border 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .search-box input:focus {
+            border-color: #6366f1;
+        }
+        .btn-add-list {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-add-list:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(99,102,241,0.4);
+        }
+
+        /* Collapse button */
+        .collapse-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f1f5f9;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 5px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s;
+            pointer-events: none; /* header handles click */
+        }
+        .collapse-btn i {
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 11px;
+        }
+        .table-card-header:hover .collapse-btn {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+        }
+        .table-collapsible {
+            overflow: hidden;
+            max-height: 2000px;
+            transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.35s ease;
+            opacity: 1;
+        }
+        .table-collapsible.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        /* Table */
+        .table-card {
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        .table-card-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .table-card-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .table-card-header h2 i {
+            color: #6366f1;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+        }
+        .premium-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .premium-table thead th {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white;
+            padding: 11px 14px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            white-space: nowrap;
+        }
+        .premium-table thead th:first-child {
+            border-radius: 0;
+            width: 40px;
+        }
+        .premium-table tbody tr {
+            border-bottom: 1px solid #f1f5f9;
+            transition: background 0.15s;
+        }
+        .premium-table tbody tr:last-child {
+            border-bottom: none;
+        }
+        .premium-table tbody tr:hover {
+            background: #f8faff;
+        }
+        .premium-table tbody tr:nth-child(even) {
+            background: #fafbff;
+        }
+        .premium-table tbody tr:nth-child(even):hover {
+            background: #f0f4ff;
+        }
+        .premium-table td {
+            padding: 10px 14px;
+            font-size: 13px;
+            color: #334155;
+            white-space: nowrap;
+        }
+        .premium-table td .fragrance-name {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .premium-table td .fragrance-type {
+            font-size: 11px;
+            color: #6366f1;
+            font-weight: 500;
+            background: rgba(99,102,241,0.08);
+            padding: 2px 8px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .id-badge {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            font-family: monospace;
+        }
+        .price-val {
+            font-weight: 600;
+            color: #059669;
+        }
+
+        /* Status Toggle */
+        .status-toggle {
+            padding: 5px 14px;
+            font-size: 11px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            min-width: 80px;
+            text-align: center;
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+        .status-toggle.active {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(16,185,129,0.3);
+        }
+        .status-toggle.inactive {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(239,68,68,0.3);
+        }
+        .status-toggle.pending {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(245,158,11,0.3);
+        }
+        .status-toggle:hover { transform: scale(1.04); }
+        .status-toggle:active { transform: scale(0.97); }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #94a3b8;
+        }
+        .empty-state i { font-size: 2.5rem; margin-bottom: 0.75rem; color: #cbd5e1; }
+
+        /* Premium Available Bottles Section Redesign */
+        .bottles-section-wrapper {
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+        .bottles-section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'Poppins', sans-serif;
+            border-bottom: 1.5px solid #f1f5f9;
+            padding-bottom: 0.75rem;
+        }
+        .bottles-section-title span {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .bottles-section-title i {
+            color: #6366f1;
+        }
+        .bottles-size-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        @media (max-width: 992px) {
+            .bottles-size-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+        }
+        .size-card {
+            background: #fafbff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+        .size-card:hover {
+            box-shadow: 0 6px 18px rgba(99, 102, 241, 0.08);
+            border-color: #cbd5e1;
+        }
+        .size-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed #e2e8f0;
+            padding-bottom: 0.75rem;
+        }
+        .size-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .size-badge {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .size-info h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #334155;
+            margin: 0;
+        }
+        .design-count {
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 500;
+            background: #f1f5f9;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .bottle-images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            align-content: start;
+            flex-grow: 1;
+            min-height: 100px;
+        }
+        .bottle-image-container {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            transition: all 0.3s ease;
+        }
+        .bottle-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        .bottle-image-container:hover {
+            border-color: #a5b4fc;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.12);
+        }
+        .bottle-image-container:hover img {
+            transform: scale(1.08);
+        }
+        
+        /* Hover overlay */
+        .bottle-hover-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(2px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            z-index: 2;
+        }
+        .bottle-image-container:hover .bottle-hover-overlay {
+            opacity: 1;
+        }
+        .bottle-hover-overlay .action-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+        }
+        .bottle-hover-overlay .preview-btn {
+            background: white;
+            color: #1e293b;
+        }
+        .bottle-hover-overlay .preview-btn:hover {
+            background: #f1f5f9;
+            transform: scale(1.1);
+        }
+        .bottle-hover-overlay .delete-btn {
+            background: #ef4444;
+            color: white;
+        }
+        .bottle-hover-overlay .delete-btn:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+        .no-designs {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            font-style: italic;
+            border: 1px dashed #e2e8f0;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Pagination */
+        .pagination-bar {
+            display: flex;
+            justify-content: flex-end;
+            padding: 0.75rem 1.25rem;
+            border-top: 1px solid #f1f5f9;
+            gap: 4px;
+        }
+        .pagination-bar button {
+            width: 30px;
+            height: 30px;
+            border: 1.5px solid #e2e8f0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            color: #475569;
+        }
+        .pagination-bar button.active,
+        .pagination-bar button:hover {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 2100;
+            left: 0; top: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(15,23,42,0.6);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            width: 500px;
+            max-width: 95vw;
+            position: relative;
+            animation: modalIn 0.25s ease;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.93) translateY(-10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-box h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-box h3 i { color: #6366f1; }
+        .modal-close {
+            position: absolute;
+            top: 1rem; right: 1.25rem;
+            font-size: 1.4rem;
+            color: #94a3b8;
+            cursor: pointer;
+            background: none; border: none;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+        .modal-close:hover { color: #ef4444; }
+        .form-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+            transition: border 0.2s;
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+        }
+        .form-group input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+        }
+        .form-price-row {
+            margin-bottom: 12px;
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 1.25rem;
+        }
+        .btn-cancel {
+            padding: 9px 20px;
+            background: #f1f5f9;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-cancel:hover { background: #e2e8f0; }
+        .btn-submit {
+            padding: 9px 22px;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+        }
+        .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(99,102,241,0.4); }
+
+        /* Header export/import buttons */
+        .btn-secondary {
+            padding: 7px 14px;
+            background: white;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-secondary:hover { border-color: #6366f1; color: #6366f1; }
+        .btn-add-perfume {
+            padding: 7px 16px;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-add-perfume:hover { transform: translateY(-1px); }
+    </style>
+</head>
+<body>
+
+    {% include 'admin/sidebar.html' %}
+
+    <div class="main-content">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1><i class="fas fa-list-ul" style="margin-right:8px; opacity:0.8;"></i>Custom Perfume List</h1>
+                <p>Manage your fragrance catalog and custom perfume inventory</p>
+            </div>
+            <div class="header-user">
+                <img src="https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff" alt="Admin">
+                <span>Admin</span>
+            </div>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="stat-cards">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-flask"></i></div>
+                <div>
+                    <div class="stat-label">Total Fragrances</div>
+                    <div class="stat-value">{{ items | length }}</div>
+                </div>
+            </div>
+            <div class="stat-card" style="border-left-color: #10b981;">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fas fa-check-circle"></i></div>
+                <div>
+                    <div class="stat-label">Active</div>
+                    <div class="stat-value">{{ items | selectattr('status', 'equalto', 'Active') | list | length }}</div>
+                </div>
+            </div>
+            <div class="stat-card" style="border-left-color: #f59e0b;">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><i class="fas fa-wine-bottle"></i></div>
+                <div>
+                    <div class="stat-label">Bottles</div>
+                    <div class="stat-value">{{ total_bottles }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="filter-group">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="male">Men</button>
+                <button class="filter-btn" data-filter="female">Women</button>
+                <button class="filter-btn" data-filter="unisex">Unisex</button>
+            </div>
+            <div class="toolbar-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="listSearch" placeholder="Search fragrances...">
+                </div>
+                <button class="btn-secondary"><i class="fas fa-file-export" style="margin-right:5px;"></i>Export</button>
+                <button class="btn-secondary"><i class="fas fa-file-import" style="margin-right:5px;"></i>Import</button>
+                <button class="btn-add-list" id="openAddListModal"><i class="fas fa-plus"></i> Add List</button>
+                <button class="btn-add-perfume" id="openAddBottleModal"><i class="fas fa-plus" style="margin-right:5px;"></i>Add Bottle</button>
+            </div>
+        </div>
+
+        <!-- Main Table -->
+        <div class="table-card">
+            <div class="table-card-header" id="catalogHeader" style="cursor:pointer;" onclick="toggleCatalog()">
+                <h2><i class="fas fa-table"></i> Fragrance Catalog</h2>
+                <button class="collapse-btn" id="collapseBtn" title="Collapse table">
+                    <i class="fas fa-chevron-up" id="collapseIcon"></i>
+                    <span id="collapseLabel">Collapse</span>
+                </button>
+            </div>
+            <div class="table-collapsible" id="catalogBody">
+                <div class="table-wrapper">
+                    <table class="premium-table" id="listTable">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="select-all-custom"></th>
+                                <th><i class="fas fa-hashtag" style="margin-right:5px;"></i>ID</th>
+                                <th><i class="fas fa-flask" style="margin-right:5px;"></i>Fragrance Name</th>
+                                <th><i class="fas fa-tag" style="margin-right:5px;"></i>Type</th>
+                                <th><i class="fas fa-users" style="margin-right:5px;"></i>Category</th>
+                                <th><i class="fas fa-rupee-sign" style="margin-right:5px;"></i>Price</th>
+                                <th><i class="fas fa-toggle-on" style="margin-right:5px;"></i>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="custom-perfume-details">
+                            {% for item in items %}
+                            {% set status = item.get('status', 'Inactive') %}
+                            <tr data-category="{{ item.get('category', '') | lower }}">
+                                <td><input type="checkbox" class="custom-checkbox" value="{{ item['_id'] }}"></td>
+                                <td><span class="id-badge">{{ item.get('ID', '-') }}</span></td>
+                                <td><span class="fragrance-name">{{ item.get('name', '-') }}</span></td>
+                                <td><span class="fragrance-type">{{ item.get('type', '-') }}</span></td>
+                                <td>{{ item.get('category', '-') | capitalize }}</td>
+                                <td><span class="price-val">Rs. {{ item.get('price', '-') }}</span></td>
+                                <td>
+                                    <button
+                                        class="status-toggle {% if status == 'Active' %}active{% elif status == 'Pending' %}pending{% else %}inactive{% endif %}"
+                                        data-id="{{ item['_id'] }}"
+                                        data-status="{{ status }}">
+                                        {{ status }}
+                                    </button>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="7">
+                                    <div class="empty-state">
+                                        <i class="fas fa-box-open"></i>
+                                        <p>No fragrances found. Add your first one!</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination-bar">
+                    <button><i class="fas fa-chevron-left"></i></button>
+                    <button class="active">1</button>
+                    <button>2</button>
+                    <button>3</button>
+                    <button>...</button>
+                    <button><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottles Section Redesign -->
+        <div class="bottles-section-wrapper">
+            <h2 class="bottles-section-title">
+                <span><i class="fas fa-wine-bottle"></i> Available Bottles Gallery</span>
+            </h2>
+            
+            <div class="bottles-size-grid">
+                <!-- 100ml Size Card -->
+                <div class="size-card">
+                    <div class="size-card-header">
+                        <div class="size-info">
+                            <span class="size-badge">100ml</span>
+                            <h3>Large Bottles</h3>
+                        </div>
+                        {% set count_100 = namespace(value=0) %}
+                        {% for b in bottles %}
+                            {% set count_100.value = count_100.value + (b.images['100'] | length) %}
+                        {% endfor %}
+                        <span class="design-count">{{ count_100.value }} {{ 'design' if count_100.value == 1 else 'designs' }}</span>
+                    </div>
+                    <div class="bottle-images-grid">
+                        {% for b in bottles %}
+                            {% for img_path in b.images['100'] %}
+                                <div class="bottle-image-container" data-size="100" data-path="{{ img_path }}">
+                                    <img src="{{ url_for('static', filename=img_path.replace('static/', '')) }}" alt="100ml bottle design">
+                                    <div class="bottle-hover-overlay">
+                                        <button class="action-btn preview-btn" title="Preview Image" onclick="previewBottleImg(this)"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn delete-btn" title="Delete Design" onclick="deleteBottleImg('100', '{{ img_path }}', this)"><i class="fas fa-trash-alt"></i></button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% if count_100.value == 0 %}
+                            <div class="no-designs">No 100ml designs.</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- 50ml Size Card -->
+                <div class="size-card">
+                    <div class="size-card-header">
+                        <div class="size-info">
+                            <span class="size-badge">50ml</span>
+                            <h3>Medium Bottles</h3>
+                        </div>
+                        {% set count_50 = namespace(value=0) %}
+                        {% for b in bottles %}
+                            {% set count_50.value = count_50.value + (b.images['50'] | length) %}
+                        {% endfor %}
+                        <span class="design-count">{{ count_50.value }} {{ 'design' if count_50.value == 1 else 'designs' }}</span>
+                    </div>
+                    <div class="bottle-images-grid">
+                        {% for b in bottles %}
+                            {% for img_path in b.images['50'] %}
+                                <div class="bottle-image-container" data-size="50" data-path="{{ img_path }}">
+                                    <img src="{{ url_for('static', filename=img_path.replace('static/', '')) }}" alt="50ml bottle design">
+                                    <div class="bottle-hover-overlay">
+                                        <button class="action-btn preview-btn" title="Preview Image" onclick="previewBottleImg(this)"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn delete-btn" title="Delete Design" onclick="deleteBottleImg('50', '{{ img_path }}', this)"><i class="fas fa-trash-alt"></i></button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% if count_50.value == 0 %}
+                            <div class="no-designs">No 50ml designs.</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- 30ml Size Card -->
+                <div class="size-card">
+                    <div class="size-card-header">
+                        <div class="size-info">
+                            <span class="size-badge">30ml</span>
+                            <h3>Small Bottles</h3>
+                        </div>
+                        {% set count_30 = namespace(value=0) %}
+                        {% for b in bottles %}
+                            {% set count_30.value = count_30.value + (b.images['30'] | length) %}
+                        {% endfor %}
+                        <span class="design-count">{{ count_30.value }} {{ 'design' if count_30.value == 1 else 'designs' }}</span>
+                    </div>
+                    <div class="bottle-images-grid">
+                        {% for b in bottles %}
+                            {% for img_path in b.images['30'] %}
+                                <div class="bottle-image-container" data-size="30" data-path="{{ img_path }}">
+                                    <img src="{{ url_for('static', filename=img_path.replace('static/', '')) }}" alt="30ml bottle design">
+                                    <div class="bottle-hover-overlay">
+                                        <button class="action-btn preview-btn" title="Preview Image" onclick="previewBottleImg(this)"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn delete-btn" title="Delete Design" onclick="deleteBottleImg('30', '{{ img_path }}', this)"><i class="fas fa-trash-alt"></i></button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% if count_30.value == 0 %}
+                            <div class="no-designs">No 30ml designs.</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- end .main-content -->
+
+    <!-- Add List Modal - uses display:flex toggled by list.js -->
+    <div id="addListModal" style="display:none; position:fixed; z-index:2100; left:0; top:0; width:100vw; height:100vh; background:rgba(15,23,42,0.6); backdrop-filter:blur(4px); align-items:center; justify-content:center;">
+        <div class="modal-box">
+            <span class="add-list-close modal-close" style="cursor:pointer;"><i class="fas fa-times"></i></span>
+            <h3><i class="fas fa-plus-circle"></i> Add New Fragrance</h3>
+            <form id="addListForm" method="POST" action="{{ url_for('admin.add_list') }}">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>No.</label>
+                        <input type="number" id="listNumber" name="listNumber" required placeholder="ID" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Fragrance Name</label>
+                        <input type="text" id="listName" name="fragranceName" required placeholder="e.g. Oud Royale">
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <input type="text" id="fragranceType" name="fragranceType" required placeholder="e.g. Floral">
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <input type="text" id="category" name="category" required placeholder="e.g. Unisex">
+                    </div>
+                </div>
+                <div class="form-group form-price-row">
+                    <label>Price (Rs.)</label>
+                    <input type="number" id="price" name="price" required min="0" step="0.01" placeholder="e.g. 1500">
+                </div>
+                <div class="modal-actions" style="justify-content: flex-end;">
+                    <button type="submit" class="btn-submit"><i class="fas fa-plus" style="margin-right:6px;"></i>Add Fragrance</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Bottle Modal -->
+    <div id="addBottleModal" style="display:none; position:fixed; z-index:2200; left:0; top:0; width:100vw; height:100vh; background:rgba(15,23,42,0.6); backdrop-filter:blur(4px); align-items:center; justify-content:center;">
+        <div class="modal-box" style="max-width:480px;">
+            <span class="add-bottle-close modal-close" style="cursor:pointer;"><i class="fas fa-times"></i></span>
+            <h3><i class="fas fa-wine-bottle"></i> Add New Bottle</h3>
+            <form id="addBottleForm" method="POST" action="{{ url_for('admin.add_bottle') }}" enctype="multipart/form-data">
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label>Bottle Size</label>
+                    <select name="size" style="width:100%;padding:8px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;outline:none;font-family:inherit;color:#1e293b;">
+                        <option value="100">100ml</option>
+                        <option value="50">50ml</option>
+                        <option value="30">30ml</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label>Upload Bottle Images</label>
+                    <input type="file" name="images" multiple accept="image/*" style="width:100%;padding:8px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;">
+                </div>
+                <div class="modal-actions" style="justify-content: flex-end;">
+                    <button type="submit" class="btn-submit"><i class="fas fa-upload" style="margin-right:6px;"></i>Upload Bottle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bottle Preview Modal -->
+    <div id="bottlePreviewModal" style="display:none; position:fixed; z-index:2300; left:0; top:0; width:100vw; height:100vh; background:rgba(15,23,42,0.6); backdrop-filter:blur(4px); align-items:center; justify-content:center;">
+        <div class="modal-box" style="max-width:380px; align-items:center;">
+            <span class="bottle-preview-close modal-close" style="cursor:pointer;"><i class="fas fa-times"></i></span>
+            <img id="bottlePreviewImg" src="" alt="Bottle Preview" style="max-width:280px;max-height:420px;object-fit:contain;border-radius:10px;">
+        </div>
+    </div>
+
+    <script>
+    // Collapse / Expand Fragrance Catalog
+    let catalogCollapsed = false;
+    function toggleCatalog() {
+        const body   = document.getElementById('catalogBody');
+        const icon   = document.getElementById('collapseIcon');
+        const label  = document.getElementById('collapseLabel');
+        catalogCollapsed = !catalogCollapsed;
+        if (catalogCollapsed) {
+            body.classList.add('collapsed');
+            icon.style.transform = 'rotate(180deg)';
+            label.textContent = 'Expand';
+        } else {
+            body.classList.remove('collapsed');
+            icon.style.transform = 'rotate(0deg)';
+            label.textContent = 'Collapse';
+        }
+    }
+
+    // Status toggle
+    document.addEventListener("click", function(e) {
+        if (e.target.classList.contains("status-toggle")) {
+            const btn = e.target;
+            const id = btn.dataset.id;
+            const current = btn.dataset.status || 'Inactive';
+            const newStatus = current === 'Active' ? 'Inactive' : 'Active';
+
+            btn.classList.remove('active', 'inactive');
+            btn.classList.add(newStatus === 'Active' ? 'active' : 'inactive');
+            btn.textContent = newStatus;
+            btn.dataset.status = newStatus;
+
+            fetch(`/viaadmin/update_list_status/${id}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(res => res.json())
+            .then(data => { if (!data.success) alert('Failed to update status'); })
+            .catch(() => alert('Network error'));
+        }
+    });
+
+    // Select all checkbox
+    document.getElementById('select-all-custom').addEventListener('change', function() {
+        document.querySelectorAll('.custom-checkbox').forEach(cb => cb.checked = this.checked);
+    });
+
+    // Category filter
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            const filter = this.dataset.filter;
+            document.querySelectorAll('#custom-perfume-details tr[data-category]').forEach(row => {
+                if (filter === 'all' || row.dataset.category === filter) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // Search
+    document.getElementById('listSearch').addEventListener('input', function() {
+        const q = this.value.toLowerCase();
+        document.querySelectorAll('#custom-perfume-details tr[data-category]').forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+        });
+    });
+
+    // Modal open/close — handled by list.js (which uses style.display)
+    // Inline JS only handles collapse and table interactions
+
+    // Bottle preview gallery actions
+    function previewBottleImg(btn) {
+        const container = btn.closest('.bottle-image-container');
+        const img = container.querySelector('img');
+        const modal = document.getElementById('bottlePreviewModal');
+        const modalImg = document.getElementById('bottlePreviewImg');
+        if (modal && modalImg && img) {
+            modalImg.src = img.src;
+            modal.style.display = 'flex';
+        }
+    }
+
+    function deleteBottleImg(size, path, btn) {
+        if (!confirm('Are you sure you want to delete this bottle image design?')) {
+            return;
+        }
+        
+        fetch('/viaadmin/delete_bottle_image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ size: size, image_path: path })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                const container = btn.closest('.bottle-image-container');
+                const sizeCard = btn.closest('.size-card');
+                container.remove();
+                
+                if (sizeCard) {
+                    const countBadge = sizeCard.querySelector('.design-count');
+                    const remaining = sizeCard.querySelectorAll('.bottle-image-container').length;
+                    if (countBadge) {
+                        countBadge.textContent = remaining + (remaining === 1 ? ' design' : ' designs');
+                    }
+                    
+                    if (remaining === 0) {
+                        const grid = sizeCard.querySelector('.bottle-images-grid');
+                        const noDiv = document.createElement('div');
+                        noDiv.className = 'no-designs';
+                        noDiv.textContent = `No ${size}ml designs.`;
+                        grid.appendChild(noDiv);
+                    }
+                }
+            } else {
+                alert('Failed to delete image: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Network error while deleting image');
+        });
+    }
+    </script>
+
+    <script src="/static/js/admin/list.js"></script>
+</body>
+</html>

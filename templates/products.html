@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Perfumes | Premium Fragrances</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/products.css') }}">
+    <!-- <style>
+        .card-animation-container {
+    position: relative;
+    width: 100%;
+    height: 250px; /* Match your current image height */
+    overflow: hidden;
+}
+
+.card-image-main,
+.gif-background,
+.card-image-secondary {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.5s ease;
+}
+
+.gif-background {
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-card:hover .card-image-main {
+    opacity: 0; /* Fade out main image */
+}
+
+.product-card:hover .gif-background {
+    opacity: 1; /* Fade in GIF */
+}
+
+.product-card:hover .fragrance-text {
+    animation: textFade 0.5s forwards; /* Animate text appearance */
+}
+
+.product-card:hover .card-image-secondary {
+    opacity: 0; /* Initially hide secondary image */
+}
+
+.product-card:hover .gif-background:hover {
+    opacity: 0; /* Fade out GIF on hover */
+}
+
+.product-card:hover .card-image-secondary {
+    opacity: 1; /* Fade in secondary image after GIF */
+    transition-delay: 1s; /* Delay to show secondary image */
+}
+
+.fragrance-text {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+@keyframes textFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+    </style> -->
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar Filters -->
+        <div class="filter-header" onclick="toggleSidebar()">
+            <h3>FILTER PERFUMES</h3>
+            <div class="toggle-arrow">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+        <div class="filter-container">
+            <!-- Persistent filter header with toggle arrow -->
+            <!-- Collapsible sidebar content -->
+            <aside class="sidebar">
+                <div class="filter-header filter-header-inside" onclick="toggleSidebar()">
+                    <h3>FILTER PERFUMES</h3>
+                    <div class="toggle-arrow">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+               <div class="filter-group">
+                    <h3>Categories</h3>
+                    <div class="flex-for-mobile">
+                        <ul class="category-filters">
+                            <li>
+                                <input type="radio" name="category" id="all" checked>
+                                <label for="all">All Perfumes</label>
+                            </li>
+                           
+                                <li>
+                                <input type="radio" name="category" id="men">
+                                <label for="men">For Men</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="category" id="women">
+                                <label for="women">For Women</label>
+                            </li>
+                            
+                            <li>
+                                <input type="radio" name="category" id="unisex">
+                                <label for="unisex">Unisex</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="category" id="attar">
+                                <label for="attar">Attar</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3>Fragrance Type</h3>
+                    <div class="flex-for-mobile">
+
+                        <ul class="type-filters">
+                            <li>
+                                <input type="checkbox" id="floral">
+                                <label for="floral">Floral</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="woody">
+                                <label for="woody">Woody</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="citrus">
+                                <label for="citrus">Citrus</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="oriental">
+                                <label for="oriental">Oriental</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="fresh">
+                                <label for="fresh">Fresh</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3>Sort By</h3>
+                    <div class="sort-container">
+                        <select id="sort-by">
+                            <option value="featured">Featured</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="newest">Newest Arrivals</option>
+                        </select>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Main Product Grid -->
+    <main class="product-grid">
+
+        <!-- ✨ Custom Perfume CTA Banner -->
+        <section class="custom-perfume-cta-banner" style="
+            background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 40%, #4a1a6e 70%, #1a0a2e 100%);
+            border-radius: 20px;
+            padding: 3rem 2.5rem;
+            margin: 0 0 2.5rem 0;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            box-shadow: 0 20px 60px rgba(74, 26, 110, 0.4);
+        ">
+            <!-- Decorative glow elements -->
+            <div style="position:absolute;top:-40px;right:15%;width:200px;height:200px;background:radial-gradient(circle,rgba(248,156,51,0.3),transparent 70%);border-radius:50%;pointer-events:none;"></div>
+            <div style="position:absolute;bottom:-40px;left:10%;width:150px;height:150px;background:radial-gradient(circle,rgba(99,102,241,0.4),transparent 70%);border-radius:50%;pointer-events:none;"></div>
+
+            <div style="flex:1; min-width:0; position:relative;z-index:1;">
+                <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(248,156,51,0.15);border:1px solid rgba(248,156,51,0.4);padding:4px 14px;border-radius:20px;margin-bottom:1rem;">
+                    <span style="font-size:0.7rem;color:#f89c33;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;">Exclusive</span>
+                </div>
+                <h2 style="color:white;font-size:1.9rem;font-weight:800;margin:0 0 0.75rem;line-height:1.2;font-family:'Poppins',sans-serif;">
+                    ✨ Create Your Own<br>
+                    <span style="background:linear-gradient(90deg,#f89c33,#f6692a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Custom Perfume</span>
+                </h2>
+                <p style="color:rgba(255,255,255,0.75);font-size:0.95rem;margin:0 0 1.5rem;max-width:420px;line-height:1.6;">
+                    Choose your fragrance, bottle size, and bottle design. Build a unique scent that's crafted just for you — personalized from scratch.
+                </p>
+                <a href="{{ url_for('routes.custom_perfume') }}" style="
+                    display:inline-flex;
+                    align-items:center;
+                    gap:10px;
+                    background:linear-gradient(135deg,#f89c33,#f6692a);
+                    color:white;
+                    text-decoration:none;
+                    padding:0.85rem 2rem;
+                    border-radius:50px;
+                    font-weight:700;
+                    font-size:0.95rem;
+                    box-shadow:0 8px 24px rgba(248,156,51,0.4);
+                    transition:all 0.3s ease;
+                    font-family:'Poppins',sans-serif;
+                " onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 14px 32px rgba(248,156,51,0.55)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 8px 24px rgba(248,156,51,0.4)'">
+                    <i class="fas fa-flask"></i>
+                    Start Customizing Now
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div style="flex-shrink:0;display:flex;flex-direction:column;gap:1rem;position:relative;z-index:1;">
+                <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:1rem 1.5rem;backdrop-filter:blur(10px);text-align:center;min-width:140px;">
+                    <div style="font-size:1.8rem;font-weight:800;color:#f89c33;font-family:'Poppins',sans-serif;">30+</div>
+                    <div style="font-size:0.75rem;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:0.8px;">Fragrances</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:1rem 1.5rem;backdrop-filter:blur(10px);text-align:center;min-width:140px;">
+                    <div style="font-size:1.8rem;font-weight:800;color:#a78bfa;font-family:'Poppins',sans-serif;">3</div>
+                    <div style="font-size:0.75rem;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:0.8px;">Bottle Sizes</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Men Section -->
+<!-- Men Section -->
+<section class="category-section" id="men-section" data-category-section="men">
+
+    <h2 class="section-title">For Men</h2>
+    <div class="products" data-category="men">
+        {% if men_products %}
+            {% for product in men_products %}
+                <div class="product-card"
+                     data-category="men"
+                     data-price="{{ product.price }}"
+                     data-date="{{ product.date }}"
+                     data-types="{{ product.types }}"
+                     data-id="{{ product._id }}">
+
+                    <div class="quick-view-icon"
+                         onclick="window.location.href = '{{ url_for("routes.product_details", product_id=product._id) }}'">
+                        <i class="fas fa-eye"></i>
+                    </div>
+
+                    <div class="card-animation-container">
+                        <img src="{{ product.thumbnails[0] if product.thumbnails else url_for('static', filename='images/placeholder.png') }}"
+                             alt="{{ product.name }}" class="card-image-main">
+
+                        <div class="gif-background">
+                            <img src="{{ url_for('static', filename='images/smart-oud.gif') }}"
+                                 alt="Smart Oud GIF" class="gif-image">
+                            <div class="fragrance-text">Now In</div>
+                        </div>
+
+                        {% if product.thumbnails|length > 1 %}
+                            <img src="{{ product.thumbnails[1] }}"
+                                 alt="{{ product.name }} Alt" class="card-image-secondary">
+                        {% else %}
+                            <img src="{{ product.thumbnails[0] if product.thumbnails else url_for('static', filename='images/placeholder.png') }}"
+                                 alt="{{ product.name }} Alt" class="card-image-secondary">
+                        {% endif %}
+                    </div>
+
+                    <h3>{{ product.name }}</h3>
+                   <p class="brand">{{ product.type or 'Unknown Type' }}</p>
+                    <p class="stock-text">
+    {% set stock = (product.stock | default(0)) | int %}
+    {% if stock == 0 %}
+        Out of stock
+    {% else %}
+        {{ stock }} left in stock
+    {% endif %}
+</p>
+
+                    <div class="price-container">
+                        <div class="price-row">
+                            <span class="price">Rs {{ "{:,.0f}".format(product.discount_price or product.price) }}</span>
+                            {% if product.discount_price %}
+                                <span class="original-price">Rs {{ "{:,.0f}".format(product.price) }}</span>
+                                <span class="discount">
+                                    {{ ((1 - product.discount_price / product.price) * 100) | round(0) }}% OFF
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                  {% set stock = (product.stock | default(0)) | int %}
+<button class="add-to-cart-btn{% if stock == 0 %} wishlist-btn-light{% endif %}">
+    {% if stock == 0 %}
+        Add to Wishlist
+    {% else %}
+        Add to Cart
+    {% endif %}
+</button>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="color: #999; font-style: italic;">No Men Products Found.</p>
+        {% endif %}
+    </div>
+</section>
+
+
+<!-- Women Section -->
+<section class="category-section" id="women-section" data-category-section="women">
+
+    <h2 class="section-title">For Women</h2>
+    <div class="products" data-category="women">
+        {% if women_products %}
+            {% for product in women_products %}
+                <div class="product-card"
+                     data-category="women"
+                     data-price="{{ product.price }}"
+                     data-date="{{ product.date }}"
+                     data-types="{{ product.types }}"
+                     data-id="{{ product._id }}">
+                     
+                    <div class="quick-view-icon"
+                         onclick="window.location.href = '{{ url_for("routes.product_details", product_id=product._id) }}'">
+                        <i class="fas fa-eye"></i>
+                    </div>
+
+                    <div class="card-animation-container">
+                        <img src="{{ product.thumbnails[0] if product.thumbnails else url_for('static', filename='images/placeholder.png') }}"
+                             alt="{{ product.name }}" class="card-image-main">
+
+                        <div class="gif-background">
+                            <img src="{{ url_for('static', filename='images/smart-oud.gif') }}"
+                                 alt="Smart Oud GIF" class="gif-image">
+                            <div class="fragrance-text">Now In</div>
+                        </div>
+
+                        {% if product.thumbnails|length > 1 %}
+                            <img src="{{ product.thumbnails[1] }}"
+                                 alt="{{ product.name }} Alt" class="card-image-secondary">
+                        {% else %}
+                            <img src="{{ product.thumbnails[0] if product.thumbnails else url_for('static', filename='images/placeholder.png') }}"
+                                 alt="{{ product.name }} Alt" class="card-image-secondary">
+                        {% endif %}
+                    </div>
+
+                    <h3>{{ product.name }}</h3>
+                   <p class="brand">{{ product.type or 'Unknown Type' }}</p>
+                   <p class="stock-text">
+    {% set stock = (product.stock | default(0)) | int %}
+    {% if stock == 0 %}
+        Out of stock
+    {% else %}
+        {{ stock }} left in stock
+    {% endif %}
+</p>
+
+                    <div class="price-container">
+                        <div class="price-row">
+                            <span class="price">Rs {{ "{:,.0f}".format(product.discount_price or product.price) }}</span>
+                            {% if product.discount_price %}
+                                <span class="original-price">Rs {{ "{:,.0f}".format(product.price) }}</span>
+                                <span class="discount">{{ ((1 - product.discount_price / product.price) * 100) | round(0) }}% OFF</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                   {% set stock = (product.stock | default(0)) | int %}
+<button class="add-to-cart-btn{% if stock == 0 %} wishlist-btn-light{% endif %}">
+    {% if stock == 0 %}
+        Add to Wishlist
+    {% else %}
+        Add to Cart
+    {% endif %}
+</button>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No Women Products Found.</p>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Unisex Section -->
+<section class="category-section" id="unisex-section" data-category-section="unisex">
+
+    <h2 class="section-title">Unisex</h2>
+    <div class="products" data-category="unisex">
+        {% if unisex_products %}
+            {% for product in unisex_products %}
+                <div class="product-card"
+                     data-category="unisex"
+                     data-price="{{ product.price }}"
+                     data-date="{{ product.date }}"
+                     data-types="{{ product.types }}"
+                     data-id="{{ product._id }}">
+                     
+                    <div class="quick-view-icon"
+                         onclick="window.location.href = '{{ url_for("routes.product_details", product_id=product._id) }}'">
+                        <i class="fas fa-eye"></i>
+                    </div>
+
+                   <div class="card-animation-container">
+                        <img src="{{ product.thumbnails[0] if product.thumbnails else url_for('static', filename='images/placeholder.png') }}"
+                             alt="{{ product.name }}" class="card-image-main">
+
+                        <div class="gif-background">
+                            <img src="{{ url_for('static', filename='images/smart-oud.gif') }}"
+                                 alt="Smart Oud GIF" class="gif-image">
+                            <div class="fragrance-text">Now In</div>
+                        </div>
+
+                        {% if product.thumbnails|length > 1 %}
+                            <img src="{{ product.thumbnails[1] }}"
+                                 alt="{{ product.name }} Alt" class="card-image-secondary">
+                        {% else %}
+                            <img src="{{ product.thumbnails[0] if product.thumbnails else url_for('static', filename='images/placeholder.png') }}"
+                                 alt="{{ product.name }} Alt" class="card-image-secondary">
+                        {% endif %}
+                    </div>
+                    <h3>{{ product.name }}</h3>
+                  <p class="brand">{{ product.type or 'Unknown Type' }}</p>
+                 <p class="stock-text">
+    {% set stock = (product.stock | default(0)) | int %}
+    {% if stock == 0 %}
+        Out of stock
+    {% else %}
+        {{ stock }} left in stock
+    {% endif %}
+</p>
+                    <div class="price-container">
+                        <div class="price-row">
+                            <span class="price">Rs {{ "{:,.0f}".format(product.discount_price or product.price) }}</span>
+                            {% if product.discount_price %}
+                                <span class="original-price">Rs {{ "{:,.0f}".format(product.price) }}</span>
+                                <span class="discount">{{ ((1 - product.discount_price / product.price) * 100) | round(0) }}% OFF</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% set stock = (product.stock | default(0)) | int %}
+<button class="add-to-cart-btn{% if stock == 0 %} wishlist-btn-light{% endif %}">
+    {% if stock == 0 %}
+        Add to Wishlist
+    {% else %}
+        Add to Cart
+    {% endif %}
+</button>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No Unisex Products Found.</p>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Attar Section -->
+<section class="category-section" id="attar-section" data-category-section="attar">
+
+    <h2 class="section-title">Attar</h2>
+    <div class="products" data-category="attar">
+        {% if attar_products %}
+            {% for product in attar_products %}
+                <div class="product-card"
+                     data-category="attar"
+                     data-price="{{ product.price }}"
+                     data-date="{{ product.date }}"
+                     data-types="{{ product.types }}"
+                     data-id="{{ product._id }}">
+                     
+                    <div class="quick-view-icon"
+                         onclick="window.location.href = '{{ url_for("routes.product_details", product_id=product._id) }}'">
+                        <i class="fas fa-eye"></i>
+                    </div>
+<div class="card-animation-container">
+                        <img src="{{ product.thumbnails[0] if product.thumbnails else url_for('static', filename='images/placeholder.png') }}"
+                             alt="{{ product.name }}" class="card-image-main">
+
+                        <div class="gif-background">
+                            <img src="{{ url_for('static', filename='images/smart-oud.gif') }}"
+                                 alt="Smart Oud GIF" class="gif-image">
+                            <div class="fragrance-text">Now In</div>
+                        </div>
+
+                        {% if product.thumbnails|length > 1 %}
+                            <img src="{{ product.thumbnails[1] }}"
+                                 alt="{{ product.name }} Alt" class="card-image-secondary">
+                        {% else %}
+                            <img src="{{ product.thumbnails[0] if product.thumbnails else url_for('static', filename='images/placeholder.png') }}"
+                                 alt="{{ product.name }} Alt" class="card-image-secondary">
+                        {% endif %}
+                    </div>
+
+                    <h3>{{ product.name }}</h3>
+                    <p class="brand">{{ product.type or 'Unknown Type' }}</p>
+                   <p class="stock-text">
+    {% set stock = (product.stock | default(0)) | int %}
+    {% if stock == 0 %}
+        Out of stock
+    {% else %}
+        {{ stock }} left in stock
+    {% endif %}
+</p>
+
+                    <div class="price-container">
+                        <div class="price-row">
+                            <span class="price">Rs {{ "{:,.0f}".format(product.discount_price or product.price) }}</span>
+                            {% if product.discount_price %}
+                                <span class="original-price">Rs {{ "{:,.0f}".format(product.price) }}</span>
+                                <span class="discount">{{ ((1 - product.discount_price / product.price) * 100) | round(0) }}% OFF</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No Attar Products Found.</p>
+        {% endif %}
+    </div>
+</section>
+
+
+    </main>
+    </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/products.js')}}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.querySelector('.sidebar');
+            const filterHeaders = document.querySelectorAll('.filter-header');
+            const toggleArrows = document.querySelectorAll('.toggle-arrow i');
+            const productGrid = document.querySelector('.product-grid');
+
+            // Initialize sidebar state
+            function initSidebar() {
+                const isMobile = window.matchMedia("(max-width: 992px)").matches;
+
+                if (isMobile) {
+                    // Mobile setup
+                    sidebar.classList.remove('closed');
+                    setupMobileNavbar();
+                } else {
+                    // Desktop setup - check localStorage
+                    const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+                    if (isCollapsed) {
+                        sidebar.classList.add('closed');
+                        productGrid.style.marginLeft = '80px';
+                        productGrid.style.width = 'calc(100% - 80px)';
+                    } else {
+                        sidebar.classList.remove('closed');
+                        productGrid.style.marginLeft = '280px';
+                        productGrid.style.width = 'calc(100% - 280px)';
+                    }
+                }
+                updateUI();
+            }
+
+            // Toggle sidebar function
+            function toggleSidebar() {
+                const isMobile = window.matchMedia("(max-width: 992px)").matches;
+
+                if (isMobile) {
+                    sidebar.classList.toggle('open');
+                } else {
+                    sidebar.classList.toggle('closed');
+                    localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('closed'));
+
+                    // Update layout immediately
+                    if (sidebar.classList.contains('closed')) {
+                        productGrid.style.marginLeft = '80px';
+                        productGrid.style.width = 'calc(100% - 80px)';
+                    } else {
+                        productGrid.style.marginLeft = '280px';
+                        productGrid.style.width = 'calc(100% - 280px)';
+                    }
+                }
+                updateUI();
+            }
+
+            // Update UI elements
+            function updateUI() {
+                const isMobile = window.matchMedia("(max-width: 992px)").matches;
+                let isOpen;
+
+                if (isMobile) {
+                    isOpen = sidebar.classList.contains('open');
+                    // Hide inside header on mobile
+                    document.querySelector('.filter-header-inside').style.display = 'none';
+                } else {
+                    isOpen = !sidebar.classList.contains('closed');
+                    // Toggle header visibility on desktop
+                    document.querySelector('.filter-header').style.display =
+                        isOpen ? 'none' : 'flex';
+                    document.querySelector('.filter-header-inside').style.display =
+                        isOpen ? 'flex' : 'none';
+                }
+
+                // Update all arrow icons
+                toggleArrows.forEach(arrow => {
+                    arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(-90deg)';
+                });
+            }
+
+            // Mobile navbar setup
+            function setupMobileNavbar() {
+                sidebar.classList.add('mini-navbar');
+                document.querySelectorAll('.filter-group').forEach(group => {
+                    group.classList.add('horizontal-group');
+                });
+                productGrid.style.marginLeft = '0';
+                productGrid.style.width = '100%';
+            }
+
+            // Handle resize events
+            window.addEventListener('resize', function () {
+                initSidebar();
+            });
+
+            // Add event listeners to both headers
+            filterHeaders.forEach(header => {
+                header.addEventListener('click', toggleSidebar);
+            });
+
+            // Initialize
+            initSidebar();
+        });
+    </script>
+</body>
+
+</html>

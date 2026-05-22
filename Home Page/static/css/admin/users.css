@@ -1,0 +1,254 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container */
+.container {
+  
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Navigation Bar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+nav h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid #007bff;
+    transition: transform 0.3s ease;
+}
+
+.profile img:hover {
+    transform: scale(1.1);
+}
+
+.profile .name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #007bff;
+}
+
+/* Filter Section */
+.filter {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+.filter input,
+.filter select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    flex: 1;
+    min-width: 120px;
+}
+
+.filter input:focus,
+.filter select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+.filter input::placeholder {
+    color: #999;
+}
+
+/* Users Section */
+.users {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    padding: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    
+}
+
+thead {
+    background: linear-gradient(135deg, #204354, #2c3e50);
+    color: #ffffff;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+    white-space: nowrap; /* Prevents text from wrapping */
+}
+
+/* ✅ Green text & background for "Complete" status */
+.status-complete {
+    color: green;
+    background-color: rgba(144, 238, 144, 0.2); /* Light green with blur effect */
+    font-weight: bold;
+}
+
+/* ❌ Red text & background for "Incomplete" status */
+.status-incomplete {
+    color: red;
+    background-color: rgba(255, 99, 71, 0.2); /* Light red with blur effect */
+    font-weight: bold;
+}
+
+th {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Custom Scrollbar */
+.users::-webkit-scrollbar {
+    height: 6px;
+}
+
+.users::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    border-radius: 4px;
+}
+
+.users::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .filter {
+        flex-direction: column;
+    }
+
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tr {
+        margin-bottom: 10px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 8px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    td {
+        text-align: left;
+        padding-right: 50%;
+        position: relative;
+        border-bottom: 1px solid #eee;
+    }
+
+    tr td:first-child {
+        background-color: #0056b3;
+        border-radius: 10px;
+        color: white;
+    }
+
+    td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 50%;
+        padding-right: 10px;
+        text-align: left;
+        font-weight: 600;
+        color: #007bff;
+    }
+
+    td:last-child {
+        border-bottom: none;
+    }
+}
+
+/* Advanced Hover Effects */
+tbody tr {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+tbody tr:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 5px 10px;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination button:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination button:disabled {
+    background-color: #007bff;
+    color: #fff;
+    cursor: not-allowed;
+}

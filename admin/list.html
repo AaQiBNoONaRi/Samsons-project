@@ -1,0 +1,249 @@
+<!-- Add Bottle Image Modal -->
+<div id="addBottleModal" class="add-bottle-modal">
+    <div class="add-bottle-modal-content">
+        <span class="add-bottle-close">&times;</span>
+        <h3>Upload Bottle Image</h3>
+        <form id="addBottleForm">
+            <input type="file" id="bottleImageInput" name="bottleImage" accept="image/*" required
+                style="margin-top:12px;">
+        </form>
+    </div>
+</div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/admin/list.css')}}">
+    <title>Custom Perfume List</title>
+</head>
+
+<body>
+    <!-- Hamburger menu button (visible on mobile, for opening sidebar) -->
+    <button id="hamburgerMenuOpen" class="hamburger-menu" aria-label="Open Sidebar">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    {% include 'admin/sidebar.html' %}
+    <div class="main-content">
+        <div class="header">
+            <h1>Custom Perfume List</h1>
+            <div class="user-info">
+                <img src="https://via.placeholder.com/40" alt="admin">
+                <span>Admin</span>
+            </div>
+        </div>
+        <div class="main-container">
+            <div class="content-header">
+                <h1>All Custom Perfumes</h1>
+                <div class="header-buttons">
+                    <button>Export</button>
+                    <button>Import</button>
+                    <button type="button" id="openAddBottleModal">Add Perfume</button>
+
+                </div>
+            </div>
+            <div class="products-container">
+                <div class="list-bottle-flex">
+                    <div class="product-table-container">
+                        <div class="product-filters">
+                            <button>All</button>
+                            <button>Men</button>
+                            <button>Women</button>
+                            <button>Unisex</button>
+                        </div>
+                        <div class="products-sorting">
+                            <button class="add-list-btn" id="openAddListModal"><i class="fas fa-plus"></i> Add
+                                List</button>
+                            <div class="product-search">
+                                <input type="search" placeholder="Search...">
+                            </div>
+                        </div>
+                        <div class="product-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="padding-right:2px; width:28px;"><input type="checkbox"
+                                                id="select-all-custom" style="margin-right:0;"></th>
+                                        <th style="padding-left:2px; width:32px;">S.No</th>
+                                        <th>Fragrance Name</th>
+                                        <th>Fragrance Type</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="custom-perfume-details">
+                                    <tr>
+                                        <td style="padding-right:2px; width:28px;"><input type="checkbox"
+                                                class="custom-checkbox" value="1" style="margin-right:0;"></td>
+                                        <td style="padding-left:2px; width:32px;">1</td>
+                                        <td>Rose Blossom</td>
+                                        <td>Floral</td>
+                                        <td>Women</td>
+                                        <td>$50</td>
+                                        <td>
+                                            <button class="status-btn active">Active</button>
+                                            <button class="status-btn inactive">Inactive</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-right:2px; width:28px;"><input type="checkbox"
+                                                class="custom-checkbox" value="2" style="margin-right:0;"></td>
+                                        <td style="padding-left:2px; width:32px;">2</td>
+                                        <td>Citrus Zest</td>
+                                        <td>Citrus</td>
+                                        <td>Unisex</td>
+                                        <td>$45</td>
+                                        <td>
+                                            <button class="status-btn active">Active</button>
+                                            <button class="status-btn inactive">Inactive</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-right:2px; width:28px;"><input type="checkbox"
+                                                class="custom-checkbox" value="3" style="margin-right:0;"></td>
+                                        <td style="padding-left:2px; width:32px;">3</td>
+                                        <td>Spicy Oud</td>
+                                        <td>Woody</td>
+                                        <td>Men</td>
+                                        <td>$60</td>
+                                        <td>
+                                            <button class="status-btn active">Active</button>
+                                            <button class="status-btn inactive">Inactive</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-right:2px; width:28px;"><input type="checkbox"
+                                                class="custom-checkbox" value="4" style="margin-right:0;"></td>
+                                        <td style="padding-left:2px; width:32px;">4</td>
+                                        <td>Spicy Oud</td>
+                                        <td>Woody</td>
+                                        <td>Men</td>
+                                        <td>Rs60</td>
+                                        <td>
+                                            <button class="status-btn active">Active</button>
+                                            <button class="status-btn inactive">Inactive</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination-info">
+                            <div></div>
+                            <div class="pagination-controls">
+                                <button><i class="fas fa-chevron-left"></i></button>
+                                <button class="active">1</button>
+                                <button>2</button>
+                                <button>3</button>
+                                <button>...</button>
+                                <button><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bottles-section">
+                        <h2>Available Bottles</h2>
+                        <div class="bottles-list">
+                            <!-- Preview Modal -->
+                            <div id="bottlePreviewModal" class="bottle-preview-modal">
+                                <div class="bottle-preview-modal-content">
+                                    <span class="bottle-preview-close">&times;</span>
+                                    <img id="bottlePreviewImg" src="" alt="Bottle Preview">
+                                </div>
+                            </div>
+                            <div class="bottle-item">
+                                <img src="WhatsApp Image 2025-09-16 at 18.56.47_09f3ea09.jpg" alt="Bottle 1">
+                                <div class="bottle-actions">
+                                    <button class="preview-btn"><i class="fas fa-eye"></i></button>
+                                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                                </div>
+                                <label><input type="checkbox" checked> Active</label>
+                            </div>
+                            <div class="bottle-item">
+                                <img src="WhatsApp Image 2025-09-16 at 18.56.47_17c4b13d.jpg" alt="Bottle 2">
+                                <div class="bottle-actions">
+                                    <button class="preview-btn"><i class="fas fa-eye"></i></button>
+                                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                                </div>
+                                <label><input type="checkbox"> Inactive</label>
+                            </div>
+                            <div class="bottle-item">
+                                <img src="WhatsApp Image 2025-09-16 at 18.56.47_2d7b8f26.jpg" alt="Bottle 3">
+                                <div class="bottle-actions">
+                                    <button class="preview-btn"><i class="fas fa-eye"></i></button>
+                                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                                </div>
+                                <label><input type="checkbox" checked> Active</label>
+                            </div>
+                            <div class="bottle-item">
+                                <img src="nano-banana-2025-09-15T16-22-19.png" alt="Bottle 4">
+                                <div class="bottle-actions">
+                                    <button class="preview-btn"><i class="fas fa-eye"></i></button>
+                                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                                </div>
+                                <label><input type="checkbox"> Inactive</label>
+                            </div>
+                            <div class="bottle-item">
+                                <img src="WhatsApp Image 2025-09-16 at 18.56.47_936556fd.jpg" alt="Bottle 5">
+                                <div class="bottle-actions">
+                                    <button class="preview-btn"><i class="fas fa-eye"></i></button>
+                                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                                </div>
+                                <label><input type="checkbox" checked> Active</label>
+                            </div>
+                            <div class="bottle-item">
+                                <img src="WhatsApp Image 2025-09-16 at 18.56.47_94a959b7.jpg" alt="Bottle 6">
+                                <div class="bottle-actions">
+                                    <button class="preview-btn"><i class="fas fa-eye"></i></button>
+                                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                                </div>
+                                <label><input type="checkbox"> Inactive</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add List Modal -->
+    <div id="addListModal" class="add-list-modal">
+        <div class="add-list-modal-content">
+            <span class="add-list-close">&times;</span>
+            <h3>Add New List</h3>
+            <form id="addListForm" class="add-list-form-mixed">
+                <div class="form-row-horizontal">
+                    <div class="form-group small-input">
+                        <label for="listNumber">List Number</label>
+                        <input type="number" id="listNumber" name="listNumber" required placeholder="No." min="1"
+                            style="width:70px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="fragranceName">Fragrance Name</label>
+                        <input type="text" id="fragranceName" name="fragranceName" required
+                            placeholder="Enter fragrance name">
+                    </div>
+                    <div class="form-group">
+                        <label for="fragranceType">Fragrance Type</label>
+                        <input type="text" id="fragranceType" name="fragranceType" required
+                            placeholder="e.g. Floral, Citrus, Woody">
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <input type="text" id="category" name="category" required placeholder="e.g. Men, Women, Unisex">
+                    </div>
+                </div>
+                <label for="price">Price</label>
+                <input type="number" id="price" name="price" required placeholder="Enter price" min="0" step="0.01">
+                <div class="add-list-modal-actions">
+                    <button type="submit" class="add-list-submit">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+      <script src="/static/js/admin/list.js"></script>
+</body>
+
+</html>

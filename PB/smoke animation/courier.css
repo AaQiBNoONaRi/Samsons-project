@@ -1,0 +1,596 @@
+/* Base Styles */
+:root {
+    --primary-color: #FD5F16;
+    --primary-dark: #e55614;
+    --text-color: #333;
+    --text-light: #666;
+    --light-bg: #f9f9f9;
+    --white: #ffffff;
+    --border-radius: 8px;
+    --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    overflow-x: hidden;
+}
+
+.courier-section {
+    padding: 80px 0;
+}
+
+.courier-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Hero Section */
+#courier-hero {
+    background-color: var(--light-bg);
+    position: relative;
+    overflow: hidden;
+}
+
+.courier-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.courier-hero-image img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.courier-hero-content {
+    padding-right: 20px;
+}
+
+.courier-main-heading {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.courier-main-heading span {
+    color: var(--primary-color);
+}
+
+.courier-subtext {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    margin-bottom: 30px;
+}
+
+/* Buttons */
+.courier-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid var(--primary-color);
+    box-shadow: var(--box-shadow);
+}
+
+.courier-btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(253, 95, 22, 0.2);
+}
+
+.courier-btn.outline {
+    background-color: transparent;
+    color: var(--primary-color);
+    box-shadow: none;
+}
+
+.courier-btn.outline:hover {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: var(--box-shadow);
+}
+
+/* Section Grid Layout */
+.courier-section-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.reversed {
+    direction: rtl;
+}
+
+.reversed > * {
+    direction: ltr;
+}
+
+.courier-section-image img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+/* Section Headings */
+.courier-section-heading {
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.courier-section-heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 4px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+}
+
+.right-aligned .courier-section-heading::after {
+    left: auto;
+    right: 0;
+}
+
+/* Feature Boxes */
+.courier-feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.courier-feature-box {
+    padding: 25px;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s ease;
+    border-top: 3px solid var(--primary-color);
+}
+
+.courier-feature-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.courier-feature-icon {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(253, 95, 22, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.courier-feature-box h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.courier-feature-box p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+/* Savings Section */
+.courier-savings-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.courier-savings-content {
+    padding-left: 30px;
+}
+
+.courier-savings-text {
+    margin-bottom: 25px;
+    color: var(--text-light);
+    font-size: 1.05rem;
+}
+
+.courier-savings-list {
+    list-style: none;
+    margin-bottom: 30px;
+}
+
+.courier-savings-list li {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.courier-savings-list i {
+    color: var(--primary-color);
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+
+.courier-savings-image img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+/* Calculator Section */
+#courier-calculator {
+    background: linear-gradient(135deg, #f78049 0%, #e55614 100%);
+    padding: 60px 0;
+    color: white;
+}
+
+.courier-calculator-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr; /* Increased form side width */
+    gap: 40px;
+    align-items: center;
+}
+
+.courier-calculator-form {
+    background: var(--white);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    width: 100%; /* Ensures it takes full available width */
+    max-width: 700px; /* Increased max-width */
+}
+
+/* To adjust the width further:
+1. Increase the first value in grid-template-columns (1.2fr)
+   Example: 1.5fr 0.5fr for even wider form
+2. Or increase the max-width value (currently 700px)
+   Example: max-width: 800px;
+*/
+
+.courier-form-heading {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.calculator-form-group {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 4 inputs + 1 button */
+    gap: 10px;
+    align-items: end; /* Aligns items at the bottom */
+}
+
+.calculator-form-group label {
+    grid-row: 1; /* Puts all labels in first row */
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.75rem;
+    margin-bottom: 5px;
+    text-align: left;
+    padding-left: 2px; /* Small adjustment to match input padding */
+}
+
+.calculator-inputs {
+    grid-row: 2; /* Puts all inputs in second row */
+    grid-column: 1 / -1; /* Spans full width */
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    align-items: center;
+}
+
+.calculator-inputs input,
+.calculator-inputs select {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    height: 35px;
+    width: 100%; /* Changed from fixed 100px to full width */
+    min-width: 0; /* Allows flex shrinking */
+}
+
+
+.calculator-inputs .courier-btn {
+    padding: 10px;
+    height: 40px;
+    white-space: nowrap;
+    font-size: 0.85rem;
+    border-radius: 10px;
+}
+
+/* Contact Form Section */
+#courier-contact {
+    padding: 80px 0;
+}
+
+.courier-contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.courier-contact-form {
+    background: var(--white);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.contact-info {
+    margin-top: 30px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.contact-item i {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(253, 95, 22, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    margin-right: 15px;
+    font-size: 1rem;
+}
+
+.contact-form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.contact-form-group {
+    flex: 1;
+}
+
+.contact-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.85rem;
+}
+
+.contact-form-group.full-width {
+    flex: 0 0 100%;
+    margin-bottom: 15px;
+}
+
+.contact-form-group input,
+.contact-form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+}
+
+.contact-form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 1em;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .courier-main-heading {
+        font-size: 2.4rem;
+    }
+    
+    .courier-section-heading {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .courier-hero-grid,
+    .courier-section-grid,
+    .courier-savings-grid,
+    .courier-calculator-grid,
+    .courier-contact-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .courier-hero-content,
+    .courier-savings-content,
+    .courier-calculator-content,
+    .courier-contact-content {
+        padding: 0 15px;
+        text-align: center;
+    }
+    
+    .courier-section-heading::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .right-aligned .courier-section-heading::after {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+    }
+    
+    .reversed {
+        direction: ltr;
+    }
+    
+    .courier-section-image,
+    .courier-hero-image,
+    .courier-savings-image {
+        order: -1;
+        padding: 0 15px;
+    }
+    
+    .calculator-form-group {
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+    
+    .calculator-inputs {
+        grid-template-columns: 1fr;
+    }
+    
+    .calculator-inputs .courier-btn {
+        grid-column: 1;
+    }
+    
+    .contact-form-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .contact-info {
+        text-align: left;
+        max-width: 400px;
+        margin: 30px auto 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .courier-main-heading {
+        font-size: 2rem;
+    }
+    
+    .courier-section-heading {
+        font-size: 1.8rem;
+    }
+    
+    .courier-feature-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .courier-section {
+        padding: 50px 0;
+    }
+    
+    #courier-calculator,
+    #courier-contact {
+        padding: 50px 0;
+    }
+    
+    .courier-feature-box,
+    .courier-calculator-form,
+    .courier-contact-form {
+        padding: 20px;
+    }
+    
+    .courier-feature-box {
+        text-align: center;
+    }
+    
+    .courier-feature-icon {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .courier-savings-text {
+        text-align: center;
+    }
+    
+    .courier-savings-list {
+        text-align: center;
+        display: block;
+    }
+    
+    .courier-savings-list li {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .courier-main-heading {
+        font-size: 1.8rem;
+    }
+    
+    .courier-section-heading {
+        font-size: 1.6rem;
+    }
+    
+    .courier-form-heading {
+        font-size: 1.3rem;
+    }
+    
+    .courier-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .courier-subtext,
+    .courier-savings-text {
+        font-size: 1rem;
+    }
+    
+    .courier-savings-list li {
+        font-size: 0.9rem;
+    }
+    
+    .calculator-inputs input,
+    .calculator-inputs select,
+    .contact-form-group input,
+    .contact-form-group select {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+    }
+    
+    .contact-item {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .courier-main-heading {
+        font-size: 1.6rem;
+    }
+    
+    .courier-section-heading {
+        font-size: 1.4rem;
+    }
+    
+    .courier-feature-box h3 {
+        font-size: 1.1rem;
+    }
+    
+    .courier-feature-box p,
+    .courier-savings-list li {
+        font-size: 0.85rem;
+    }
+}

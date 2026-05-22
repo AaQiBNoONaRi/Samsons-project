@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Samsons Signature Tester</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tester-checkout.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <style>
+        .checkout-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.order-summary {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.order-details p {
+    margin: 8px 0;
+}
+
+.fragrance-selections {
+    margin-top: 20px;
+}
+
+.box-selection {
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.box-selection h4 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+}
+
+.box-selection ul {
+    margin: 10px 0 0 0;
+    padding-left: 20px;
+}
+
+.box-selection li {
+    margin-bottom: 5px;
+}
+
+.checkout-form {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.payment-methods {
+    margin-bottom: 20px;
+}
+
+.payment-option {
+    margin-bottom: 10px;
+}
+
+.payment-option label {
+    display: inline;
+    margin-left: 8px;
+    font-weight: normal;
+}
+
+.card-details {
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.place-order-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.place-order-btn:hover {
+    background: #45a049;
+}
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <h1>Checkout</h1>
+        
+        <div class="order-summary">
+            <h2>Order Summary</h2>
+            <div class="order-details">
+                <p><strong>Product:</strong> {{ order.product_name }}</p>
+                <p><strong>Packet Size:</strong> {{ order.packet_size }} testers per box</p>
+                <p><strong>Quantity:</strong> {{ order.quantity }} box(es)</p>
+                <p><strong>Total Price:</strong> Rs. {{ order.price * order.quantity }}</p>
+            </div>
+            
+            <div class="fragrance-selections">
+                <h3>Your Fragrance Selections:</h3>
+                {% for box in order.boxes %}
+                <div class="box-selection">
+                    <h4>Box {{ loop.index }}</h4>
+                    <ul>
+                        {% for fragrance in box %}
+                        <li>{{ fragrance }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <form class="checkout-form" method="POST" action="/process_order">
+            <h2>Shipping Information</h2>
+            
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="address">Shipping Address</label>
+                <textarea id="address" name="address" rows="3" required></textarea>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="zipcode">Zip Code</label>
+                    <input type="text" id="zipcode" name="zipcode" required>
+                </div>
+            </div>
+            
+            <h2>Payment Method</h2>
+            
+            <div class="payment-methods">
+                <div class="payment-option">
+                    <input type="radio" id="cod" name="payment" value="cod" checked>
+                    <label for="cod">Cash on Delivery</label>
+                </div>
+                
+                <div class="payment-option">
+                    <input type="radio" id="card" name="payment" value="card">
+                    <label for="card">Credit/Debit Card</label>
+                </div>
+            </div>
+            
+            <div class="card-details" id="cardDetails" style="display: none;">
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expiry">Expiry Date</label>
+                        <input type="text" id="expiry" name="expiry" placeholder="MM/YY">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" name="cvv" placeholder="123">
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="place-order-btn">Place Order</button>
+        </form>
+    </div>
+
+    <script>
+        // Show/hide card details based on payment method selection
+        document.querySelectorAll('input[name="payment"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('cardDetails').style.display = 
+                    this.value === 'card' ? 'block' : 'none';
+            });
+        });
+
+        // Update the payload creation in handleCartOrBuy function
+const payload = {
+    product_name: "Samsons Signature Tester Pack",
+    packet_size: packetSize,
+    quantity: quantity,
+    boxes: allBoxes,
+    price: priceInt * quantity,  // Total price
+    product_price: priceInt      // Price per box
+};
+    </script>
+</body>
+</html>

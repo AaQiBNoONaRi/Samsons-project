@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Rose Perfume | Chanel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- <link rel="stylesheet" href="styles.css">  -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/product_details.css') }}">
+
+    <style>
+       #main-image {
+    width: 100%;
+    max-width: 500px;
+    transition: transform 0.3s ease;
+    cursor: zoom-in;
+}
+
+#main-image:hover {
+    transform: scale(1.1);
+    cursor: zoom-out;
+
+
+}
+.price {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.discounted-price {
+    color: #e63946;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.original-price {
+    color: #888;
+    text-decoration: line-through;
+    font-size: 0.9rem;
+    margin-right: 8px;
+}
+
+.discount {
+    color: #2a9d8f;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="product-page">
+
+    <!-- Product Main Section -->
+    <div class="product-main">
+        <!-- Product Images -->
+        <div class="product-images">
+            <img id="main-image"
+                 src="{{ product.thumbnails[0] if product.thumbnails else url_for('static', filename='images/placeholder.png') }}"
+                 alt="{{ product.name }}">
+
+            <div class="thumbnails">
+                {% for thumb in product.thumbnails %}
+                    <img src="{{ thumb }}" onclick="changeImage(this)" class="{% if loop.first %}selected{% endif %}">
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="product-details">
+            <h1>{{ product.name }}</h1>
+            <p class="price">
+  {% if product.discount_price %}
+    <span class="discounted-price" id="discountedPrice" data-base="{{ product.discount_price }}">
+  Rs {{ "{:,.0f}".format(product.discount_price) }}
+</span>
+
+
+    <span class="original-price" id="originalPrice" data-base="{{ product.price }}">
+      Rs {{ "{:,.0f}".format(product.price) }}
+    </span>
+    <span class="discount" id="discountPercentage">
+      {{ ((1 - product.discount_price / product.price) * 100) | round(0) }}% OFF
+    </span>
+  {% else %}
+    <span class="regular-price" id="regularPrice" data-base="{{ product.price }}">
+      Rs {{ "{:,.0f}".format(product.price) }}
+    </span>
+  {% endif %}
+</p>
+<p>{{ product.description   }}</p>
+            <p class="brand">{{ product.type or 'Unknown Type' }}</p>
+            <p class="category">For {{ (product.category or 'Uncategorized') | capitalize }}</p>
+
+            
+
+            <!-- Stock Availability -->
+            {% if product.get('stock', 0) | int == 0 %}
+    <p class="stock-text out-of-stock">Out of Stock</p>
+{% else %}
+    <p class="stock-text in-stock">{{ product.get('stock') }} left in stock</p>
+{% endif %}
+
+
+            <!-- Delivery Info -->
+            <p class="delivery-info"><i class="fas fa-truck"></i> Delivery in 3-5 working days</p>
+
+            <!-- Wishlist Button -->
+            <button class="wishlist-btn"><i class="far fa-heart"></i> Add to Wishlist</button>
+<div class="custom-dropdown">
+                    <label for="bottleSize">Choose Bottle Size</label>
+                    <div class="dropdown-selected" onclick="toggleDropdown()">50ml</div>
+                    <ul class="dropdown-options" id="dropdownOptions">
+                        <li onclick="selectOption(this)">50ml</li>
+                        <li onclick="selectOption(this)">75ml</li>
+                        <li onclick="selectOption(this)">100ml</li>
+                        
+                    </ul>
+                    <input type="hidden" name="" id="" value="">
+                </div>
+            <!-- Quantity Selector -->
+            <div class="quantity-selector">
+                    <button onclick="adjustQuantity(-1)">-</button>
+                    <input type="number" id="quantity" value="1" min="1"
+       max="{{ product.get('stock', 0) }}"
+       {% if product.get('stock', 0) | int <= 0 %} disabled {% endif %}
+>
+
+
+
+                    <button onclick="adjustQuantity(1)">+</button>
+                </div>
+
+ {% set is_in_stock = product.get('stock', '0') | int > 0 %}
+
+<div class="product-actions">
+
+  <!-- ✅ Add to Cart Form -->
+  <form action="{{ url_for('routes.checkout_cart') }}" method="POST"
+        class="add-to-cart-form"
+        {% if not is_in_stock %} onsubmit="return false;" {% else %} onsubmit="return syncCartForm();" {% endif %}>
+
+    <input type="hidden" name="product_id" value="{{ product._id|string }}">
+    <input type="hidden" name="final_price" id="cartFinalPriceInput">
+<input type="hidden" name="description" value="{{ product.description or 'A luxurious fragrance with carefully crafted notes for every occasion.' }}">
+    <input type="hidden" name="product_name" value="{{ product.name }}">
+    <input type="hidden" name="price" value="{{ product.discount_price or product.price }}">
+    <input type="hidden" name="quantity" class="buy-now-quantity" value="1">
+    <input type="hidden" name="gender" value="{{ product.category }}">
+    <input type="hidden" name="stock" value="{{ product.stock }}">
+    <input type="hidden" name="bottleSize" id="cart-bottleSizeInput" value="">
+    <input type="hidden" name="total_price" id="cart-total-price" value="{{ product.discount_price or product.price }}">
+    <input type="hidden" name="thumbnail"
+           value="{{ product.thumbnails[0] if product.thumbnails else url_for('static', filename='images/placeholder.png') }}">
+
+    <button type="submit" onclick="return syncCartForm();"class="add-to-cart"
+            {% if not is_in_stock %}
+              disabled
+              title="Out of stock"
+              style="opacity: 0.5; cursor: not-allowed;"
+            {% endif %}>
+      Add to Cart
+    </button>
+  </form>
+
+  <!-- ✅ Buy Now Form -->
+  <form action="{{ url_for('routes.checkout') }}" method="POST"
+        class="buy-now-form"
+        {% if not is_in_stock %} onsubmit="return false;" {% else %} onsubmit="return syncFragranceToHidden();" {% endif %}>
+
+    <input type="hidden" name="product_id" value="{{ product._id|string }}">
+    <input type="hidden" name="product_name" value="{{ product.name }}">
+    <input type="hidden" name="price" value="{{ product.discount_price or product.price }}">
+    <input type="hidden" name="quantity" class="buy-now-quantity" value="1">
+    <input type="hidden" name="final_price" id="buyNowFinalPriceInput">
+<input type="hidden" name="description" value="{{ product.description or 'A luxurious fragrance with carefully crafted notes for every occasion.' }}">
+
+    <input type="hidden" name="gender" value="{{ product.category }}">
+    <input type="hidden" name="stock" value="{{ product.stock }}">
+    <input type="hidden" name="bottleSize" id="bottleSizeInput" value="">
+    <input type="hidden" name="total_price" id="buy-now-total-price" value="{{ product.discount_price or product.price }}">
+    <input type="hidden" name="thumbnail" id="thumbnailInput"
+           value="{{ product.thumbnails[0] if product.thumbnails else url_for('static', filename='images/placeholder.png') }}">
+
+    <button type="submit" class="buy-now"
+            {% if not is_in_stock %}
+              disabled
+              title="Out of stock"
+              style="opacity: 0.5; cursor: not-allowed;"
+            {% endif %}>
+      Buy Now
+    </button>
+  </form>
+
+</div>
+
+
+
+
+                <!-- Total Price -->
+               <p class="total-amount">
+    Total: Rs <span id="total-price" data-price="{{ product.discount_price or product.price }}">
+        {{ "{:,.0f}".format(product.discount_price or product.price) }}
+    </span>
+</p>
+
+            <!-- Social Share -->
+            <div class="social-share">
+                <span>Share:</span>
+                <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="gmail"><i class="fab fa-google"></i></a>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    <div class="related-products">
+        <h2>You May Also Like</h2>
+        <div class="related-grid">
+            {% for item in related_products %}
+                <div class="related-card" onclick="window.location.href='{{ url_for('routes.product_details', product_id=item._id) }}'">
+                    <img src="{{ item.thumbnails[0] if item.get('thumbnails') else url_for('static', filename='images/placeholder.png') }}"
+                         alt="{{ item.name }}">
+                    <h3>{{ item.name }}</h3>
+                    <p class="brand">{{ item.type or 'type' }}</p>
+                    <p class="price">Rs {{ "{:,.0f}".format(item.discount_price or item.price) }}</p>
+                </div>
+            {% endfor %}
+            {% if not related_products %}
+                <p>No related products found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Product Tabs -->
+    <div class="product-tabs">
+        <div class="tab-header">
+            <button class="tab-btn active" onclick="openTab('description')">Description</button>
+            <button class="tab-btn" onclick="openTab('specs')">Specifications</button>
+            <button class="tab-btn" onclick="openTab('reviews')">Reviews (0)</button>
+            <button class="tab-btn" onclick="openTab('brand')">About Brand</button>
+            <button class="tab-btn" onclick="openTab('shipping')">Shipping</button>
+        </div>
+
+        <div id="description" class="tab-content active">
+            <p>{{ product.description or 'A luxurious fragrance with carefully crafted notes for every occasion.' }}</p>
+        </div>
+
+        <div id="specs" class="tab-content">
+            <ul class="spec-list">
+                <li><strong>Brand:</strong> {{ product.brand or 'Unknown' }}</li>
+                <li><strong>Type:</strong> {{ product.type or 'N/A' }}</li>
+                <li><strong>Category:</strong> {{ product.category or 'Uncategorized' }}</li>
+                <li><strong>SKU:</strong> {{ product._id }}</li>
+                <li><strong>Availability:</strong>
+    {% if product.get('stock', 0)|int > 0 %} In Stock {% else %} Out of Stock {% endif %}
+</li>
+
+            </ul>
+        </div>
+
+        <div id="reviews" class="tab-content">
+            <p>No reviews yet. Be the first to review this product!</p>
+        </div>
+
+        <div id="brand" class="tab-content">
+            <p>{{ product.brand_description or 'Our products are crafted with care and quality in mind, offering luxurious experiences in every bottle.' }}</p>
+        </div>
+
+        <div id="shipping" class="tab-content">
+            <p>Free standard shipping on all orders. Express delivery available. 30-day return policy.</p>
+        </div>
+    </div>
+
+</div>
+<script>
+
+</script>
+
+
+    <script src="{{ url_for('static', filename='js/product_details.js')}}"></script>
+    <!-- <script src="script.js"></script> -->
+</body>
+
+</html>

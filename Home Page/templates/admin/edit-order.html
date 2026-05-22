@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Order - ORD-1001</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.4;
+            font-size: 13px;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: 180px;
+            background-color: #1b2992;
+            color: white;
+            height: 100vh;
+            padding: 8px 0;
+            position: fixed;
+        }
+
+        .sidebar-header {
+            padding: 0 10px 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-header h2 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .sidebar-menu {
+            padding: 8px 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 10px;
+            margin: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .menu-item i {
+            font-size: 12px;
+            margin-right: 8px;
+            min-width: 12px;
+        }
+
+        .menu-item.active {
+            background-color: white;
+            color: #1b2992;
+            font-weight: 500;
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 180px;
+            padding: 15px;
+            width: calc(100% - 180px);
+        }
+
+        /* Compact form styles */
+        .compact-container {
+            max-width: 100%;
+        }
+
+        .compact-form {
+            background-color: white;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .form-title {
+            color: #1b2992;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .order-id {
+            background-color: #1b2992;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .form-section {
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            color: #1b2992;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #e9eefa;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 11px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #e0e3ed;
+            border-radius: 4px;
+            font-size: 12px;
+            background-color: #f8f9fd;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #1b2992;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(27, 41, 146, 0.1);
+            background-color: white;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 7px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn i {
+            margin-right: 5px;
+            font-size: 11px;
+        }
+
+        .btn-primary {
+            background-color: #1b2992;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #14207d;
+        }
+
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #555;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 500;
+            margin-left: 6px;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-confirmed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-delivered {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .thumbnail-preview {
+            width: 50px;
+            height: 50px;
+            border-radius: 3px;
+            object-fit: cover;
+            border: 1px solid #eee;
+            margin-top: 6px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+            
+            .sidebar-header h2,
+            .menu-item span {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 60px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar-open .sidebar {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .compact-form {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>PAGE</h2>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-item">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </div>
+            <div class="menu-item active">
+                <i class="fas fa-shopping-bag"></i>
+                <span>Products</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-list"></i>
+                <span>Categories</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>Customers</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-truck"></i>
+                <span>Orders</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Analytics</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+    <div class="compact-container">
+        <div class="compact-form">
+            <div class="form-header">
+                <h2 class="form-title">Edit Order</h2>
+                <span class="order-id">{{ order.order_id }}</span>
+            </div>
+
+            <form method="POST" action="{{ url_for('admin.update_order', order_id=order._id) }}">
+                <!-- Customer Details -->
+                <div class="form-section">
+                    <h3 class="section-title">Customer Details</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="first_name">First Name</label>
+                            <input type="text" id="first_name" name="first_name" value="{{ order.details.first_name }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" id="last_name" name="last_name" value="{{ order.details.last_name }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" value="{{ order.details.email }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="text" id="phone" name="phone" value="{{ order.details.phone }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" name="address" value="{{ order.details.address }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" name="city" value="{{ order.details.city }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input type="text" id="state" name="state" value="{{ order.details.state }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="zip_code">ZIP Code</label>
+                            <input type="text" id="zip_code" name="zip_code" value="{{ order.details.zip_code }}" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Details -->
+                <div class="form-section">
+                    <h3 class="section-title">Product Details</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="product_name">Product Name</label>
+                            <input type="text" id="product_name" name="product_name" value="{{ order.product.name }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="size">Size</label>
+                            <select id="size" name="size" required>
+                                {% for sz in ['30ml', '50ml', '75ml', '100ml', '150ml', '200ml'] %}
+                                    <option value="{{ sz }}" {% if order.product.size == sz %}selected{% endif %}>{{ sz }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <input type="text" id="gender" name="gender" value="{{ order.product.gender }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="number" id="quantity" name="quantity" value="{{ order.product.quantity }}" required>
+                        </div>
+
+                       
+                    </div>
+                </div>
+
+                <!-- Order Status -->
+                <div class="form-section">
+                    <h3 class="section-title">Order Status</h3>
+                    <div class="form-group">
+                        <label>Current Status:
+                            <span class="status-badge status-{{ order.status | lower }}">{{ order.status }}</span>
+                        </label>
+                        <select id="status" name="status">
+                            {% for status in ['Pending', 'Confirm', 'Delivered'] %}
+                                <option value="{{ status }}" {% if order.status == status %}selected{% endif %}>{{ status }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Admin Notes</label>
+                        <textarea id="notes" name="notes" rows="2">{{ order.notes or '' }}</textarea>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-actions">
+                    <a href="{{ url_for('admin.orders') }}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Update
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+        // Simple thumbnail preview handler
+        document.getElementById('thumbnail').addEventListener('input', function(e) {
+            const preview = document.querySelector('.thumbnail-preview');
+            if (e.target.value) {
+                preview.src = e.target.value;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+        
+        // Status badge updater
+        document.getElementById('status').addEventListener('change', function(e) {
+            const badge = document.querySelector('.status-badge');
+            badge.textContent = e.target.options[e.target.selectedIndex].text;
+            
+            // Remove all status classes
+            badge.classList.remove('status-pending', 'status-confirmed', 'status-delivered');
+            
+            // Add appropriate class
+            if (e.target.value === 'Pending') {
+                badge.classList.add('status-pending');
+            } else if (e.target.value === 'Confirm') {
+                badge.classList.add('status-confirmed');
+            } else if (e.target.value === 'Delivered') {
+                badge.classList.add('status-delivered');
+            }
+        });
+    </script>
+</body>
+</html>

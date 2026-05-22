@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfume | E-Commerce</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css">
+     <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
+
+     <style>
+      
+
+        </style>
+</head>
+
+
+
+<body>
+    <!-- Page Loader -->
+    <div class="page-loader">
+        <svg class="progress-ring" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="60"></circle>
+        </svg>
+        
+        <div class="perfume-bottle">
+            <div class="bottle-cap"></div>
+            <div class="bottle-body">
+                <div class="liquid"></div>
+                <div class="bubbles">
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="loader-text">
+            <span>S</span>
+            <span>A</span>
+            <span>M</span>
+            <span>S</span>
+            <span>O</span>
+            <span>N</span>
+            <span>S</span>
+        </div>
+        
+        <div class="loading-subtitle">Premium Fragrances Loading...</div>
+    </div>
+
+    {% include 'header.html' %}
+
+    <!-- slider section starts  -->
+    <section class="slider_section slider_section2 mb-66">
+    <div class="slider_area owl-carousel">
+<div class="single_slider d-flex align-items-center" style="background-image: url('{{ url_for('static', filename='images/slider/slider1.jpg') }}'); background-size: cover; background-position: center;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-6 offset-lg-6 col-md-6 offset-md-6">
+                        <div class="slider_content slider_content2 content_right">
+                            <h1>Men's Collection</h1>
+                            <h2>Wild Stone</h2>
+                            <p>The rich aromatic notes of rosemary and nerolu combined with the sophistication of
+                                tonka beans and white beans and white woods to create the perfect accompaniment for
+                                the suited look.</p>
+                            <a href="#" class="button">Shop Now <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="single_slider d-flex align-items-center" data-bgimg="{{ url_for('static', filename='images/slider/slider2.jpg') }}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-7">
+                        <div class="slider_content slider_content2 content_left">
+                            <h1>Watch</h1>
+                            <h2>Maison Micallef</h2>
+                            <p>This perfume is a wonderful elixir that heightens both the scents of gourmet Bourbon
+                                vanilla and those refined of tuberose and jasmine. The delightful alliance reminds
+                                of tropical paradise.</p>
+                            <a href="#" class="button">Shop Now <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="single_slider d-flex align-items-center justify-content-center"
+             style="background-image: url('{{ url_for('static', filename='images/perfume.jpg') }}');">
+            <div class="slider_content text-center">
+                <h1>Luxury Perfume</h1>
+                <h2>Elegance in Every Drop</h2>
+                <p>Experience timeless fragrances crafted for sophistication.</p>
+                <a href="#" class="button">Shop Now <i class="fa fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+    <!-- product area starts -->
+
+    <div class="product_area product_area_two mb-65">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section_title">
+                        <h2>New Products</h2>
+                        <div class="product_tab_btn">
+                            <ul class="nav" role="tablist">
+                                <li>
+                                    <a href="#Men" class="active" data-toggle="tab" role="tab" aria-controls="Men"
+                                        aria-selected="true">
+                                        Men
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#Women" data-toggle="tab" role="tab" aria-controls="Women"
+                                        aria-selected="false">
+                                        Women
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#Unisex" data-toggle="tab" role="tab" aria-controls="Unisex"
+                                        aria-selected="false">
+                                        Unisex
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+              {% if new_products %}
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="Men" role="tabpanel">
+                    <div class="row">
+                        <div class="product_carousel product_column4 owl-carousel">
+                             {% for p in new_products %}
+                            <div class="col-lg-3">
+                               <article class="single_product" onclick="window.location.href='{{ url_for('routes.product_details', product_id=p._id) }}'" style="cursor: pointer;">
+                                    <figure>
+                                        <div class="product_thumb">
+                                            <div class="product-card">
+                                                <div class="card-animation-container">
+                                                    <!-- Main Image -->
+                                                    <img src="{{ p.thumbnails[0] if p.thumbnails else url_for('static', filename='images/placeholder.png') }}" 
+                                                         alt="{{ p.name }}" class="card-image-main">
+                                                    
+                                                    <!-- Secondary Image (hover fade in or mobile) -->
+                                                    {% if p.thumbnails|length > 1 %}
+                                                        <img src="{{ p.thumbnails[1] }}" alt="{{ p.name }} Alt" class="card-image-secondary">
+                                                    {% endif %}
+                                                    
+                                                    <!-- GIF Background Layer -->
+                                                    <div class="gif-background">
+                                                        <img src="{{ url_for('static', filename='images/smart-oud.gif') }}"
+                                                             alt="Smart Oud GIF" class="gif-image">
+                                                        <div class="fragrance-text">Now In</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="action_links">
+                                                <ul>
+                                                    <li class="add_to_cart">
+                                                        <a href="#" class="add-to-cart" data-id="{{ p._id }}"
+                                                            data-name="{{ p.name }}" data-price="{{ p.price }}"
+                                                            data-image="{{ p.thumbnails[0] if p.thumbnails else '' }}">
+                                                            <i class="fa fa-shopping-cart"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li class="wishlist">
+                                                        <a href="#" title="Add to Wishlist">
+                                                            <i class="fa fa-heart-o"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li class="quick_button">
+                                                        <a href="#" data-toggle="modal" data-target="#modal_box"
+                                                            title="Quick View">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <figcaption class="product_content">
+                                            <h4 class="product_name"><a href="{{ url_for('routes.product_details', product_id=p._id) }}">{{ p.name }}</a></h4>
+                                            <div class="price_box">
+                                                {% if p.discount_price %}
+                                                <span class="old_price">Rs. {{ "{:,.0f}".format(p.price) }}</span>
+                                                <span class="current_price">Rs. {{ "{:,.0f}".format(p.discount_price) }}</span>
+                                                {% else %}
+                                                <span class="current_price">Rs. {{ "{:,.0f}".format(p.price) }}</span>
+                                                {% endif %}
+                                            </div>
+                                            <div class="product_rating">
+                                                <ul>
+                                                    {% set rating = [4, 5, 3, 4, 5, 3, 4, 5, 4, 3][loop.index0 % 10] %}
+                                                    {% for i in range(rating) %}
+                                                    <li>
+                                                        <a href="#">
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                        </a>
+                                                    </li>
+                                                    {% endfor %}
+                                                    {% for i in range(5 - rating) %}
+                                                    <li>
+                                                        <a href="#">
+                                                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                        </a>
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </figcaption>
+                                    </figure>
+                                </article>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="tab-pane fade" id="Unisex" role="tabpanel">
+                    <div class="row">
+                        <div class="product_carousel product_column4 owl-carousel">
+                            
+                           
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- product area ends -->
+
+
+    <!-- banner area starts -->
+    <div class="banner_area mb-66">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <figure class="single_banner">
+                        <div class="banner_thumb">
+                            <a href="#">
+                                <img src="{{url_for('static',filename='images/banner/banner1.jpg')}}"  alt="">
+                            </a>
+                            <div class="banner_content">
+                                <h3>Sale up to</h3>
+                                <h2>50%</h2>
+                                <p>Perfume <span> & </span> Body Spray</p>
+                            </div>
+                        </div>
+                    </figure>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <figure class="single_banner">
+                        <div class="banner_thumb">
+                            <a href="#">
+                                <img src="{{url_for('static',filename='images/banner/banner2.jpg')}}"  alt="">
+                            </a>
+                            <div class="banner_content">
+                                <h3>Sale up to</h3>
+                                <h2>70%</h2>
+                                <p>Deodrants</p>
+                            </div>
+                        </div>
+                    </figure>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <figure class="single_banner">
+                        <div class="banner_thumb">
+                            <a href="#">
+                                <img src="{{url_for('static',filename='images/banner/banner3.jpg')}}" alt="">
+                            </a>
+                            <div class="banner_content">
+                                <h3>Sale up to</h3>
+                                <h2>30%</h2>
+                                <p>Cologne</p>
+                            </div>
+                        </div>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner area ends -->
+
+    <!-- home section area starts  -->
+
+    <div class="home_section_two color_two mb-70">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-12">
+                    <div class="home_section_left">
+                        <!-- deals product area starts -->
+
+                        <div class="deals_product_area mb-68">
+                            <div class="section_title section_title_style2">
+                                <h2>Hot Deals</h2>
+                            </div>
+                            <div class="row">
+                                <div class="deals_carousel product_column1 owl-carousel">
+                                   {% for p in hot_deals %}
+<div class="col-lg-3">
+     <article class="single_product">
+    <figure>
+        <div class="product_thumb">
+            <!-- Primary image with link -->
+            <a href="{{ url_for('routes.product_details', product_id=p._id) }}" class="primary_img">
+                <img src="{{ p.thumbnails[0] if p.thumbnails else '' }}" alt="">
+            </a>
+
+            <!-- Secondary image (if available) -->
+            {% if p.thumbnails|length > 1 %}
+            <a href="{{ url_for('routes.product_details', product_id=p._id) }}" class="secondary_img">
+                <img src="{{ p.thumbnails[1] }}" alt="">
+            </a>
+            {% endif %}
+
+            <!-- Action buttons -->
+            <div class="action_links">
+                <ul>
+                    <li class="add_to_cart">
+                        <a href="#" class="add-to-cart"
+                           data-id="{{ p._id }}"
+                           data-name="{{ p.name }}"
+                           data-price="{{ p.price }}"
+                           data-image="{{ p.thumbnails[0] if p.thumbnails else '' }}">
+                            <i class="fa fa-shopping-cart"></i>
+                        </a>
+                    </li>
+                    <li class="wishlist">
+                        <a href="#" title="Add to Wishlist">
+                            <i class="fa fa-heart-o"></i>
+                        </a>
+                    </li>
+                    <li class="compare">
+                        <a href="#" title="Add to Compare">
+                            <i class="fa fa-random"></i>
+                        </a>
+                    </li>
+                    <li class="quick_button">
+                        <a href="#" data-toggle="modal" data-target="#modal_box" title="Quick View">
+                            <i class="fa fa-eye"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <figcaption class="product_content">
+            <!-- Optional countdown timer -->
+            <div class="product_timing">
+                <div data-countdown="{{ p.discount_end or '2025/12/31' }}"></div>
+            </div>
+
+            <!-- Product name linked to product details -->
+            <h4 class="product_name">
+                <a href="{{ url_for('routes.product_details', product_id=p._id) }}">{{ p.name }}</a>
+            </h4>
+
+            <!-- Pricing -->
+            <div class="price_box">
+                <span class="old_price">Rs. {{ p.price }}</span>
+                <span class="current_price">Rs. {{ p.discount_price or p.price }}</span>
+            </div>
+        </figcaption>
+    </figure>
+</article>
+
+</div>
+{% endfor %}
+
+
+                                   
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- deals product area ends -->
+
+                        <!-- small product area starts -->
+
+                       <div class="small_product_area mb-68">
+    <div class="section_title section_title_style2">
+        <h2>Best Sellers</h2>
+    </div>
+
+    <div class="small_product_container sidebar_product_column1 owl-carousel">
+        {% set top_six = best_sellers[:6] %}
+        {% for chunk in top_six|batch(3, fill_with=None) %}
+        <div class="small_product_list">
+            {% for p in chunk %}
+            {% if p %}
+            <article class="single_product" onclick="window.location.href='{{ url_for('routes.product_details', product_id=p._id) }}'" style="cursor: pointer;">
+    <figure>
+        <div class="product_thumb">
+            <a href="{{ url_for('routes.product_details', product_id=p._id) }}" class="primary_img">
+                <img src="{{ p.thumbnails[0] if p.thumbnails else url_for('static', filename='images/placeholder.png') }}" alt="{{ p.name }}">
+            </a>
+            {% if p.thumbnails|length > 1 %}
+            <a href="{{ url_for('routes.product_details', product_id=p._id) }}" class="secondary_img">
+                <img src="{{ p.thumbnails[1] }}" alt="{{ p.name }}">
+            </a>
+            {% endif %}
+        </div>
+
+        <figcaption class="product_content">
+            <h4 class="product_name">
+                <a href="{{ url_for('routes.product_details', product_id=p._id) }}">{{ p.name }}</a>
+            </h4>
+
+            <div class="product_rating">
+                <ul>
+                    {% set rating = [4, 5, 3, 4, 5][loop.index0 % 5] %}
+                    {% for i in range(rating) %}
+                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                    {% endfor %}
+                    {% for i in range(5 - rating) %}
+                    <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="price_box">
+                {% if p.discount_price %}
+                <span class="old_price">Rs. {{ "{:,.0f}".format(p.price) }}</span>
+                <span class="current_price">Rs. {{ "{:,.0f}".format(p.discount_price) }}</span>
+                {% else %}
+                <span class="current_price">Rs. {{ "{:,.0f}".format(p.price) }}</span>
+                {% endif %}
+            </div>
+        </figcaption>
+    </figure>
+</article>
+
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+                        <!-- small product area ends -->
+
+                        <!-- testimonial section starts  -->
+
+                        <div class="testimonial_style_two mb-60">
+    <div class="testimonial_container">
+        <div class="section_title section_title_style2">
+            <h2>Testimonial</h2>
+        </div>
+        <div class="testimonial_sidebar_carousel owl-carousel">
+            {% for testimonial in testimonials %}
+            <div class="single_testimonial">
+                
+                <div class="testimonial_content">
+                    <h4><a href="#">{{ testimonial.name }}</a></h4>
+                    <p>{{ testimonial.message }}</p>
+                    <div class="testimonial_rating">
+                        {% for i in range(testimonial.rating) %}
+                            <i class="fa fa-star text-warning"></i>
+                        {% endfor %}
+                        {% for i in range(5 - testimonial.rating) %}
+                            <i class="fa fa-star-o text-muted"></i>
+                        {% endfor %}
+                    </div>
+                    <small class="text-muted">{{ testimonial.email }}</small><br>
+                    <small class="text-secondary">{{ testimonial.fragrance }} ({{ testimonial.type }})</small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+                        <!-- testimonial section ends -->
+
+                        <!-- Newsletter section starts -->
+
+                        <div class="newsletter_style2">
+                            <div class="newsletter_container">
+                                <div class="section_title section_title_style2">
+                                    <h2>Newsletter</h2>
+                                </div>
+                                <div class="subscribe_form">
+                                    <form>
+                                        <input type="email" autocomplete="off" placeholder="example@gmail.com">
+                                        <button>
+                                            <i class="fa fa-envelope-o"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="newsletter_content">
+                                    <p>Sign up to get news and get 25% off instantly.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Newsletter section ends -->
+
+                    </div>
+                </div>
+
+                <div class="col-lg-9 col-md-12">
+                    <div class="home_section_right">
+                        <!-- product area starts  -->
+
+                        <div class="product_area mb-65">
+                            <div class="section_title section_title_style2">
+                                <h2>New Product</h2>
+                            </div>
+                            <div class="row">
+                                <div class="product_carousel product_column3 owl-carousel">
+                                    {% for p in new_women_products %}
+                                    <div class="col-lg-3">
+                                        <article class="single_product" onclick="window.location.href='{{ url_for('routes.product_details', product_id=p._id) }}'" style="cursor: pointer;">
+                                            <figure>
+                                                <div class="product_thumb">
+                                                    <div class="product-card">
+                                                        <div class="card-animation-container">
+                                                            <!-- Main Image -->
+                                                            <img src="{{ p.thumbnails[0] if p.thumbnails else url_for('static', filename='images/placeholder.png') }}" 
+                                                                 alt="{{ p.name }}" class="card-image-main">
+                                                            
+                                                            <!-- Secondary Image (hover fade in or mobile) -->
+                                                            {% if p.thumbnails|length > 1 %}
+                                                                <img src="{{ p.thumbnails[1] }}" alt="{{ p.name }} Alt" class="card-image-secondary">
+                                                            {% endif %}
+                                                            
+                                                            <!-- GIF Background Layer -->
+                                                            <div class="gif-background">
+                                                                <img src="{{ url_for('static', filename='images/smart-oud.gif') }}"
+                                                                     alt="Smart Oud GIF" class="gif-image">
+                                                                <div class="fragrance-text">Now In</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="action_links">
+                                                        <ul>
+                                                            <li class="add_to_cart">
+                                                                <a href="#" class="add-to-cart" data-id="{{ p._id }}"
+                                                                     data-name="{{ p.name }}" data-price="{{ p.price }}"
+                                                                     data-image="{{ p.thumbnails[0] if p.thumbnails else '' }}">
+                                                                    <i class="fa fa-shopping-cart"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li class="wishlist">
+                                                                <a href="#" title="Add to Wishlist">
+                                                                    <i class="fa fa-heart-o"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li class="quick_button">
+                                                                <a href="#" data-toggle="modal" data-target="#modal_box"
+                                                                    title="Quick View">
+                                                                    <i class="fa fa-eye"></i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <figcaption class="product_content">
+                                                    <h4 class="product_name"><a href="{{ url_for('routes.product_details', product_id=p._id) }}">{{ p.name }}</a></h4>
+                                                    <div class="product_rating">
+                                                        <ul>
+                                                            {% set rating = [4, 5, 3, 4, 5, 3, 4][loop.index0 % 7] %}
+                                                            {% for i in range(rating) %}
+                                                            <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                            {% endfor %}
+                                                            {% for i in range(5 - rating) %}
+                                                            <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                    <div class="price_box">
+                                                        {% if p.discount_price %}
+                                                        <span class="old_price">Rs. {{ "{:,.0f}".format(p.price) }}</span>
+                                                        <span class="current_price">Rs. {{ "{:,.0f}".format(p.discount_price) }}</span>
+                                                        {% else %}
+                                                        <span class="current_price">Rs. {{ "{:,.0f}".format(p.price) }}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </figcaption>
+                                            </figure>
+                                        </article>
+                                    </div>
+                                    {% endfor %}                                        
+                                                
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- product area ends -->
+
+                        <!-- Long banner area starts  -->
+                        <div class="banner_area banner_style_two mb-58">
+                            <div class="single_banner">
+                                <div class="banner_thumb">
+                                    <a href="#">
+                                        <img src="{{url_for('static', filename='images/banner/banner4.png')}}" alt="">
+
+                                    </a>
+                                    <div class="banner_content">
+                                        <h3 style="color: tomato;">Sale up to </h3>
+                                        <h2>45%</h2>
+                                        <p>Versace</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Long Banner area ends -->
+
+                        <!-- product section starts  -->
+                        <div class="product_area">
+    <div class="section_title section_title_style2">
+        <h2>On Sale</h2>
+    </div>
+    <div class="row">
+        <div class="product_carousel product_column3 owl-carousel">
+            {% set top_five = sale_products[:10] %}
+            {% for pair in top_five|batch(2, fill_with=None) %}
+            <div class="col-lg-3">
+                <div class="product_items">
+                    {% for p in pair %}
+                    {% if p %}
+                    <article class="single_product" onclick="window.location.href='{{ url_for('routes.product_details', product_id=p._id) }}'" style="cursor: pointer;">
+                        <figure>
+                            <div class="product_thumb">
+                                <div class="product-card">
+    <div class="card-animation-container">
+        <!-- Main Image -->
+        <img src="{{ p.thumbnails[0] if p.thumbnails else url_for('static', filename='images/placeholder.png') }}"
+             alt="{{ p.name }}" class="card-image-main">
+
+        <!-- Secondary Image (hover fade in or mobile) -->
+        {% if p.thumbnails|length > 1 %}
+            <img src="{{ p.thumbnails[1] }}" alt="{{ p.name }} Alt" class="card-image-secondary">
+        {% endif %}
+
+        <!-- GIF Background Layer -->
+        <div class="gif-background">
+            <img src="{{ url_for('static', filename='images/smart-oud.gif') }}"
+                 alt="Smart Oud GIF" class="gif-image">
+            <div class="fragrance-text">Now In</div>
+        </div>
+    </div>
+</div>
+                                <div class="action_links">
+                                    <ul>
+                                        <li class="add_to_cart">
+                                            <a href="#" class="add-to-cart" data-id="{{ p._id }}"
+                                                data-name="{{ p.name }}" data-price="{{ p.price }}"
+                                                data-image="{{ p.thumbnails[0] if p.thumbnails else '' }}">
+                                                <i class="fa fa-shopping-cart"></i>
+                                            </a>
+                                        </li>
+                                        <li class="wishlist">
+                                            <a href="#" title="Add to Wishlist">
+                                                <i class="fa fa-heart-o"></i>
+                                            </a>
+                                        </li>
+                                        <li class="compare">
+                                            <a href="#" title="Add to Compare">
+                                                <i class="fa fa-random"></i>
+                                            </a>
+                                        </li>
+                                        <li class="quick_button">
+                                            <a href="#" data-toggle="modal" data-target="#modal_box" title="Quick View">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <figcaption class="product_content">
+                                <h4 class="product_name">
+                                    <a href="#">{{ p.name }}</a>
+                                </h4>
+                                <div class="product_rating">
+                                    <ul>
+                                        {% set rating = [3, 4, 5, 4, 3, 5, 4][loop.index0 % 7] %}
+                                        {% for i in range(rating) %}
+                                        <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                        {% endfor %}
+                                        {% for i in range(5 - rating) %}
+                                        <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="price_box">
+                                    {% if p.discount_price %}
+                                    <span class="old_price">Rs. {{ "{:,.0f}".format(p.price) }}</span>
+                                    <span class="current_price">Rs. {{ "{:,.0f}".format(p.discount_price) }}</span>
+                                    {% else %}
+                                    <span class="current_price">Rs. {{ "{:,.0f}".format(p.price) }}</span>
+                                    {% endif %}
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </article>
+                
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</div>
+
+                        <!-- product section ends -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- home section area ends -->
+
+
+    <!-- blog section starts  -->
+
+    <section class="blog_section blog_two color_two mb-65">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section_title">
+                        <h2>From Our Blog</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="blog_carousel blog_column3 owl-carousel">
+                    <div class="col-lg-3">
+                        <div class="single_blog">
+                            <figure>
+                                <div class="blog_thumb">
+                                    <a href="#"> <img src="{{ url_for('static', filename='images/blog/blog1.jpg') }}" alt="Blog Image"> <img src="images/blog/blog1.jpg" alt="">
+                                    </a>
+                                </div>
+                                <figcaption class="blog_content">
+                                    <h4 class="post_title">
+                                        <a href="#">
+                                            Flavours of Perfume
+                                        </a>
+                                    </h4>
+                                    <p class="post_desc">
+                                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Esse excepturi cumque
+                                        nulla saepe. Error, rem odio perferendis ullam facere veniam commodi minima
+                                        delectus velit at obcaecati. Nam dolorem eligendi voluptates.
+                                    </p>
+                                    <footer class="btn_more">
+                                        <a href="#">Read More...</a>
+                                    </footer>
+                                </figcaption>
+                            </figure>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="single_blog">
+                            <figure>
+                                <div class="blog_thumb">
+                                    <a href="#">
+                                        <img src="{{ url_for('static', filename='images/blog/blog2.jpg') }}" alt="Blog Image">
+                                    </a>
+                                </div>
+                                <figcaption class="blog_content">
+                                    <h4 class="post_title">
+                                        <a href="#">
+                                            Divine Of India
+                                        </a>
+                                    </h4>
+                                    <p class="post_desc">
+                                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Esse excepturi cumque
+                                        nulla saepe. Error, rem odio perferendis ullam facere veniam commodi minima
+                                        delectus velit at obcaecati. Nam dolorem eligendi voluptates.
+                                    </p>
+                                    <footer class="btn_more">
+                                        <a href="#">Read More...</a>
+                                    </footer>
+                                </figcaption>
+                            </figure>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="single_blog">
+                            <figure>
+                                <div class="blog_thumb">
+                                    <a href="#">
+                                        <img src="{{ url_for('static', filename='images/blog/blog3.jpg') }}" alt="Blog Image">
+                                    </a>
+                                </div>
+                                <figcaption class="blog_content">
+                                    <h4 class="post_title">
+                                        <a href="#">
+                                            Wardrobe Collection
+                                        </a>
+                                    </h4>
+                                    <p class="post_desc">
+                                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Esse excepturi cumque
+                                        nulla saepe. Error, rem odio perferendis ullam facere veniam commodi minima
+                                        delectus velit at obcaecati. Nam dolorem eligendi voluptates.
+                                    </p>
+                                    <footer class="btn_more">
+                                        <a href="#">Read More...</a>
+                                    </footer>
+                                </figcaption>
+                            </figure>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="single_blog">
+                            <figure>
+                                <div class="blog_thumb">
+                                    <a href="#">
+                                        <img src="{{ url_for('static', filename='images/blog/blog4.jpg') }}" alt="Blog Image">
+                                    </a>
+                                </div>
+                                <figcaption class="blog_content">
+                                    <h4 class="post_title">
+                                        <a href="#">
+                                            Best Perfume for Party
+                                        </a>
+                                    </h4>
+                                    <p class="post_desc">
+                                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Esse excepturi cumque
+                                        nulla saepe. Error, rem odio perferendis ullam facere veniam commodi minima
+                                        delectus velit at obcaecati. Nam dolorem eligendi voluptates.
+                                    </p>
+                                    <footer class="btn_more">
+                                        <a href="#">Read More...</a>
+                                    </footer>
+                                </figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- blog section ends -->
+
+    <footer class="footer_widgets color_two">
+        <div class="footer_top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-7">
+                        <div class="widgets_container contact_us">
+                            <div class="footer_logo">
+                                <a href="#"><img src="images/logo.png" alt="Logo"></a>
+                            </div>
+                            <div class="footer_desc">
+                                <p>Get all types of perfume from us within 2 day delivery. We can even order the
+                                    perfumes which are not in our database. To do that kindly send a E-mail to the
+                                    company's mail id.</p>
+                            </div>
+                            <p>
+                                <span>Address :</span> International Business Center, Vesu, Surat, Gujarat
+                            </p>
+                            <p><span>Email :</span> <a href="#">deo@gmail.com</a></p>
+                            <p><span>Phone :</span> <a href="tel: +91 8888884444">+91 8888884444</a> </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-5">
+                        <div class="widgets_container widget_menu">
+                            <h3>Information</h3>
+                            <div class="footer_menu">
+                                <ul>
+                                    <li><a href="#">About Us</a></li>
+                                    <li><a href="#">Prices Drop</a></li>
+                                    <li><a href="#">New Products</a></li>
+                                    <li><a href="#">Best Sales</a></li>
+                                    <li><a href="#">Terms & Conditions</a></li>
+                                    <li><a href="#">Gift Certificate</a></li>
+                                    <li><a href="#">My Account</a></li>
+                                    <li><a href="#">Order History</a></li>
+                                    <li><a href="#">Wish List</a></li>
+                                    <li><a href="#">Specials</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="widgets_container widgets_p_product">
+                            <h3>Featured Products</h3>
+                            <div class="small_product_container small_product_column1 owl-carousel">
+                                <div class="small_product_list">
+                                    <article class="single_product">
+                                        <figure>
+                                            <div class="product_thumb">
+                                                <a href="#" class="primary_img">
+                                                    <img src="images/onsale/D12-1.png" alt="">
+                                                </a>
+                                                <a href="#" class="secondary_img">
+                                                    <img src="images/onsale/D12-2.png" alt="">
+                                                </a>
+
+
+                                            </div>
+                                            <figcaption class="product_content">
+                                                <h4 class="product_name">
+                                                    <a href="#" style="color: white;">Bvlgari Women Goldea</a>
+                                                </h4>
+
+                                                <div class="price_box">
+                                                    <span class="old_price">Rs. 3999</span>
+                                                    <span class="current_price" style="color: white;">Rs. 3700</span>
+                                                </div>
+                                            </figcaption>
+                                        </figure>
+                                    </article>
+                                    <article class="single_product">
+                                        <figure>
+                                            <div class="product_thumb">
+                                                <a href="#" class="primary_img">
+                                                    <img src="images/onsale/D11-1.png" alt="">
+                                                </a>
+                                                <a href="#" class="secondary_img">
+                                                    <img src="images/onsale/D11-2.png" alt="">
+                                                </a>
+
+
+                                            </div>
+                                            <figcaption class="product_content">
+                                                <h4 class="product_name">
+                                                    <a href="#" style="color: white;">Jimmy Choo Illicit Flower
+                                                    </a>
+                                                </h4>
+                                                <div class="price_box">
+                                                    <span class="old_price">Rs. 4999</span>
+                                                    <span class="current_price" style="color: white;">Rs.
+                                                        4200</span>
+                                                </div>
+                                            </figcaption>
+                                        </figure>
+                                    </article>
+                                    <article class="single_product">
+                                        <figure>
+                                            <div class="product_thumb">
+                                                <a href="#" class="primary_img">
+                                                    <img src="images/best-product/B5-1.png" alt="">
+                                                </a>
+                                                <a href="#" class="secondary_img">
+                                                    <img src="images/best-product/B5-2.png" alt="">
+                                                </a>
+
+                                            </div>
+                                            <figcaption class="product_content">
+                                                <h4 class="product_name">
+                                                    <a href="#" style="color: white;">Jimmy Choo Women Fever</a>
+                                                </h4>
+
+                                                <div class="price_box">
+                                                    <span class="old_price">Rs. 7499</span>
+                                                    <span class="current_price" style="color: white;">Rs. 7200</span>
+                                                </div>
+                                            </figcaption>
+                                        </figure>
+                                    </article>
+                                </div>
+                                <div class="small_product_list">
+                                    <article class="single_product">
+                                        <figure>
+                                            <div class="product_thumb">
+                                                <a href="#" class="primary_img">
+                                                    <img src="images/best-product/B4-1.png" alt="">
+                                                </a>
+                                                <a href="#" class="secondary_img">
+                                                    <img src="images/best-product/B4-2.png" alt="">
+                                                </a>
+
+
+                                            </div>
+                                            <figcaption class="product_content">
+                                                <h4 class="product_name">
+                                                    <a href="#" style="color: white;">Mugler Aura Women</a>
+                                                </h4>
+
+                                                <div class="price_box">
+                                                    <span class="old_price">Rs. 7999</span>
+                                                    <span class="current_price" style="color: white;">Rs. 7550</span>
+                                                </div>
+                                            </figcaption>
+                                        </figure>
+                                    </article>
+                                    <article class="single_product">
+                                        <figure>
+                                            <div class="product_thumb">
+                                                <a href="#" class="primary_img">
+                                                    <img src="images/onsale/D1-1.png" alt="">
+                                                </a>
+                                                <a href="#" class="secondary_img">
+                                                    <img src="images/onsale/D1-2.png" alt="">
+                                                </a>
+
+
+                                            </div>
+                                            <figcaption class="product_content">
+                                                <h4 class="product_name">
+                                                    <a href="#" style="color: white;">Paco Rabbane Pure XS for her
+                                                    </a>
+                                                </h4>
+                                                <div class="price_box">
+                                                    <span class="old_price">Rs. 6550</span>
+                                                    <span class="current_price" style="color: white;">Rs.
+                                                        4250</span>
+                                                </div>
+                                            </figcaption>
+                                        </figure>
+                                    </article>
+                                    <article class="single_product">
+                                        <figure>
+                                            <div class="product_thumb">
+                                                <a href="#" class="primary_img">
+                                                    <img src="images/new-product/N5-1.png" alt="">
+                                                </a>
+                                                <a href="#" class="secondary_img">
+                                                    <img src="images/new-product/N5-2.png" alt="">
+                                                </a>
+
+
+                                            </div>
+                                            <figcaption class="product_content">
+                                                <h4 class="product_name">
+                                                    <a href="#" style="color: white;">Kenzo Women World</a>
+                                                </h4>
+
+                                                <div class="price_box">
+                                                    <span class="old_price">Rs. 5999</span>
+                                                    <span class="current_price" style="color: white;">Rs. 5900</span>
+                                                </div>
+                                            </figcaption>
+                                        </figure>
+                                    </article>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="widgets_container widgets_p_product">
+                            <h3>Most Viewed Products</h3>
+                            <div class="small_product_container small_product_column1 owl-carousel">
+                                <div class="small_product_list">
+                                    <article class="single_product">
+                                        <figure>
+                                            <div class="product_thumb">
+                                                <a href="#" class="primary_img">
+                                                    <img src="images/onsale/D12-1.png" alt="">
+                                                </a>
+                                                <a href="#" class="secondary_img">
+                                                    <img src="images/onsale/D12-2.png" alt="">
+                                                </a>
+
+
+                                            </div>
+                                            <figcaption class="product_content">
+                                                <h4 class="product_name">
+                                                    <a href="#" style="color: white;">Bvlgari Women Goldea</a>
+                                                </h4>
+
+                                                <div class="price_box">
+                                                    <span class="old_price">Rs. 3999</span>
+                                                    <span class="current_price" style="color: white;">Rs. 3700</span>
+                                                </div>
+                                            </figcaption>
+                                        </figure>
+                                    </article>
+                                    <article class="single_product">
+                                        <figure>
+                                            <div class="product_thumb">
+                                                <a href="#" class="primary_img">
+                                                    <img src="images/onsale/D11-1.png" alt="">
+                                                </a>
+                                                <a href="#" class="secondary_img">
+                                                    <img src="images/onsale/D11-2.png" alt="">
+                                                </a>
+
+
+                                            </div>
+                                            <figcaption class="product_content">
+                                                <h4 class="product_name">
+                                                    <a href="#" style="color: white;">Jimmy Choo Illicit Flower
+                                                    </a>
+                                                </h4>
+                                                <div class="price_box">
+                                                    <span class="old_price">Rs. 4999</span>
+                                                    <span class="current_price" style="color: white;">Rs.
+                                                        4200</span>
+                                                </div>
+                                            </figcaption>
+                                        </figure>
+                                    </article>
+                                    <article class="single_product">
+                                        <figure>
+                                            <div class="product_thumb">
+                                                <a href="#" class="primary_img">
+                                                    <img src="images/best-product/B5-1.png" alt="">
+                                                </a>
+                                                <a href="#" class="secondary_img">
+                                                    <img src="images/best-product/B5-2.png" alt="">
+                                                </a>
+
+                                            </div>
+                                            <figcaption class="product_content">
+                                                <h4 class="product_name">
+                                                    <a href="#" style="color: white;">Jimmy Choo Women Fever</a>
+                                                </h4>
+
+                                                <div class="price_box">
+                                                    <span class="old_price">Rs. 7499</span>
+                                                    <span class="current_price" style="color: white;">Rs. 7200</span>
+                                                </div>
+                                            </figcaption>
+                                        </figure>
+                                    </article>
+                                </div>
+                                <div class="small_product_list">
+                                    <article class="single_product">
+
+
+                                        <figure>
+                                            <div class="product_thumb">
+                                                <a href="#" class="primary_img">
+                                                    <img src="images/best-product/B4-1.png" alt="">
+                                                </a>
+                                                <a href="#" class="secondary_img"><img
+                                                        src="images/best-product/B4-2.png" alt=""></a>
+                                            </div>
+                                            <figcaption class="product_content">
+                                                <h4 class="product_name">
+                                                    <a href="#" style="color: white;">Mugler Aura Women</a>
+                                                </h4>
+
+                                                <div class="price_box">
+                                                    <span class="old_price">Rs. 7999</span>
+                                                    <span class="current_price" style="color: white;">Rs. 7550</span>
+                                                </div>
+                                            </figcaption>
+                                        </figure>
+                                    </article>
+                                    <article class="single_product">
+
+
+                                        <figure>
+                                            <div class="product_thumb">
+                                                <a href="#" class="primary_img">
+                                                    <img src="images/best-product/B5-1.png" alt="">
+                                                </a>
+                                                <a href="#" class="secondary_img"><img
+                                                        src="images/best-product/B5-2.png" alt=""></a>
+                                            </div>
+                                            <figcaption class="product_content">
+                                                <h4 class="product_name">
+                                                    <a href="#" style="color: white;">Jimmy Choo Women Fever</a>
+                                                </h4>
+
+                                                <div class="price_box">
+                                                    <span class="old_price">Rs. 7499</span>
+                                                    <span class="current_price" style="color: white;">Rs. 7200</span>
+                                                </div>
+                                            </figcaption>
+                                        </figure>
+                                    </article>
+                                    <article class="single_product">
+
+
+                                        <figure>
+                                            <div class="product_thumb">
+                                                <a href="#" class="primary_img">
+                                                    <img src="images/best-product/B6-1.png" alt="">
+                                                </a>
+                                                <a href="#" class="secondary_img"><img
+                                                        src="images/best-product/B6-2.png" alt=""></a>
+                                            </div>
+                                            <figcaption class="product_content">
+                                                <h4 class="product_name">
+                                                    <a href="#" style="color: white;">Dloce & Gabbana Women </a>
+                                                </h4>
+
+                                                <div class="price_box">
+                                                    <span class="old_price">Rs. 7499</span>
+                                                    <span class="current_price" style="color: white;">Rs. 7200</span>
+                                                </div>
+                                            </figcaption>
+                                        </figure>
+                                    </article>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="footer_link">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <ul>
+                            <li><a href="#">Order History</a></li>
+                            <li><a href="#">Wish List</a></li>
+                            <li><a href="#">Affiliate</a></li>
+                            <li><a href="#">Site Map</a></li>
+                            <li><a href="#">Newsletter</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- footer section starts  -->
+
+        <div class="footer_bottom">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="copyright_area">
+                            <p>Copyright &copy; 2021 <a href="#">Perfume Store </a>All right Reserved.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="footer_payment text-right">
+                            <ul>
+                                <li><a href="#"><img src="images/icon/paypal.jpg" alt=""></a></li>
+                                <li><a href="#"><img src="images/icon/paypal1.jpg" alt=""></a></li>
+                                <li><a href="#"><img src="images/icon/paypal2.jpg" alt=""></a></li>
+                                <li><a href="#"><img src="images/icon/paypal3.jpg" alt=""></a></li>
+                                <li><a href="#"><img src="images/icon/paypal4.jpg" alt=""></a></li>
+                                <li><a href="#"><img src="images/icon/paypal5.jpg" alt=""></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- footer section ends -->
+
+    <!-- modal section starts  -->
+
+
+    <div class="modal fade" id="modal_box" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <button type="button" data-dismiss="modal" aria-label="close" class="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="modal_body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-5 col-md-5 col-sm-12">
+                                <div class="modal_tab">
+                                    <div class="tab-content product-details-large">
+                                        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+                                            <div class="modal_tab_img">
+                                                <a href="#"><img src="images/new-product/N1-1.png" alt=""></a>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="tab2" role="tabpanel">
+                                            <div class="modal_tab_img">
+                                                <a href="#"><img src="images/new-product/N2-1.png" alt=""></a>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="tab3" role="tabpanel">
+                                            <div class="modal_tab_img">
+                                                <a href="#"><img src="images/new-product/N3.png" alt=""></a>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="tab4" role="tabpanel">
+                                            <div class="modal_tab_img">
+                                                <a href="#"><img src="images/new-product/N4-1.png" alt=""></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal_tab_button">
+                                        <ul class="nav product_navactive owl-carousel" role="tablist">
+                                            <li>
+                                                <a href="#tab1" class="nav-link active" data-toggle="tab" role="tab"
+                                                    aria-controls="tab1" aria-selected="false">
+                                                    <img src="images/new-product/N1-1.png" alt="">
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#tab2" class="nav-link" data-toggle="tab" role="tab"
+                                                    aria-controls="tab2" aria-selected="false">
+                                                    <img src="images/new-product/N2-1.png" alt="">
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#tab3" class="nav-link" data-toggle="tab" role="tab"
+                                                    aria-controls="tab3" aria-selected="false">
+                                                    <img src="images/new-product/N3.png" alt="">
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#tab4" class="nav-link" data-toggle="tab" role="tab"
+                                                    aria-controls="tab4" aria-selected="false">
+                                                    <img src="images/new-product/N4-1.png" alt="">
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-7 col-md-7 col-sm-12">
+                                <div class="modal_right">
+                                    <div class="modal_title mb-10">
+                                        <h2>Paco Rabbane Men Invictus</h2>
+                                    </div>
+                                    <div class="modal_price mb-10">
+                                        <span class="new_price">Rs. 7600</span>
+                                        <span class="old_price">Rs. 8100</span>
+                                    </div>
+                                    <div class="modal_description mb-15">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis earum
+                                            nesciunt consequatur deleniti nam dicta eligendi iusto quaerat dolores
+                                            debitis, est natus omnis consequuntur sequi. Ipsam sint rerum minus eos?</p>
+                                    </div>
+                                    <div class="variants_selects">
+                                        <div class="variants_size">
+                                            <h2>Size</h2>
+                                            <select class="select_option">
+                                                <option value="1" selected>10ml</option>
+                                                <option value="1">25ml</option>
+                                                <option value="1">50ml</option>
+                                                <option value="1">100ml</option>
+                                                <option value="1">250ml</option>
+                                            </select>
+                                        </div>
+                                        <div class="variants_fragrance">
+                                            <h2>Fragrance</h2>
+                                            <select class="select_option">
+                                                <option value="1" selected>Rose</option>
+                                                <option value="1">Chocolate</option>
+                                                <option value="1">Sweet</option>
+                                                <option value="1">Fruit</option>
+                                                <option value="1">Intense</option>
+                                            </select>
+                                        </div>
+                                        <div class="modal_add_to_cart">
+                                            <form action="#">
+                                                <input type="number" min="1" max="100" step="1" value="1">
+                                                <button type="submit">Add to cart</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="modal_social">
+                                        <h2>Follow us on</h2>
+                                        <ul>
+                                            <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                            <li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                            <li class="pinterest"><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                                            <li class="google-plus"><a href="#"><i class="fa fa-google-plus"></i></a>
+                                            </li>
+                                            <li class="linkedin"><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- modal section ends -->
+
+
+
+
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
+    <script defer src="{{ url_for('static', filename='js/countdown.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+    <script defer src="{{ url_for('static', filename='js/home.js')}}"></script>
+
+    <!-- Loader Script -->
+    <script>
+        // Show loader on page load
+        window.addEventListener('load', function() {
+            // Add a minimum loading time to show the animation
+            setTimeout(function() {
+                document.body.classList.add('page-loaded');
+                
+                // Remove loader from DOM after transition
+                setTimeout(function() {
+                    const loader = document.querySelector('.page-loader');
+                    if (loader) {
+                        loader.remove();
+                    }
+                }, 500);
+            }, 2000); // Show loader for at least 2 seconds
+        });
+
+        // Fallback: Hide loader after maximum time
+        setTimeout(function() {
+            document.body.classList.add('page-loaded');
+            setTimeout(function() {
+                const loader = document.querySelector('.page-loader');
+                if (loader) {
+                    loader.remove();
+                }
+            }, 500);
+        }, 5000); // Maximum 5 seconds
+
+        // Prevent scrolling while loader is active
+        const loader = document.querySelector('.page-loader');
+        if (loader) {
+            document.body.style.overflow = 'hidden';
+            
+            // Re-enable scrolling when loader is hidden
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                        if (document.body.classList.contains('page-loaded')) {
+                            document.body.style.overflow = '';
+                            observer.disconnect();
+                        }
+                    }
+                });
+            });
+            observer.observe(document.body, { attributes: true });
+        }
+    </script>
+
+
+</body>
+
+</html>

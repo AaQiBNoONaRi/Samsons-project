@@ -1,0 +1,274 @@
+/* ==========================================
+   💎 PREMIUM CLASSIC GLASSMORPHIC SIDEBAR CSS 
+   ========================================== */
+
+:root {
+    --sb-primary: #1e293b;
+    --sb-primary-light: #334155;
+    --sb-accent: #6366f1;
+    --sb-accent-hover: #4f46e5;
+    --sb-text: #f1f5f9;
+    --sb-text-muted: #94a3b8;
+    --sb-bg-glass: rgba(15, 23, 42, 0.85);
+    
+    --sidebar-width: 280px;
+    --sidebar-collapsed-width: 80px;
+    --transition-speed: 0.3s;
+    --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Document layout support - zero-spillover main grid container alignment */
+body {
+    display: flex !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #f8fafc !important;
+    overflow-x: hidden !important;
+}
+
+/* Sidebar Wrapper */
+.sidebar {
+    width: var(--sidebar-width) !important;
+    background: var(--sb-bg-glass) !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: var(--sb-text) !important;
+    height: 100vh !important;
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    overflow-y: auto !important;
+    z-index: 1050 !important;
+    transition: width var(--transition-speed) var(--transition-timing), 
+                transform var(--transition-speed) var(--transition-timing) !important;
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Sidebar Header */
+.sidebar-header {
+    padding: 1.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    height: 70px !important;
+}
+
+.sidebar-header h2 {
+    margin: 0 !important;
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.75px !important;
+    text-transform: uppercase !important;
+    color: var(--sb-text) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* Close Button (Mobile Only) */
+.hamburger-menu {
+    background: transparent !important;
+    border: none !important;
+    color: var(--sb-text) !important;
+    font-size: 1.25rem !important;
+    cursor: pointer !important;
+    display: none !important;
+    padding: 0.25rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: color 0.2s ease !important;
+}
+
+.hamburger-menu:hover {
+    color: var(--sb-accent) !important;
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+    padding: 1rem 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.25rem !important;
+}
+
+/* Menu Items */
+.menu-item {
+    display: flex !important;
+    align-items: center !important;
+    padding: 0.85rem 1.5rem !important;
+    color: var(--sb-text-muted) !important;
+    text-decoration: none !important;
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+    border-left: 4px solid transparent !important;
+    gap: 1.2rem !important;
+    white-space: nowrap !important;
+    cursor: pointer !important;
+}
+
+.menu-item:hover, .menu-item.active {
+    color: var(--sb-text) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    text-decoration: none !important;
+}
+
+.menu-item.active {
+    border-left-color: var(--sb-accent) !important;
+    background: rgba(99, 102, 241, 0.15) !important;
+    color: #a5b4fc !important;
+}
+
+.menu-item i {
+    font-size: 1.15rem !important;
+    width: 24px !important;
+    text-align: center !important;
+    color: inherit !important;
+    transition: transform 0.2s ease !important;
+}
+
+.menu-item span {
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    color: inherit !important;
+}
+
+.menu-item:hover i {
+    transform: scale(1.1) !important;
+}
+
+/* Main Content Area adjustments to adapt automatically */
+.main-content {
+    margin-left: var(--sidebar-width) !important;
+    width: calc(100% - var(--sidebar-width)) !important;
+    min-height: 100vh !important;
+    transition: margin-left var(--transition-speed) var(--transition-timing),
+                width var(--transition-speed) var(--transition-timing) !important;
+    padding: 2rem !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+}
+
+/* Floating Toggle Button for Mobile Navigation */
+.sidebar-toggle-btn {
+    position: fixed !important;
+    left: 20px !important;
+    top: 20px !important;
+    z-index: 1040 !important;
+    width: 45px !important;
+    height: 45px !important;
+    border-radius: 50% !important;
+    background: var(--sb-bg-glass) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--sb-text) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+    display: none !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: background 0.2s, transform 0.2s !important;
+}
+
+.sidebar-toggle-btn:hover {
+    background: var(--sb-primary-light) !important;
+    transform: scale(1.05) !important;
+}
+
+.sidebar-toggle-btn i {
+    font-size: 1.2rem !important;
+}
+
+/* ========================================================
+   📱 RESPONSIVE VIEWPORT BREAKPOINTS (COVERS TABLETS/MOBILE)
+   ======================================================== */
+
+/* Tablet Portrait & Laptop Small: Compact 80px Icon View */
+@media (min-width: 768.1px) and (max-width: 1200px) {
+    :root {
+        --sidebar-width: var(--sidebar-collapsed-width);
+    }
+    
+    .sidebar {
+        width: var(--sidebar-collapsed-width) !important;
+    }
+    
+    .sidebar-header h2 {
+        display: none !important;
+    }
+    
+    .sidebar-header {
+        justify-content: center !important;
+    }
+    
+    .menu-item {
+        padding: 1rem !important;
+        justify-content: center !important;
+        border-left-width: 0 !important;
+        border-bottom: 3px solid transparent !important;
+    }
+    
+    .menu-item.active {
+        border-bottom-color: var(--sb-accent) !important;
+    }
+    
+    .menu-item span {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin-left: var(--sidebar-collapsed-width) !important;
+        width: calc(100% - var(--sidebar-collapsed-width)) !important;
+    }
+}
+
+/* Mobile Screen Viewports: Clean Drawer Translation sliding in/out */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%) !important;
+        width: 280px !important;
+    }
+    
+    .hamburger-menu {
+        display: flex !important;
+    }
+    
+    .sidebar-toggle-btn {
+        display: flex !important;
+    }
+    
+    /* When active mobile class is toggled on body */
+    body.sidebar-open .sidebar {
+        transform: translateX(0) !important;
+    }
+    
+    body.sidebar-open::after {
+        content: '' !important;
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: rgba(15, 23, 42, 0.5) !important;
+        backdrop-filter: blur(4px) !important;
+        z-index: 1045 !important;
+        animation: fadeIn 0.2s ease-out !important;
+    }
+    
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 1.5rem !important;
+        padding-top: 5rem !important; /* Offset for floating toggle */
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

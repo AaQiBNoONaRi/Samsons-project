@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/summary.css')}}">
+    <link rel="icon" type="image/png" href="SF Logo Gray Color PNG.png">
+    <title>Order Summary UI</title>
+    <style>
+        
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+       <div class="order-summary-header">
+    <div class="header-content">
+        <div class="order-id-container">
+            <h2>Order #<span class="order-id">{{ order.order_id }}</span></h2>
+            <div class="order-subtext">
+                {{ order.created_at.strftime('%B %d, %Y at %I:%M %p') }}
+                <span class="order-status">
+                    <span class="status-dot"></span>
+                    {{ order.status }}
+                </span>
+            </div>
+        </div>
+        <div class="order-summary-logo">
+            <img src="{{ url_for('static', filename='images/SF Logo Gray Color PNG.png') }}" alt="Company Logo">
+        </div>
+    </div>
+</div>
+
+
+        <!-- Main Content -->
+        <div class="order-summary-content">
+            <!-- Left Column -->
+            <div class="order-summary-left">
+                <!-- Order Items -->
+                <div class="order-card">
+                    <div class="order-card-header">
+                        <div class="order-card-title">Order Items</div>
+                    </div>
+                    
+                    <!-- Item 1 -->
+                    <!-- Around lines 40-70 - Update the entire product loop: -->
+{% for product in order.products %}
+<div class="order-item-content">
+  {% if 'packet_size' in product %}
+    <!-- Tester item - use default tester image -->
+    <img src="{{ url_for('static', filename='images/images.jpeg') }}" alt="{{ product.product_name }}" class="order-item-img">
+  {% else %}
+    <!-- Regular product - use thumbnail -->
+    <img src="{{ product.thumbnail }}" alt="{{ product.product_name }}" class="order-item-img">
+  {% endif %}
+  
+  <div class="order-item-details">
+    <div class="item-name">{{ product.product_name }}</div>
+    
+    {% if 'packet_size' in product %}
+      <!-- Tester Pack Attributes -->
+      <div class="item-attrs">
+        <span class="attr-pill">6ml</span>
+        <span class="attr-pill">{{ product.packet_size }} Testers</span>
+      </div>
+      
+      <!-- Show selected fragrances -->
+      <div class="item-description">
+        {% if product.boxes and product.boxes|length > 0 %}
+          <div class="fragrances-section">
+            <strong>Selected Fragrances:</strong>
+            {% for box in product.boxes %}
+              {% for fragrance in box %}
+                <li class="fragrance-item">{{ fragrance.Name }}</li>
+              {% endfor %}
+            {% endfor %}
+          </div>
+        {% else %}
+          Custom tester pack with selected fragrances.
+        {% endif %}
+      </div>
+
+    {% else %}
+      <!-- Regular Product Attributes -->
+      <div class="item-attrs">
+        <span class="attr-pill">{{ product.bottleSize }}</span>
+        {% if product.gender %}
+          <span class="attr-pill">{{ product.gender|title }}</span>
+        {% endif %}
+      </div>
+      <div class="item-description">
+        {{ product.description or "A carefully crafted scent perfect for any occasion." }}
+      </div>
+    {% endif %}
+  </div>
+  
+  <div class="order-item-price-summary">
+    <span class="item-qty">{{ product.quantity }} × Rs {{ "{:,.0f}".format(product.final_price or product.price or 0) }}</span>
+    <span class="item-total">Rs {{ "{:,.0f}".format((product.final_price or product.price or 0) * product.quantity) }}</span>
+  </div>
+</div>
+{% endfor %}
+                    <!-- Item 2 (example of multiple items) -->
+                    
+                </div>
+
+                <!-- Order Summary -->
+                <div class="order-card">
+    <div class="order-card-header">
+        <div class="order-card-title">Order Summary</div>
+    </div>
+
+    <table class="order-summary-table">
+        <tr>
+            <td>Subtotal</td>
+            <td>
+    {{ order.products | length }} item{{ 's' if order.products|length > 1 else '' }}
+  </td>
+            <td>
+               Rs {{ "{:,.0f}".format(order.total_price or 0) }}
+            </td>
+        </tr>
+        
+        <tr>
+            <td>Shipping</td>
+            <td>Express Delivery</td>
+            <td>Free</td>
+        </tr>
+        <tr class="order-summary-total">
+    <td colspan="2">Total</td>
+    <td>
+        Rs {{ "{:,.0f}".format(order.total_price or 0) }}
+    </td>
+</tr>
+    </table>
+</div>
+
+
+                <!-- Tracking -->
+                <div class="order-card">
+                    <div class="order-card-header">
+                        <div class="order-card-title">Order Tracking</div>
+                    </div>
+                    <div class="tracking-content">
+                        <div class="tracking-info">
+                            <span class="tracking-label">Tracking ID:</span>
+                            <span class="tracking-id">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M12 8v4l3 3"></path>
+                                </svg>
+                                {{ order.tracking_number }}
+                            </span>
+                        </div>
+                        <div class="tracking-buttons">
+                            <a href="{{ url_for('routes.tracking') }}" class="btn btn-primary">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+        <circle cx="12" cy="10" r="3"></circle>
+    </svg>
+    Track Order
+</a>
+
+                            <a href="{{ url_for('routes.home') }}" class="btn btn-outline">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                                Continue Shopping
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="order-summary-right">
+                <!-- Customer Info -->
+                <div class="sidebar-card">
+    <div class="sidebar-title">Customer</div>
+    <div class="sidebar-content">
+        <div class="customer-row">
+            <!-- Avatar with first letter -->
+            <span class="user-avatar">
+                {{ order.details.first_name[0] if order.details.first_name else '?' }}
+            </span>
+            <div>
+                <div class="customer-name">
+                    {{ order.details.first_name }} {{ order.details.last_name }}
+                </div>
+                <!-- <div class="customer-meta">
+                    <span>1 Order</span> You can make this dynamic if needed 
+                </div> -->
+            </div>
+        </div>
+        <div class="customer-note">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            Customer is tax-exempt
+        </div>
+    </div>
+</div>
+
+
+                <!-- Contact Info -->
+                <div class="sidebar-card">
+  <div class="sidebar-title">Contact Information</div>
+  <div class="sidebar-content">
+    
+    <!-- Email Row -->
+    <div class="contact-row">
+      <span class="contact-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+             viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4
+                   c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+      </span>
+      {{ order.details.email }}
+    </div>
+
+    <!-- Phone Row -->
+    <div class="contact-row">
+      <span class="contact-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+             viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2
+                   19.86 19.86 0 0 1-8.63-3.07
+                   19.5 19.5 0 0 1-6-6A19.86 
+                   19.86 0 0 1 2.08 4.18
+                   2 2 0 0 1 4 2h3a2 2 0 0 1 
+                   2 1.72 12.05 12.05 0 0 0 
+                   .57 2.57 2 2 0 0 1-.45 2.11L8.09 
+                   9.91a16 16 0 0 0 6 6l1.51-1.51a2 
+                   2 0 0 1 2.11-.45 12.05 12.05 
+                   0 0 0 2.57.57A2 2 0 0 1 
+                   22 16.92z"></path>
+        </svg>
+      </span>
+      {{ order.details.phone }}
+    </div>
+
+  </div>
+</div>
+
+
+                <!-- Shipping Address -->
+                <div class="sidebar-card">
+  <div class="sidebar-title">Shipping Address</div>
+  <div class="sidebar-content">
+    
+    <!-- Customer Name & Initial Avatar -->
+    <div class="customer-row">
+      <span class="user-avatar">
+        {{ order.details.first_name[0]|upper }}
+      </span>
+      <span class="customer-name">
+        {{ order.details.first_name }} {{ order.details.last_name }}
+      </span>
+    </div>
+
+    <!-- Address Block -->
+    <div class="address-block">
+      <div>{{ order.details.address }}</div>
+      <div>{{ order.details.city }}, {{ order.details.state }} {{ order.details.zip_code }}</div>
+      <div>Pakistan</div>
+      <div>{{ order.details.phone }}</div>
+    </div>
+
+    <!-- Optional Map Link -->
+    <a href="https://www.google.com/maps/search/?api=1&query={{ order.details.address | urlencode }}+{{ order.details.city | urlencode }}" target="_blank" class="sidebar-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+        <circle cx="12" cy="10" r="3"></circle>
+      </svg>
+      View on Map
+    </a>
+    
+  </div>
+</div>
+
+
+                <!-- Billing Address -->
+                <div class="sidebar-card">
+                    <div class="sidebar-title">Billing Address</div>
+                    <div class="sidebar-content">
+                        Same as shipping address
+                    </div>
+                </div>
+
+                <!-- Order Timeline
+                <div class="sidebar-card">
+                    <div class="sidebar-title">Order Timeline</div>
+                    <div class="sidebar-content">
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">Jan 10, 2024 - 10:30 AM</div>
+                                    <div class="timeline-text">Order delivered</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">Jan 9, 2024 - 2:15 PM</div>
+                                    <div class="timeline-text">Out for delivery</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">Jan 8, 2024 - 11:20 PM</div>
+                                    <div class="timeline-text">Order shipped</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">Jan 8, 2024 - 9:48 PM</div>
+                                    <div class="timeline-text">Order placed</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</body>
+
+</html>

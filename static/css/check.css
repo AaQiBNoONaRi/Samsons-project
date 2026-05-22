@@ -1,0 +1,38 @@
+ /* Removed header and footer CSS as requested. Only product page and utility styles remain. */
+        :root {
+            --primary: #2a2d34;
+            --secondary: #134B70;
+            --accent: #F6692A;
+            --text: #333333;
+            --text-light: #777777;
+            --border: #e1e1e1;
+            --bg-light: #f9f9f9;
+            --success: #28a745;
+            --error: #dc3545;
+            --discount: #2a9d8f;
+            --white: #ffffff;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion.active .accordion-content {
+            max-height: 500px;
+        }
+        .countdown-timer {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        #main-image {
+            transition: transform 0.3s ease;
+            cursor: zoom-in;
+        }
+        #main-image.zoomed {
+            transform: scale(1.5);
+            cursor: zoom-out;
+        }

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/admin/sidebar.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/admin/products.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* Error highlights */
+        .invalid-input-highlight {
+            border: 1.5px solid #f94144 !important;
+            box-shadow: 0 0 0 3px rgba(249, 65, 68, 0.2) !important;
+            background-color: rgba(249, 65, 68, 0.02) !important;
+        }
+        .invalid-dropzone-highlight {
+            border: 2px dashed #f94144 !important;
+            background-color: rgba(249, 65, 68, 0.02) !important;
+        }
+        
+        .toast {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+
+
+<body>
+
+        {% include 'admin/sidebar.html' %}
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Content</h1>
+            <div class="user-info">
+                <img src="" alt="admin">
+                <span>Admin</span>
+            </div>
+        </div>
+
+        <!-- main content file upload section -->
+         <div class="main-container">
+    <h2>Add Products</h2>
+   <form action="{{ url_for('admin.edit_product', product_id=product._id) if product else url_for('admin.add_product') }}"
+      method="POST"
+      enctype="multipart/form-data">
+      
+
+
+    <div class="product-details">
+        <div class="wrapper">
+            <div class="add-product">
+                <div class="product-inputs">
+                    <div class="input-item">
+                        <label for="product-name">Product Name <span style="color: #f94144;">*</span></label>
+                        <input type="text" id="product-name" name="product_name" placeholder="Product Name" required
+                               value="{{ product.name if product else '' }}">
+                    </div>
+
+                    <div class="input-item">
+                        <label for="gender-category">Category <span style="color: #f94144;">*</span></label>
+                        <select id="gender-category" name="category" required>
+                            <option value="" disabled {% if not product %}selected{% endif %}>Select category</option>
+                            <option value="male" {% if product and product.category == 'male' %}selected{% endif %}>Male</option>
+                            <option value="female" {% if product and product.category == 'female' %}selected{% endif %}>Female</option>
+                            <option value="unisex" {% if product and product.category == 'unisex' %}selected{% endif %}>Unisex</option>
+                            <option value="attar" {% if product and product.category == 'attar' %}selected{% endif %}>attar</option>
+                        </select>
+                    </div>
+                    <!--
+                    <div class="input-item">
+                        <label for="Volume-category">Volume</label>
+                        <select id="Volume-category" name="Volume" required>
+                            <option value="" disabled {% if not product %}selected{% endif %}>Select volume_ml</option>
+                            <option value="10ml" {% if product and product.Volume == '10ml' %}selected{% endif %}>10ml</option>
+                            <option value="50ml" {% if product and product.Volume == '50ml' %}selected{% endif %}>50ml</option>
+                            <option value="100ml" {% if product and product.Volume == '100ml' %}selected{% endif %}>100ml</option>
+                        </select>
+                    </div>
+                    -->
+               <div class="input-item">
+                        <label for="status-category">Status <span style="color: #f94144;">*</span></label>
+                        <select id="status-category" name="status" required>
+    <option value="" disabled {% if not product %}selected{% endif %}>Select status</option>
+    <option value="Active" {% if product and product.status == 'Active' %}selected{% endif %}>Active</option>
+    <option value="Inactive" {% if product and product.status == 'Inactive' %}selected{% endif %}>Inactive</option>
+</select>
+
+                    </div>
+
+
+
+                    <div class="input-item">
+    <label for="type">Type <span style="color: #f94144;">*</span></label>
+    <select id="type" name="type" required>
+        <option value="" disabled {% if not product %}selected{% endif %}>Select fragrance type</option>
+        <option value="floral" {% if product and product.type == 'floral' %}selected{% endif %}>Floral</option>
+        <option value="fruity" {% if product and product.type == 'fruity' %}selected{% endif %}>Fruity</option>
+        <option value="citrus" {% if product and product.type == 'citrus' %}selected{% endif %}>Citrus</option>
+        <option value="spicy" {% if product and product.type == 'spicy' %}selected{% endif %}>Spicy</option>
+        <option value="floral spicy" {% if product and product.type == 'floral spicy' %}selected{% endif %}>Floral Spicy</option>
+        <option value="fruity citrus" {% if product and product.type == 'fruity citrus' %}selected{% endif %}>Fruity Citrus</option>
+        <option value="oudh" {% if product and product.type == 'oudh' %}selected{% endif %}>Oudh</option>
+        <option value="floral fruity" {% if product and product.type == 'floral fruity' %}selected{% endif %}>Floral Fruity</option>
+        <option value="fresh" {% if product and product.type == 'fresh' %}selected{% endif %}>Fresh</option>
+        <option value="fresh aquatic" {% if product and product.type == 'fresh aquatic' %}selected{% endif %}>Fresh Aquatic</option>
+        <option value="aquatic" {% if product and product.type == 'aquatic' %}selected{% endif %}>Aquatic</option>
+    </select>
+</div>
+
+
+                    <div class="stock-input form-item">
+                        <label for="stock">Stock <span style="color: #f94144;">*</span></label>
+                        <input type="number" id="stock" name="stock" placeholder="Stock" required
+                               value="{{ product.stock if product else '' }}">
+                    </div>
+
+                    <div class="sku-input form-item">
+                        <label for="sku">SKU <span style="color: #f94144;">*</span></label>
+                        <input type="text" id="sku" name="sku" placeholder="SKU" required
+                               value="{{ product.sku if product else '' }}">
+                    </div>
+                </div>
+
+                <div class="description-input">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="4" cols="50" placeholder="Enter product description">{{ product.description if product else '' }}</textarea>
+                </div>
+            </div>
+
+            <div class="dropzone-wrapper">
+                <!-- Thumbnail Dropzone -->
+                <div class="dropzone-container">
+                    <label for="thumbnail-file" class="dropzone">
+                        <div class="dropzone-content">
+                            <svg class="dropzone-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                            </svg>
+                            <p>Click to upload <strong>Your product thumbnails (maximum 2) <span style="color: #f94144;">*</span></strong></p>
+                            <p class="note">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                        </div>
+                        <input id="thumbnail-file" name="thumbnail_images[]" type="file" class="hidden-input" multiple accept="image/*">
+                    </label>
+                </div>
+
+                <!-- Product Images Dropzone -->
+                <div class="dropzone-container">
+                    <label for="product-images-file" class="dropzone">
+                        <div class="dropzone-content">
+                            <svg class="dropzone-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                            </svg>
+                            <p>Click to upload <strong>product images <span style="color: #f94144;">*</span></strong></p>
+                            <p class="note">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                        </div>
+                        <input id="product-images-file" name="product_images[]" type="file" class="hidden-input" multiple accept="image/*">
+                    </label>
+                </div>
+            </div>
+
+            <div class="error-message" id="thumbnail-error">Exactly 2 thumbnails are required.</div>
+            <div class="error-message" id="product-images-error">Between 1 and 4 product images/variants are required.</div>
+
+            <div class="preview-section">
+    <!-- Thumbnails -->
+    <div class="thumbnail-preview">
+        <div class="preview-header">
+            <span class="preview-count" id="thumbnail-count">
+                {{ product.thumbnails | length if product and product.thumbnails else 0 }} thumbnails selected
+            </span>
+            {% if product %}
+            <button type="button" class="clear-all-btn" onclick="submitImageAction('{{ url_for('admin.clear_all_thumbnails', product_id=product._id) }}')">Clear All</button>
+            {% endif %}
+        </div>
+        <div class="preview-container" id="thumbnail-preview">
+            {% if product and product.thumbnails %}
+                {% for thumb in product.thumbnails %}
+                    <div class="preview-item">
+                        <img src="{{ thumb }}" alt="Thumbnail">
+                        <button type="button" class="remove-image" title="Delete" onclick="submitImageAction('{{ url_for('admin.delete_thumbnail', product_id=product._id) }}', '{{ thumb }}')">&times;</button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Variants -->
+    <div class="varients-preview">
+        <div class="preview-header">
+            <span class="preview-count" id="product-images-count">
+                {{ product.images | length if product and product.images else 0 }} variants selected
+            </span>
+            {% if product %}
+            <button type="button" class="clear-all-btn" onclick="submitImageAction('{{ url_for('admin.clear_all_variants', product_id=product._id) }}')">Clear All</button>
+            {% endif %}
+        </div>
+        <div class="preview-container" id="product-images-preview">
+            {% if product and product.images %}
+                {% for image in product.images %}
+                    <div class="preview-item">
+                        <img src="{{ image }}" alt="Variant">
+                        <button type="button" class="remove-image" title="Delete" onclick="submitImageAction('{{ url_for('admin.delete_variant', product_id=product._id) }}', '{{ image }}')">&times;</button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+  
+        </div>
+
+        <div class="product-form">
+            <h1>Price</h1>
+
+            <div class="price-input form-item">
+                <div class="regular-price">
+                    <label for="price">Price <span style="color: #f94144;">*</span></label>
+                    <input type="text" id="price" name="price" placeholder="Price" required
+                           value="{{ product.price if product else '' }}">
+                </div>
+
+                <div class="discount-price">
+                    <label for="discount-price">Discount Price</label>
+                    <div class="discount-wrapper">
+                        <input type="text" id="discount-price" name="discount_price" placeholder="Discount"
+                               value="{{ product.discount_price if product else '' }}">
+                        <span class="arrow-toggle">&#9660;</span>
+                    </div>
+
+                    <div class="discount-dates hidden">
+                        <input type="date" name="discount_start_date" placeholder="Start Date"
+                               value="{{ product.discount_start if product else '' }}">
+                        <input type="date" name="discount_end_date" placeholder="End Date"
+                               value="{{ product.discount_end if product else '' }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="tags-section">
+                <div class="tags-title">Tags:</div>
+                <div class="tags-container">
+                    <div class="tag-input-container">
+                        <input type="text" class="tag-input" name="tag_input" placeholder="Add a tag...">
+                        <button type="button" class="add-tag-btn">+</button>
+                    </div>
+                    <div class="added-tags" id="added-tags">
+                        {% if product and product.tags %}
+    {% for tag in product.tags %}
+        <div class="tag-item">{{ tag }}<button class="remove-tag">&times;</button></div>
+    {% endfor %}
+{% endif %}
+
+                    </div>
+                    <input type="hidden" name="tags" id="hidden-tags"
+       value="{{ product.tags | join(',') if product and product.tags else '' }}">
+
+                </div>
+            </div>
+
+            <button type="submit" class="publish-btn">
+                {{ 'Update Product' if product else 'Publish Product' }}
+            </button>
+        </div>
+    </div>
+</form>
+
+  </div>
+
+    </div>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Sidebar menu active state
+    document.querySelectorAll('.menu-item').forEach(item => {
+        item.addEventListener('click', function () {
+            document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // Tags logic
+    const tagInput = document.querySelector('.tag-input');
+    const addTagBtn = document.querySelector('.add-tag-btn');
+    const addedTags = document.getElementById('added-tags');
+    const hiddenTags = document.getElementById('hidden-tags');
+
+    function updateHiddenTags() {
+        const tags = Array.from(addedTags.querySelectorAll('.tag-item')).map(tag => tag.textContent.trim().slice(0, -1));
+        hiddenTags.value = tags.join(',');
+    }
+
+    function addTag() {
+        const value = tagInput.value.trim();
+        if (!value) return;
+
+        const tag = document.createElement('div');
+        tag.className = 'tag-item';
+        tag.innerHTML = `${value}<button class="remove-tag">&times;</button>`;
+        addedTags.appendChild(tag);
+
+        tagInput.value = '';
+        updateHiddenTags();
+
+        tag.querySelector('.remove-tag').addEventListener('click', () => {
+            tag.remove();
+            updateHiddenTags();
+        });
+    }
+
+    addTagBtn.addEventListener('click', addTag);
+    tagInput.addEventListener('keypress', e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addTag();
+        }
+    });
+
+    // Image preview logic
+    const thumbnailInput = document.getElementById('thumbnail-file');
+    const thumbnailPreview = document.getElementById('thumbnail-preview');
+    const thumbnailCount = document.getElementById('thumbnail-count');
+
+    const productInput = document.getElementById('product-images-file');
+    const productPreview = document.getElementById('product-images-preview');
+    const productCount = document.getElementById('product-images-count');
+
+    const thumbnailFileList = [];
+    const productImagesFileList = [];
+
+    function setupDropzone(input, previewContainer, countElement, fileList, maxCount = Infinity) {
+        function syncFiles() {
+            const dt = new DataTransfer();
+            fileList.forEach(file => dt.items.add(file));
+            input.files = dt.files;
+            
+            const newCount = previewContainer.querySelectorAll('.preview-item-new').length;
+            const existingCount = previewContainer.querySelectorAll('.preview-item:not(.preview-item-new)').length;
+            countElement.textContent = `${newCount + existingCount} file(s) selected`;
+        }
+
+        input.addEventListener('change', () => {
+            const newFiles = Array.from(input.files);
+            const totalExisting = previewContainer.querySelectorAll('.preview-item').length;
+
+            if (totalExisting + newFiles.length > maxCount) {
+                showToast(`You can only upload a maximum of ${maxCount} file(s)`, 'error');
+                input.value = '';
+                syncFiles();
+                return;
+            }
+
+            newFiles.forEach(file => {
+                if (fileList.some(f => f.name === file.name && f.size === file.size)) {
+                    return;
+                }
+
+                fileList.push(file);
+
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const div = document.createElement('div');
+                    div.className = 'preview-item preview-item-new';
+                    div.dataset.fileName = file.name;
+                    div.dataset.fileSize = file.size;
+                    div.innerHTML = `
+                        <img src="${e.target.result}" alt="Image">
+                        <button type="button" class="remove-image">&times;</button>
+                    `;
+                    previewContainer.appendChild(div);
+
+                    div.querySelector('.remove-image').addEventListener('click', () => {
+                        div.remove();
+                        const idx = fileList.findIndex(f => f.name === file.name && f.size === file.size);
+                        if (idx > -1) {
+                            fileList.splice(idx, 1);
+                        }
+                        syncFiles();
+
+                        // Clear error highlights when the user modifies their file selection
+                        const dropzone = input.closest('.dropzone-container');
+                        if (dropzone) {
+                            dropzone.classList.remove('invalid-dropzone-highlight');
+                            dropzone.style.border = '';
+                        }
+                        const errId = input.id === 'thumbnail-file' ? 'thumbnail-error' : 'product-images-error';
+                        const errorEl = document.getElementById(errId);
+                        if (errorEl) {
+                            errorEl.style.display = 'none';
+                        }
+                    });
+
+                    syncFiles();
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        const initialCount = previewContainer.querySelectorAll('.preview-item').length;
+        countElement.textContent = `${initialCount} file(s) selected`;
+    }
+
+    setupDropzone(thumbnailInput, thumbnailPreview, thumbnailCount, thumbnailFileList, 2);
+    setupDropzone(productInput, productPreview, productCount, productImagesFileList, 4);
+
+
+
+    // Discount date toggle
+    const discountWrapper = document.querySelector('.discount-wrapper');
+    const discountDates = document.querySelector('.discount-dates');
+    discountWrapper.addEventListener('click', () => {
+        discountDates.classList.toggle('hidden');
+        discountWrapper.querySelector('.arrow-toggle').classList.toggle('rotate');
+    });
+
+    // Toast Notification Function
+    function showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease;
+            background: ${type === 'success' ? '#4cc9f0' : type === 'error' ? '#f94144' : '#4895ef'};
+        `;
+
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+
+    function getFieldName(input) {
+        const id = input.getAttribute('id');
+        if (id) {
+            const label = document.querySelector(`label[for="${id}"]`);
+            if (label) {
+                return label.textContent.replace('*', '').trim();
+            }
+        }
+        return input.getAttribute('placeholder') || input.getAttribute('name') || 'Field';
+    }
+
+    // Remove invalid highlights on input/change
+    const allFormInputs = document.querySelectorAll('form input, form select, form textarea');
+    allFormInputs.forEach(input => {
+        const clearHighlight = function() {
+            input.classList.remove('invalid-input-highlight');
+        };
+        input.addEventListener('input', clearHighlight);
+        input.addEventListener('change', clearHighlight);
+    });
+
+    const thumbnailInputEl = document.getElementById('thumbnail-file');
+    if (thumbnailInputEl) {
+        thumbnailInputEl.addEventListener('change', () => {
+            const thumbnailDropzone = thumbnailInputEl.closest('.dropzone-container');
+            if (thumbnailDropzone) {
+                thumbnailDropzone.classList.remove('invalid-dropzone-highlight');
+                thumbnailDropzone.style.border = '';
+            }
+            const errorEl = document.getElementById('thumbnail-error');
+            if (errorEl) {
+                errorEl.style.display = 'none';
+            }
+        });
+    }
+
+    const productInputEl = document.getElementById('product-images-file');
+    if (productInputEl) {
+        productInputEl.addEventListener('change', () => {
+            const productDropzone = productInputEl.closest('.dropzone-container');
+            if (productDropzone) {
+                productDropzone.classList.remove('invalid-dropzone-highlight');
+                productDropzone.style.border = '';
+            }
+            const errorEl = document.getElementById('product-images-error');
+            if (errorEl) {
+                errorEl.style.display = 'none';
+            }
+        });
+    }
+
+    // Validate form before submit
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function (e) {
+        // Clear previous highlights
+        form.querySelectorAll('.invalid-input-highlight').forEach(el => el.classList.remove('invalid-input-highlight'));
+        const thumbnailDropzone = document.getElementById('thumbnail-file').closest('.dropzone-container');
+        if (thumbnailDropzone) {
+            thumbnailDropzone.classList.remove('invalid-dropzone-highlight');
+            thumbnailDropzone.style.border = '';
+        }
+        const productDropzone = document.getElementById('product-images-file').closest('.dropzone-container');
+        if (productDropzone) {
+            productDropzone.classList.remove('invalid-dropzone-highlight');
+            productDropzone.style.border = '';
+        }
+
+        // Validate regular required inputs
+        const requiredInputs = form.querySelectorAll('[required]');
+        let invalidFields = [];
+        requiredInputs.forEach(input => {
+            if (!input.checkValidity()) {
+                invalidFields.push(input);
+                input.classList.add('invalid-input-highlight');
+            }
+        });
+
+        // Validate thumbnail count
+        const thumbnailPreview = document.getElementById('thumbnail-preview');
+        const thumbnailUploaded = thumbnailPreview ? thumbnailPreview.querySelectorAll('.preview-item').length : 0;
+        let isThumbnailInvalid = false;
+
+        if (thumbnailUploaded !== 2) {
+            isThumbnailInvalid = true;
+            if (thumbnailDropzone) {
+                thumbnailDropzone.classList.add('invalid-dropzone-highlight');
+            }
+            const errorEl = document.getElementById('thumbnail-error');
+            if (errorEl) {
+                errorEl.style.display = 'block';
+                errorEl.textContent = 'Exactly 2 thumbnails are required.';
+            }
+        } else {
+            const errorEl = document.getElementById('thumbnail-error');
+            if (errorEl) {
+                errorEl.style.display = 'none';
+            }
+        }
+
+        // Validate product images/variants count
+        const productPreview = document.getElementById('product-images-preview');
+        const productImagesUploaded = productPreview ? productPreview.querySelectorAll('.preview-item').length : 0;
+        let isProductImagesInvalid = false;
+
+        if (productImagesUploaded < 1 || productImagesUploaded > 4) {
+            isProductImagesInvalid = true;
+            if (productDropzone) {
+                productDropzone.classList.add('invalid-dropzone-highlight');
+            }
+            const errorEl = document.getElementById('product-images-error');
+            if (errorEl) {
+                errorEl.style.display = 'block';
+                errorEl.textContent = 'Between 1 and 4 product images/variants are required.';
+            }
+        } else {
+            const errorEl = document.getElementById('product-images-error');
+            if (errorEl) {
+                errorEl.style.display = 'none';
+            }
+        }
+
+        // If any error exists, prevent submit
+        if (invalidFields.length > 0 || isThumbnailInvalid || isProductImagesInvalid) {
+            e.preventDefault();
+
+            // Construct feedback message
+            let messages = [];
+            if (invalidFields.length > 0) {
+                const names = invalidFields.map(getFieldName);
+                messages.push(`Required fields missing: ${names.join(', ')}`);
+            }
+            if (isThumbnailInvalid) {
+                messages.push('Exactly 2 product thumbnails are required.');
+            }
+            if (isProductImagesInvalid) {
+                messages.push('Between 1 and 4 product images/variants are required.');
+            }
+
+            // Show Toast for each warning
+            messages.forEach(msg => showToast(msg, 'error'));
+
+            // Scroll to the first error
+            if (invalidFields.length > 0) {
+                invalidFields[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                invalidFields[0].focus();
+            } else if (isThumbnailInvalid && thumbnailDropzone) {
+                thumbnailDropzone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else if (isProductImagesInvalid && productDropzone) {
+                productDropzone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    });
+});
+
+function submitImageAction(url, imagePath) {
+    if (confirm("Are you sure you want to proceed with this action?")) {
+        const actionForm = document.getElementById('image-action-form');
+        const actionInput = document.getElementById('image-action-path');
+        actionForm.action = url;
+        actionInput.value = imagePath || '';
+        actionForm.submit();
+    }
+}
+</script>
+
+<form id="image-action-form" method="POST" style="display:none;">
+    <input type="hidden" name="image_path" id="image-action-path">
+</form>
+
+</body>
+
+</html>

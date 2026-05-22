@@ -1,0 +1,845 @@
+/* Sidebar and Main Content Styles for List Page */
+:root {
+    --primary: #4361ee;
+    --primary-dark: #3a56d4;
+    --secondary: #3f37c9;
+    --success: #4cc9f0;
+    --info: #4895ef;
+    --warning: #f8961e;
+    --danger: #f94144;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --gray: #6c757d;
+    --light-gray: #e9ecef;
+    --white: #ffffff;
+    --sidebar-width: 260px;
+    --sidebar-collapsed: 80px;
+    --card-radius: 12px;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
+    --gradient-primary: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+/* Main Content Responsive Layout */
+.main-content {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    padding: 18px 16px 16px 16px;
+    transition: all 0.3s;
+    min-height: 100vh;
+    background: #f0f4ff;
+    overflow-x: auto;
+}
+
+
+
+.bottle-actions {
+    display: flex;
+    gap: 2px;
+    margin: 2px 0 0 0;
+}
+
+.preview-btn,
+.delete-btn {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 10px;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.preview-btn {
+    background-color: transparent;
+    color: #1b2992;
+}
+
+.preview-btn:hover {
+    background-color: #0f1a6b;
+    color: white;
+}
+
+.delete-btn {
+    background: transparent;
+    color: #f94144;
+}
+
+.delete-btn:hover {
+    background-color: #d90429;
+    color: white;
+}
+
+/* Adjust bottle item to accommodate buttons */
+.bottle-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 80px;
+    position: relative;
+}
+
+.header-buttons #openAddBottleModal {
+    background-color: #1b2992;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.header-buttons #openAddBottleModal:hover {
+    background-color: #0f1a6b;
+}
+
+/* Add Bottle Modal Styles */
+.add-bottle-modal {
+    display: none;
+    position: fixed;
+    z-index: 2200;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.45);
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.add-bottle-modal-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 24px 28px 20px 28px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 240px;
+    max-width: 95vw;
+    position: relative;
+}
+
+.add-bottle-modal-content h3 {
+    margin-bottom: 16px;
+    font-size: 17px;
+    color: #1b2992;
+    font-weight: 600;
+    text-align: center;
+}
+
+.add-bottle-close {
+    position: absolute;
+    top: 10px;
+    right: 16px;
+    font-size: 22px;
+    color: #333;
+    cursor: pointer;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.add-bottle-close:hover {
+    color: #f94144;
+}
+
+.add-bottle-modal-content input[type="file"] {
+    margin-top: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 0;
+    width: 100%;
+    background: #fafbfc;
+    cursor: pointer;
+}
+
+/* Mixed Add List Form Styles */
+.add-list-form-mixed {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.form-row-horizontal {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.form-row-horizontal .form-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.form-row-horizontal .form-group.small-input {
+    flex: 0 0 auto;
+    min-width: 70px;
+    max-width: 80px;
+}
+
+.add-list-form-mixed label {
+    font-size: 13px;
+    color: #222;
+    font-weight: 500;
+    margin-bottom: 2px;
+    margin-top: 4px;
+}
+
+.add-list-form-mixed input[type="text"],
+.add-list-form-mixed input[type="number"] {
+    width: 100%;
+    padding: 7px 10px;
+    font-size: 13px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    outline: none;
+    transition: border 0.2s;
+    margin-bottom: 0;
+}
+
+.add-list-form-mixed input[type="text"]:focus,
+.add-list-form-mixed input[type="number"]:focus {
+    border: 1.5px solid #1b2992;
+}
+
+.add-list-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+/* Vertical Add List Form Styles */
+.add-list-form-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.add-list-form-vertical label {
+    font-size: 13px;
+    color: #222;
+    font-weight: 500;
+    margin-bottom: 2px;
+    margin-top: 4px;
+}
+
+.add-list-form-vertical input[type="text"],
+.add-list-form-vertical input[type="number"] {
+    width: 100%;
+    padding: 7px 10px;
+    font-size: 13px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    outline: none;
+    transition: border 0.2s;
+    margin-bottom: 0;
+}
+
+.add-list-form-vertical input[type="text"]:focus,
+.add-list-form-vertical input[type="number"]:focus {
+    border: 1.5px solid #1b2992;
+}
+
+.add-list-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.add-list-modal-content input[type="number"] {
+    padding: 7px 10px;
+    font-size: 13px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-bottom: 14px;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.add-list-modal-content input[type="number"]:focus {
+    border: 1.5px solid #1b2992;
+}
+
+/* Add List Modal Styles */
+.add-list-modal {
+    display: none;
+    position: fixed;
+    z-index: 2100;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.45);
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.add-list-modal-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px 24px 16px 24px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-width: 260px;
+    max-width: 95vw;
+    position: relative;
+}
+
+.add-list-modal-content h3 {
+    margin-bottom: 14px;
+    font-size: 17px;
+    color: #1b2992;
+    font-weight: 600;
+    text-align: center;
+}
+
+.add-list-close {
+    position: absolute;
+    top: 10px;
+    right: 16px;
+    font-size: 22px;
+    color: #333;
+    cursor: pointer;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.add-list-close:hover {
+    color: #f94144;
+}
+
+.add-list-modal-content label {
+    font-size: 13px;
+    margin-bottom: 4px;
+    color: #222;
+    font-weight: 500;
+}
+
+.add-list-modal-content input[type="text"] {
+    padding: 7px 10px;
+    font-size: 13px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-bottom: 14px;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.add-list-modal-content input[type="text"]:focus {
+    border: 1.5px solid #1b2992;
+}
+
+.add-list-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.add-list-submit {
+    background-color: #1b2992;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 7px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.add-list-submit:hover {
+    background-color: #0f1a6b;
+}
+
+.add-list-btn {
+    background-color: #1b2992;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 14px 5px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    margin-bottom: 6px;
+    transition: background 0.2s;
+}
+
+.add-list-btn i {
+    font-size: 13px;
+}
+
+.add-list-btn:hover {
+    background-color: #0f1a6b;
+}
+
+/* Bottle Preview Modal Styles */
+.bottle-preview-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.45);
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.bottle-preview-modal-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px 16px 10px 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 180px;
+    min-height: 180px;
+    max-width: 90vw;
+    max-height: 90vh;
+    position: relative;
+}
+
+.bottle-preview-modal-content img {
+    max-width: 320px;
+    max-height: 480px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    background: #fff;
+    margin-bottom: 6px;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: zoom-in;
+}
+
+.bottle-preview-modal-content img:hover {
+    transform: scale(1.7);
+    z-index: 10;
+    cursor: zoom-out;
+}
+
+.bottle-preview-close {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 22px;
+    color: #333;
+    cursor: pointer;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.bottle-preview-close:hover {
+    color: #f94144;
+}
+
+/* Flex layout for table and bottles section side by side */
+.list-bottle-flex {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    margin-top: 12px;
+}
+
+.list-bottle-flex .product-table-container {
+    flex: 2 1 0;
+    min-width: 0;
+}
+
+.list-bottle-flex .bottles-section {
+    flex: 1 1 220px;
+    min-width: 220px;
+    max-width: 260px;
+    margin-top: 0;
+    height: fit-content;
+}
+
+@media (max-width: 1100px) {
+    .list-bottle-flex {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .list-bottle-flex .bottles-section {
+        max-width: 100%;
+        min-width: 0;
+    }
+}
+
+/* Bottles Section Styles */
+.bottles-section {
+    margin-top: 16px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    padding: 10px 8px 8px 8px;
+}
+
+.bottles-section h2 {
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: #222;
+    font-weight: 600;
+}
+
+.bottles-list {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.bottle-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 70px;
+}
+
+.bottle-item img {
+    width: 48px;
+    height: 80px;
+    display: block;
+    margin: 0 auto 2px auto;
+    object-fit: contain;
+    border-radius: 5px;
+    border: 1px solid #e0e0e0;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.bottle-item label {
+    font-size: 11px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-weight: 500;
+}
+
+.bottle-item input[type="checkbox"] {
+    accent-color: #1b2992;
+    width: 12px;
+    height: 12px;
+    margin-right: 1px;
+}
+
+.bottle-item input[type="checkbox"]:checked+span,
+.bottle-item input[type="checkbox"]:checked~label {
+    color: #28a745;
+    font-weight: 600;
+}
+
+/* Main Content, Table, and Checkbox Styles for List Page */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.header h1 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.user-info img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: #ddd;
+}
+
+.user-info span {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.content-header h1 {
+    font-size: 15px;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.header-buttons button {
+    padding: 4px 8px;
+    font-size: 10px;
+    border-radius: 3px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.header-buttons button:first-child,
+.header-buttons button:nth-child(2) {
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.header-buttons button:last-child {
+    background-color: #1b2992;
+    color: white;
+}
+
+.product-table-container {
+    background: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    padding: 8px;
+    height: calc(100vh - 120px);
+    display: flex;
+    flex-direction: column;
+}
+
+.product-filters {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.product-filters button {
+    padding: 3px 6px;
+    font-size: 10px;
+    border-radius: 3px;
+    border: none;
+    background-color: #f0f0f0;
+    color: #333;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.product-filters button:first-child {
+    background-color: #1b2992;
+    color: white;
+}
+
+.products-sorting {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.product-count h2 {
+    font-size: 11px;
+    font-weight: 500;
+    color: #555;
+}
+
+.product-search input {
+    padding: 4px 8px;
+    font-size: 10px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    min-width: 150px;
+}
+
+.product-table {
+    width: 100%;
+    overflow: auto;
+    flex-grow: 1;
+}
+
+.product-table table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.product-table th {
+    text-align: left;
+    padding: 5px 6px;
+    background-color: #f5f5f5;
+    color: #555;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 9px;
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+}
+
+.product-table td {
+    padding: 4px 6px;
+    border-bottom: 1px solid #eee;
+    font-size: 10px;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Checkbox style for table */
+input[type="checkbox"] {
+    accent-color: #1b2992;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+
+/* Pagination and status styles */
+.pagination-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+    font-size: 10px;
+    color: #555;
+}
+
+.pagination-controls {
+    display: flex;
+    gap: 4px;
+}
+
+.pagination-controls button {
+    padding: 2px 5px;
+    font-size: 10px;
+    min-width: 22px;
+    height: 22px;
+    border: 1px solid #ddd;
+    background-color: white;
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination-controls button.active {
+    background-color: #1b2992;
+    color: white;
+    border-color: #1b2992;
+}
+
+/* Status Indicators */
+.status-active {
+    color: #28a745;
+    font-weight: 500;
+}
+
+.status-inactive {
+    color: #ff3007;
+    font-weight: 500;
+}
+
+/* Single toggle button for status */
+.status-toggle {
+    padding: 4px 8px;
+    font-size: 11px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    min-width: 78px;
+    text-align: center;
+    transition: background 0.12s ease, color 0.12s ease, transform 0.08s ease;
+}
+.status-toggle.active {
+    background-color: #2ecc71; /* green */
+    color: #fff;
+    border-color: rgba(0,0,0,0.05);
+}
+.status-toggle.inactive {
+    background-color: #ff4d4f; /* red */
+    color: #fff;
+    border-color: rgba(0,0,0,0.05);
+}
+
+.status-toggle:active { transform: scale(0.98); }
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        width: 100vw;
+        padding: 4rem 12px 10px 12px;
+        min-height: 100vh;
+    }
+
+    .content-header h1 {
+        margin-top: 0;
+        text-align: left;
+    }
+
+    .user-info span {
+        display: none;
+    }
+}
+
+
+.bottle-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin: 15px 0;
+    padding: 10px;
+    background: #fafafa;
+}
+
+.size-section {
+    margin-top: 10px;
+}
+
+.image-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.image-group img {
+    width: 100px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 4px rgba(0,0,0,0.2);
+}

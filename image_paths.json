@@ -1,0 +1,147 @@
+{
+  "images": {
+    "logo": "D:\\Samsuns\\PB website\\images\\logo.png",
+    "perfume": "D:\\Samsuns\\PB website\\images\\perfume.jpg",
+    "banner": [
+      "D:\\Samsuns\\PB website\\images\\banner\\banner-long.jpg",
+      "D:\\Samsuns\\PB website\\images\\banner\\banner1.jpg",
+      "D:\\Samsuns\\PB website\\images\\banner\\banner2.jpg",
+      "D:\\Samsuns\\PB website\\images\\banner\\banner3.jpg",
+      "D:\\Samsuns\\PB website\\images\\banner\\banner4.png",
+      "D:\\Samsuns\\PB website\\images\\banner\\banner5.jpg"
+    ],
+    "best-product": [
+      "D:\\Samsuns\\PB website\\images\\best-product\\B1-1.png",
+      "D:\\Samsuns\\PB website\\images\\best-product\\B1-2.png",
+      "D:\\Samsuns\\PB website\\images\\best-product\\B2-1.png",
+      "D:\\Samsuns\\PB website\\images\\best-product\\B2-2.png",
+      "D:\\Samsuns\\PB website\\images\\best-product\\B3-1.png",
+      "D:\\Samsuns\\PB website\\images\\best-product\\B3-2.png",
+      "D:\\Samsuns\\PB website\\images\\best-product\\B4-1.png",
+      "D:\\Samsuns\\PB website\\images\\best-product\\B4-2.png",
+      "D:\\Samsuns\\PB website\\images\\best-product\\B5-1.png",
+      "D:\\Samsuns\\PB website\\images\\best-product\\B5-2.png",
+      "D:\\Samsuns\\PB website\\images\\best-product\\B6-1.png",
+      "D:\\Samsuns\\PB website\\images\\best-product\\B6-2.png"
+    ],
+    "blog": [
+      "D:\\Samsuns\\PB website\\images\\blog\\blog1.jpg",
+      "D:\\Samsuns\\PB website\\images\\blog\\blog2.jpg",
+      "D:\\Samsuns\\PB website\\images\\blog\\blog3.jpg",
+      "D:\\Samsuns\\PB website\\images\\blog\\blog4.jpg"
+    ],
+    "deals": [
+      "D:\\Samsuns\\PB website\\images\\Deals\\D1-1.png",
+      "D:\\Samsuns\\PB website\\images\\Deals\\D1-2.png",
+      "D:\\Samsuns\\PB website\\images\\Deals\\D2-1.png",
+      "D:\\Samsuns\\PB website\\images\\Deals\\D2-2.png",
+      "D:\\Samsuns\\PB website\\images\\Deals\\D3-1.png",
+      "D:\\Samsuns\\PB website\\images\\Deals\\D3-2.png"
+    ],
+    "icon": [
+      "D:\\Samsuns\\PB website\\images\\icon\\language.png",
+      "D:\\Samsuns\\PB website\\images\\icon\\paypal.jpg",
+      "D:\\Samsuns\\PB website\\images\\icon\\paypal1.jpg",
+      "D:\\Samsuns\\PB website\\images\\icon\\paypal2.jpg",
+      "D:\\Samsuns\\PB website\\images\\icon\\paypal3.jpg",
+      "D:\\Samsuns\\PB website\\images\\icon\\paypal4.jpg",
+      "D:\\Samsuns\\PB website\\images\\icon\\paypal5.jpg"
+    ],
+    "new-product": [
+      "D:\\Samsuns\\PB website\\images\\new-product\\N1-1.png",
+      "D:\\Samsuns\\PB website\\images\\new-product\\N1-2.png",
+      "D:\\Samsuns\\PB website\\images\\new-product\\N2-1.png",
+      "D:\\Samsuns\\PB website\\images\\new-product\\N2-2.png",
+      "D:\\Samsuns\\PB website\\images\\new-product\\N3.png",
+      "D:\\Samsuns\\PB website\\images\\new-product\\N4-1.png",
+      "D:\\Samsuns\\PB website\\images\\new-product\\N4-2.png",
+      "D:\\Samsuns\\PB website\\images\\new-product\\N5-1.png",
+      "D:\\Samsuns\\PB website\\images\\new-product\\N5-2.png",
+      "D:\\Samsuns\\PB website\\images\\new-product\\N6-1.png",
+      "D:\\Samsuns\\PB website\\images\\new-product\\N6-2.png"
+    ],
+    "onsale": [
+      "D:\\Samsuns\\PB website\\images\\onsale\\D1-1.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D1-2.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D10-1.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D10-2.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D11-1.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D11-2.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D12-1.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D12-2.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D2-1.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D2-2.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D3-1.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D3-2.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D4-1.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D4-2.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D5-1.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D5-2.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D6-1.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D6-2.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D7-1.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D7-2.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D8-1.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D8-2.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D9-1.png",
+      "D:\\Samsuns\\PB website\\images\\onsale\\D9-2.png"
+    ],
+    "products": {
+      "men": [
+        "D:\\Samsuns\\PB website\\images\\products\\Men\\1-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Men\\1-2.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Men\\2-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Men\\2-2.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Men\\3-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Men\\3-2.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Men\\4-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Men\\4-2.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Men\\5-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Men\\5-2.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Men\\6-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Men\\6-2.png"
+      ],
+      "unisex": [
+        "D:\\Samsuns\\PB website\\images\\products\\Unisex\\1-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Unisex\\1-2.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Unisex\\2-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Unisex\\2-2.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Unisex\\3-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Unisex\\3-2.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Unisex\\4-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Unisex\\4-2.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Unisex\\5-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Unisex\\5-2.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Unisex\\6-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Unisex\\6-2.png"
+      ],
+      "women": [
+        "D:\\Samsuns\\PB website\\images\\products\\Women\\1-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Women\\1-2.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Women\\2-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Women\\2-2.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Women\\3-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Women\\3-2.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Women\\4-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Women\\4-2.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Women\\5-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Women\\5-2.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Women\\6-1.png",
+        "D:\\Samsuns\\PB website\\images\\products\\Women\\6-2.png"
+      ]
+    },
+    "slider": [
+      "D:\\Samsuns\\PB website\\images\\slider\\slider1.jpg",
+      "D:\\Samsuns\\PB website\\images\\slider\\slider2.jpg"
+    ],
+    "small-product": [
+      "D:\\Samsuns\\PB website\\images\\small-product\\mini1.png",
+      "D:\\Samsuns\\PB website\\images\\small-product\\mini2.png"
+    ],
+    "testimonial": [
+      "D:\\Samsuns\\PB website\\images\\testimonial\\testimonial1.jpg",
+      "D:\\Samsuns\\PB website\\images\\testimonial\\testimonial2.jpg",
+      "D:\\Samsuns\\PB website\\images\\testimonial\\testimonial3.jpg"
+    ]
+  }
+}

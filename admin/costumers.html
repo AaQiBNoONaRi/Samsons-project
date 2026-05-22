@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/admin/products.css')}}">
+    <title>Products</title>
+</head>
+
+<body>
+    <!-- Hamburger menu button (visible on mobile, for opening sidebar) -->
+    <button id="hamburgerMenuOpen" class="hamburger-menu" aria-label="Open Sidebar">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    {% include 'admin/sidebar.html' %}
+    <div class="main-content">
+        <div class="header">
+            <h1>costumers</h1>
+            <div class="user-info">
+                <img src="" alt="admin">
+                <span>Admin</span>
+            </div>
+        </div>
+        <!-- main product container -->
+        <div class="main-container">
+            <div class="content-header">
+                <h1>costumers</h1>
+                <div class="header-buttons">
+                    <button>Export</button>
+                    <button>Import</button>
+                    <a href="{{ url_for('admin.add_product') }}">
+                        <button type="button">Add products</button>
+                    </a>
+                </div>
+            </div>
+            <div class="products-container">
+                <div class="product-table-container">
+                    <div class="product-filters">
+                        <!--     <button>All Products</button>
+                        <button>Active</button>
+                        <button>Inactive</button>
+                        <button>Out of stock</button>-->
+                    </div>
+                    <div class="products-sorting">
+                        <div class="product-count">
+                            <h2>{{ costumers|length }}</h2>
+                        </div>
+                        <div class="product-search">
+                            <input type="search" placeholder="Search...">
+                        </div>
+                    </div>
+                    <div class="product-table">
+                        <table>
+
+                            <tr>
+                                <th>S.No</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Registered At</th>
+                                <th>Last Login</th>
+                            </tr>
+
+                            <tbody id="userList">
+                                {% for user in costumers %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ user.name }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.registered_at }}</td>
+                                    <td>{{ user.last_login }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-info">
+                        <div></div>
+                        <div class="pagination-controls">
+                            <button><i class="fas fa-chevron-left"></i></button>
+                            <button class="active">1</button>
+                            <button>2</button>
+                            <button>3</button>
+                            <button>...</button>
+                            <button><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Sidebar mobile toggle (hamburger in header and sidebar)
+        const hamburgerMenuOpen = document.getElementById('hamburgerMenuOpen');
+        const hamburgerMenuClose = document.getElementById('hamburgerMenuClose');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+
+        function openSidebar() {
+            if (hamburgerMenuOpen) hamburgerMenuOpen.classList.add('active');
+            if (sidebar) sidebar.classList.add('mobile-open');
+            document.body.classList.add('mobile-sidebar-open');
+            if (mainContent) mainContent.classList.add('hide-on-sidebar');
+        }
+        function closeSidebar() {
+            if (hamburgerMenuOpen) hamburgerMenuOpen.classList.remove('active');
+            if (sidebar) sidebar.classList.remove('mobile-open');
+            document.body.classList.remove('mobile-sidebar-open');
+            if (mainContent) mainContent.classList.remove('hide-on-sidebar');
+        }
+
+        if (hamburgerMenuOpen) {
+            hamburgerMenuOpen.addEventListener('click', function (e) {
+                e.stopPropagation();
+                openSidebar();
+            });
+        }
+        if (hamburgerMenuClose) {
+            hamburgerMenuClose.addEventListener('click', function (e) {
+                e.stopPropagation();
+                closeSidebar();
+            });
+        }
+        if (sidebar) {
+            // Close sidebar when clicking a menu item (on mobile)
+            const menuItems = sidebar.querySelectorAll('.menu-item');
+            menuItems.forEach(function (item) {
+                item.addEventListener('click', function () {
+                    if (window.innerWidth <= 768) {
+                        closeSidebar();
+                    }
+                });
+            });
+        }
+        // Hide sidebar on resize to desktop
+        window.addEventListener('resize', function () {
+            if (window.innerWidth > 768) {
+                closeSidebar();
+            }
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/admin/costumers.js') }}"></script>
+</body>
+
+</html>

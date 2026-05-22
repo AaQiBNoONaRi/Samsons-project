@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Perfume Page</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom-perfume.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <div id="selectedBottlePreview"></div>
+            <!-- <img src="default-bottle.jpg" alt=""> -->
+        </div>
+        <div class="right">
+            <div class="product-title">CREATE YOUR CUSTOM PERFUME</div>
+            <span class="product-price">Rs. 0</span>
+            <span class="product-old-price">Rs. 8100</span>
+            <div class="social">
+                <span>FOLLOW US ON</span>
+                <div class="social-icons">
+                    <a href="#" class="fa fa-facebook" title="Facebook"></a>
+                    <a href="#" class="fa fa-twitter" title="Twitter"></a>
+                    <a href="#" class="fa fa-pinterest" title="Pinterest"></a>
+                    <a href="#" class="fa fa-google-plus" title="Google+"></a>
+                    <a href="#" class="fa fa-linkedin" title="LinkedIn"></a>
+                </div>
+            </div>
+            <div class="product-desc">
+                Choose your fragrance, bottle size, and bottle design to create your own custom perfume.
+            </div>
+            <form id="perfumeForm">
+                <div class="quantity-section">
+                    <label for="quantity">Number of Perfumes:</label>
+                    <div class="quantity-box">
+                        <button type="button" class="quantity-btn" id="decreaseQty">-</button>
+                        <span class="quantity-value">
+                            <input type="number" id="quantity" class="quantity-input" value="1" min="1" max="10">
+                        </span>
+                        <button type="button" class="quantity-btn" id="increaseQty">+</button>
+                    </div>
+                </div>
+                
+                <div id="perfumeBoxes">
+                    <!-- Dynamic perfume boxes will be generated here by JavaScript -->
+                </div>
+                
+                <div class="action-buttons">
+                    <button type="button" class="add-cart-btn">ADD TO CART</button>
+                    <button type="button" class="buy-now-btn">BUY NOW</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Pass Flask data to JavaScript -->
+    <script>
+        // Pass fragrance names from list_products (not perfume_products)
+        const fragranceOptions = {{ list_products|tojson|safe }};
+        const bottleImages = {{ perfumes|tojson|safe }};
+        
+        console.log('Fragrances loaded:', fragranceOptions.length);
+        console.log('Sample fragrance:', fragranceOptions[0]);
+        console.log('Bottle images:', bottleImages);
+    </script>
+    <script src="{{ url_for('static', filename='js/custom-perfume.js') }}"></script>
+</body>
+</html>

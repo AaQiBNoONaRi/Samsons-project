@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CRUD Example</title>
+</head>
+<body>
+
+<h1>Student List</h1>
+
+<!-- Input to add a student -->
+<input type="text" id="studentName" placeholder="Enter student name">
+<button id="addBtn">Add Student</button>
+
+<!-- List container -->
+<ul id="studentList"></ul>
+
+<script>
+  // Step 1: Store students in an array
+  let students = [];
+
+  // Step 2: Select elements
+  const input = document.getElementById('studentName');
+  const addBtn = document.getElementById('addBtn');
+  const list = document.getElementById('studentList');
+
+  // Step 3: Function to render the list
+  function renderList() {
+    list.innerHTML = ''; // clear current list
+    students.forEach((student, index) => {
+      const li = document.createElement('li');
+      li.textContent = student + ' ';
+
+      // Edit button
+      const editBtn = document.createElement('button');
+      editBtn.textContent = 'Edit';
+      editBtn.onclick = () => {
+        const newName = prompt('Edit student name:', student);
+        if (newName) {
+          students[index] = newName;
+          renderList();
+        }
+      };
+
+      // Delete button
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.onclick = () => {
+        students.splice(index, 1);
+        renderList();
+      };
+
+      li.appendChild(editBtn);
+      li.appendChild(deleteBtn);
+      list.appendChild(li);
+    });
+  }
+
+  // Step 4: Add student
+  addBtn.addEventListener('click', () => {
+    const name = input.value.trim();
+    if (name) {
+      students.push(name); // CREATE
+      input.value = '';
+      renderList();        // READ
+    }
+  });
+
+</script>
+
+</body>
+</html>

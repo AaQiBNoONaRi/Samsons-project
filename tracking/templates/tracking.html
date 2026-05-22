@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfume Blog | E-Commerce</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{url_for('static', filename='css/tracking.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/header.css')}}">
+    
+</head>
+
+<body>
+     
+{%include 'header.html'%}
+    <!-- Tracking Header -->
+   {% if not order %}
+<section class="tracking-input-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="tracking-form-container animate__animated animate__fadeIn">
+                    <div class="tracking-form">
+                        <h3>Enter Your Tracking Number</h3>
+                        <p>Please enter the tracking number you received in your confirmation email</p>
+                        <form id="trackingForm" method="POST" action="{{ url_for('routes.tracking') }}">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="trackingNumber" id="trackingNumber"
+                                        placeholder="e.g. SF123456789US" required>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fas fa-search"></i> Track Order
+                                        </button>
+                                    </div>
+                                </div>
+                                <small class="form-text text-muted">
+                                    Can't find your tracking number? <a href="#">Contact Support</a>
+                                </small>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tracking-image">
+                        <img src="https://via.placeholder.com/400x300?text=Perfume+Delivery" alt="Perfume Delivery"
+                            class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+    <!-- Main Content -->
+   <main class="tracking-main" {% if order %}style="display: block;"{% else %}style="display: none;"{% endif %}>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Order Summary Sidebar (Desktop Only) -->
+            <div class="col-lg-3 col-md-4 order-summary-sidebar order-1 order-lg-1 d-none d-md-block">
+                <div class="sidebar-card">
+                    <div class="sidebar-header">
+                        <h4><i class="fas fa-info-circle"></i> Order Summary</h4>
+                    </div>
+
+                    <!-- Order Status -->
+                    <div class="sidebar-section">
+                        <div class="status-display">
+                            {% if order %}
+                                <span class="status-badge {{ order.status | lower }}">{{ order.status }}</span>
+                            {% else %}
+                                <span class="status-badge">No Result</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% if order %}
+                    <!-- Order Info -->
+                    <div class="sidebar-section">
+                        <h5>Order Information</h5>
+                        <div class="info-item">
+                            <span class="info-label">Order ID:</span>
+                            <span class="info-value">#{{ order.order_id }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Order Date:</span>
+                            <span class="info-value">{{ order.created_at or "N/A" }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Tracking:</span>
+                            <span class="info-value">{{ order.tracking_number }}</span>
+                        </div>
+                    </div>
+
+                    {% if order.details %}
+                    <!-- Customer Info -->
+                    <div class="sidebar-section">
+                        <h5>Customer Information</h5>
+                        <div class="info-item">
+                            <span class="info-label">Name:</span>
+                            <span class="info-value">{{ order.details.first_name }} {{ order.details.last_name }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Email:</span>
+                            <span class="info-value">{{ order.details.email }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Phone:</span>
+                            <span class="info-value">{{ order.details.phone }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Address -->
+                    <div class="sidebar-section">
+                        <h5>Shipping Address</h5>
+                        <p class="address-text">
+                            {{ order.details.address }}<br>
+                            {{ order.details.city }}, {{ order.details.state }} {{ order.details.zip_code }}
+                        </p>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="col-lg-9 col-md-8 main-content order-2 order-lg-2">
+
+                <!-- Stepper -->
+                <div class="tracking-card order-1">
+                    <div class="stepper-horizontal">
+                        <div class="stepper-step completed">
+                            <div class="step-counter"><i class="fa fa-check"></i></div>
+                            <div class="step-name">Order Placed</div>
+                            <div class="step-date">June 28</div>
+                        </div>
+                        <div class="stepper-step completed">
+                            <div class="step-counter"><i class="fa fa-cog"></i></div>
+                            <div class="step-name">Processing</div>
+                            <div class="step-date">June 28</div>
+                        </div>
+                        <div class="stepper-step active">
+                            <div class="step-counter"><i class="fa fa-truck"></i></div>
+                            <div class="step-name">Shipped</div>
+                            <div class="step-date">June 29</div>
+                        </div>
+                        <div class="stepper-step pending">
+                            <div class="step-counter"><i class="fas fa-box-open"></i></div>
+                            <div class="step-name">Out for Delivery</div>
+                        </div>
+                        <div class="stepper-step pending">
+                            <div class="step-counter"><i class="fa fa-home"></i></div>
+                            <div class="step-name">Delivered</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Order Summary -->
+                <div class="mobile-order-summary d-block d-md-none order-2">
+                    <div class="order-details-main">
+                        <div class="order-header">
+                            <h3><i class="fas fa-info-circle"></i> Order Summary</h3>
+                        </div>
+
+                        <div class="detail-group">
+                            <div class="status-display">
+                                {% if order %}
+                                    <span class="status-badge shipped {{ order.status | lower }}">{{ order.status }}</span>
+                                {% else %}
+                                    <span class="status-badge shipped">No Result</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="detail-group">
+                            <h4>Order Information</h4>
+                            {% if order %}
+                                <div class="detail-item">
+                                    <span class="detail-label">Order ID:</span>
+                                    <span class="detail-value">{{ order.order_id }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Order Date:</span>
+                                    <span class="detail-value">{{ order.created_at or "N/A" }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Tracking:</span>
+                                    <span class="detail-value">{{ order.tracking_number }}</span>
+                                </div>
+                            {% else %}
+                                <p>No order details available.</p>
+                            {% endif %}
+                        </div>
+
+                        {% if order and order.details %}
+                        <div class="detail-group">
+                            <h4>Customer Information</h4>
+                            <div class="detail-item">
+                                <span class="detail-label">Name:</span>
+                                <span class="detail-value">{{ order.details.first_name }} {{ order.details.last_name }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Email:</span>
+                                <span class="detail-value">{{ order.details.email }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Phone:</span>
+                                <span class="detail-value">+{{ order.details.phone }}</span>
+                            </div>
+                        </div>
+
+                        <div class="detail-group">
+                            <h4>Shipping Address</h4>
+                            <p class="detail-value">
+                                {{ order.details.address }}<br>
+                                {{ order.details.state }}<br>
+                                {{ order.details.zip_code }}
+                            </p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Ordered Products Section -->
+                <div class="order-details-main order-3">
+    <div class="order-header">
+        <h3><i class="fas fa-shopping-bag"></i> Ordered Products</h3>
+    </div>
+
+    <div class="order-products">
+        <h5>Ordered Products</h5>
+        {% set total_amount = 0 %}
+        {% if order.products %}
+            {% for product in order.products %}
+                <div class="product-item">
+                    <div class="product-image">
+                        <img src="{{ product.thumbnail }}" alt="{{ product.name }}">
+                    </div>
+                    <div class="product-details">
+                    <h4>{{ product.product_name }}</h4>
+                    <p>{{ product.bottle_size }} - {{ product.gender }}'s Fragrance</p>
+                    <div class="product-meta">
+                        <span class="quantity">Quantity: {{ product.quantity }}</span>
+                        <span class="price">Rs.{{ "%.1f"|format(product.final_price|default(0.00)|float) }}</span>
+                        <span class="subtotal">Total: Rs.{{ "%.1f"|format((product.final_price * product.quantity)|default(0.00)|float) }}</span>
+                    </div>
+                </div>
+                </div>
+                {% set total_amount = total_amount + (product.price * product.quantity) %}
+            {% endfor %}
+            <div class="order-total-amount" style="margin-top:24px; font-weight:bold; font-size:1.2em;">
+                Grand Total: Rs {{ order.total_price }}
+            </div>
+        {% else %}
+            <p>No products found in this order.</p>
+        {% endif %}
+    </div>
+
+                <!-- Help Section -->
+                <div class="help-section-main order-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h4>Need Help With Your Order?</h4>
+                            <p>Questions about your order? Our customer service team is ready to help.</p>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <a href="#" class="btn btn-outline-secondary mr-2"><i class="fa fa-envelope"></i> Email Support</a>
+                            <a href="#" class="btn btn-primary"><i class="fa fa-phone"></i> Call Support</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+ {% include 'footer.html' %}
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
+    <script src="{{url_for('static', filename='js/countdown.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+    <script src="{{url_for('static', filename='js/tracking.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <!-- <script>
+        // You can add any custom JavaScript for the tracking page here
+        $(document).ready(function () {
+            // Animation for the stepper
+            $('.stepper-step').each(function (i) {
+                $(this).delay(i * 200).animate({
+                    opacity: 1
+                }, 400);
+            });
+        });
+        $(document).ready(function() {
+            // Handle form submission
+            $('#trackingForm').submit(function(e) {
+                e.preventDefault();
+                var trackingNumber = $('#trackingNumber').val().trim();
+                
+                if (trackingNumber) {
+                    // Show loader immediately
+                    showLoader();
+                    
+                    // Simulate API call with timeout (you can replace this with actual API call)
+                    setTimeout(function() {
+                        hideLoader();
+                        $('.tracking-input-section').hide();
+                        $('.tracking-main').fadeIn().addClass('animate__fadeIn');
+                        
+                        // Animation for the stepper
+                        $('.stepper-step').each(function(i) {
+                            $(this).delay(i * 200).animate({
+                                opacity: 1
+                            }, 400);
+                        });
+                    }, 500); // 2 seconds to simulate API response time
+                }
+            });
+            
+            // Show loader function
+            function showLoader() {
+                $('body').append(`
+                    <div id="trackingLoader" class="tracking-loader">
+                        <div class="loader-content">
+                            <div class="perfume-loader">
+                                <i class="fas fa-spray-can"></i>
+                            </div>
+                            <h4>Searching for your order...</h4>
+                            <p>Please wait while we locate your tracking information</p>
+                        </div>
+                    </div>
+                `);
+            }
+            
+            // Hide loader function
+            function hideLoader() {
+                $('#trackingLoader').fadeOut(100, function() {
+                    $(this).remove();
+                });
+            }
+        });
+    </script> -->
+</body>
+
+
+</html>

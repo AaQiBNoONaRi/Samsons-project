@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/admin/dashboard.css')}}">
+</head>
+
+<body>
+    
+    <!-- Hamburger menu button (visible on mobile, for opening sidebar) -->
+    <button id="hamburgerMenuOpen" class="hamburger-menu" aria-label="Open Sidebar">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    {% include 'admin/sidebar.html' %}
+    <div class="main-content" id="mainContent">
+        <div class="header">
+            <h1>Dashboard Overview</h1>
+            <div class="user-info">
+                <img src="https://ui-avatars.com/api/?name=Admin&background=4361ee&color=fff" alt="Admin">
+                <span>Admin</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+
+        <!-- Dashboard Cards -->
+        <div class="dashboard-cards">
+            <!-- Total Sales Card -->
+            <div class="card products" onclick="updateCardPeriod('products')">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">Total Products</div>
+                        <div class="card-value" id="products-value">
+                            {{ total_products }}
+                        </div>
+                    </div>
+                    <div class="card-icon products">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card sales" onclick="updateCardPeriod('sales')">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">Total Sales</div>
+                        <div class="card-value" id="sales-value">
+                            Rs.{{ '{:,.2f}'.format(total_sales) }}
+                        </div>
+                        <div class="card-change {{ 'positive' if sales_daily_change >= 0 else 'negative' }}"
+                            id="sales-change">
+                            <i class="fas fa-arrow-{{ 'up' if sales_daily_change >= 0 else 'down' }}"></i>
+                            {{ sales_daily_change|abs }}% from yesterday
+                        </div>
+                    </div>
+                    <div class="card-icon sales">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Orders Card -->
+            <div class="card orders" onclick="updateCardPeriod('orders')">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">Total Orders</div>
+                        <div class="card-value" id="orders-value">{{ total_orders }}</div>
+                        <div class="card-change {{ 'positive' if orders_daily_change >= 0 else 'negative' }}"
+                            id="orders-change">
+                            <i class="fas fa-arrow-{{ 'up' if orders_daily_change >= 0 else 'down' }}"></i>
+                            {{ orders_daily_change|abs }}% from yesterday
+                        </div>
+                    </div>
+                    <div class="card-icon orders">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Customers Card -->
+            <div class="card customers" onclick="updateCardPeriod('customers')">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">New Customers</div>
+                        <div class="card-value" id="customers-value">{{ total_customers }}</div>
+                        <div class="card-change {{ 'positive' if customers_daily_change >= 0 else 'negative' }}"
+                            id="customers-change">
+                            <i class="fas fa-arrow-{{ 'up' if customers_daily_change >= 0 else 'down' }}"></i>
+                            {{ customers_daily_change|abs }}% from yesterday
+                        </div>
+                    </div>
+                    <div class="card-icon customers">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Revenue Card -->
+            <div class="card revenue" onclick="updateCardPeriod('revenue')">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">Revenue</div>
+                        <div class="card-value" id="revenue-value">Rs.{{ '{:,.2f}'.format(total_revenue) }}</div>
+                        <div class="card-change {{ 'positive' if sales_daily_change >= 0 else 'negative' }}"
+                            id="revenue-change">
+                            <i class="fas fa-arrow-{{ 'up' if sales_daily_change >= 0 else 'down' }}"></i>
+                            {{ sales_daily_change|abs }}% from yesterday
+                        </div>
+                    </div>
+                    <div class="card-icon revenue">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Inventory Alerts -->
+        <div class="alerts-section">
+            <h3 class="section-title">
+                <i class="fas fa-bell"></i>
+                Inventory Alerts
+            </h3>
+
+            {% if inventory_alerts and inventory_alerts|length > 0 %}
+            {% for alert in inventory_alerts %}
+            <div class="alert-item">
+                <div class="alert-icon {{ alert.type }}">
+                    <i class="fas fa-{{ 'exclamation-triangle' if alert.type == 'warning' else 'times-circle' }}"></i>
+                </div>
+                <div class="alert-content">
+                    <div class="alert-title">{{ alert.title }}</div>
+                    <div class="alert-description">{{ alert.description }}</div>
+                </div>
+                <div class="alert-time">{{ alert.time }}</div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="no-alerts">
+                <p>No inventory alerts at this time</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="/static/js/admin/dashboard.js"></script>
+</body>
+
+</html>

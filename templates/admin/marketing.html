@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing - Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/admin/marketing.css')}}">
+    <style>
+        /* Unified Page Header styling */
+        .page-header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 60%, #4f46e5 100%) !important;
+            color: white !important;
+            padding: 1.4rem 2rem !important;
+            border-radius: 14px !important;
+            margin-bottom: 1.5rem !important;
+            box-shadow: 0 8px 32px rgba(79, 70, 229, 0.25) !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+        .page-header h1 {
+            font-size: 1.5rem !important;
+            font-weight: 700 !important;
+            margin: 0 !important;
+            letter-spacing: 0.5px !important;
+            font-family: 'Poppins', sans-serif !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+        .page-header h1 i {
+            margin-right: 8px !important;
+            opacity: 0.8 !important;
+        }
+        .page-header p {
+            margin: 2px 0 0 0 !important;
+            opacity: 0.75 !important;
+            font-size: 0.85rem !important;
+        }
+        .header-user {
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+        }
+        .header-user img {
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 50% !important;
+            border: 2px solid rgba(255,255,255,0.3) !important;
+        }
+        .header-user span {
+            font-size: 0.9rem !important;
+            font-weight: 500 !important;
+            color: white !important;
+        }
+
+        /* Unified Stat Cards styling */
+        .stat-cards {
+            display: flex !important;
+            gap: 1rem !important;
+            margin-bottom: 1.5rem !important;
+            flex-wrap: wrap !important;
+        }
+        .stat-cards .stat-card {
+            background: white !important;
+            border-radius: 12px !important;
+            padding: 1rem 1.5rem !important;
+            flex: 1 !important;
+            min-width: 140px !important;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
+            border-left: 4px solid #6366f1 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 1rem !important;
+            text-align: left !important;
+            backdrop-filter: none !important;
+        }
+        .stat-cards .stat-card .stat-icon {
+            width: 44px !important;
+            height: 44px !important;
+            background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
+            border-radius: 10px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: white !important;
+            font-size: 1.1rem !important;
+        }
+        .stat-cards .stat-card .stat-label {
+            font-size: 0.75rem !important;
+            color: #64748b !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            font-weight: 500 !important;
+        }
+        .stat-cards .stat-card .stat-value {
+            font-size: 1.6rem !important;
+            font-weight: 700 !important;
+            color: #1e293b !important;
+            line-height: 1 !important;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/sidebar.css') }}">
+</head>
+
+<body>
+     <!-- Hamburger menu button (visible on mobile, for opening sidebar) -->
+    <button id="hamburgerMenuOpen" class="hamburger-menu" aria-label="Open Sidebar">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <!-- Sidebar -->
+    {% include 'admin/sidebar.html' %}
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1><i class="fas fa-bullhorn"></i> Marketing Dashboard</h1>
+                <p>Manage customer communications and marketing campaigns</p>
+            </div>
+            <div class="header-user">
+                <img src="https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff" alt="Admin">
+                <span>Admin</span>
+            </div>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="stat-cards">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div>
+                    <div class="stat-label">Total Customers</div>
+                    <div class="stat-value">{{ total_customers or 0 }}</div>
+                </div>
+            </div>
+            <div class="stat-card" style="border-left-color: #10b981;">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fas fa-user-check"></i></div>
+                <div>
+                    <div class="stat-label">Active Customers</div>
+                    <div class="stat-value">{{ active_customers or 0 }}</div>
+                </div>
+            </div>
+            <div class="stat-card" style="border-left-color: #0284c7;">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #38bdf8, #0284c7);"><i class="fas fa-paper-plane"></i></div>
+                <div>
+                    <div class="stat-label">Messages Sent</div>
+                    <div class="stat-value">{{ messages_sent or 0 }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Container -->
+        <div class="content-container">
+            <!-- Bulk Messaging Section -->
+            <div class="bulk-messaging">
+                <h3 class="section-title">
+                    <i class="fas fa-paper-plane"></i>
+                    Bulk Messaging
+                </h3>
+
+                <!-- Message Templates -->
+                <div style="margin-bottom: 1rem;">
+                    <label for="messageTemplate" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">
+                        <i class="fas fa-clipboard-list"></i> Quick Templates:
+                    </label>
+                    <select id="messageTemplate" class="message-input" style="height: auto; padding: 12px 15px;"
+                        onchange="loadTemplate()">
+                        <option value="">Select a template...</option>
+                        <option value="reorder">Perfume Reorder Reminder</option>
+                        <option value="newCollection">New Collection Launch</option>
+                        <option value="discount">Special Discount Offer</option>
+                        <option value="custom">Write Custom Message</option>
+                    </select>
+                </div>
+
+                <div class="message-form">
+                    <textarea class="message-input" id="bulkMessage"
+                        placeholder="Type your bulk message here or select a template above..." rows="4"></textarea>
+                    <button class="btn btn-primary" onclick="sendBulkMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                        Send to Selected
+                    </button>
+                </div>
+                <div class="table-actions">
+                    <button class="btn btn-info" onclick="selectAllCustomers()">
+                        <i class="fas fa-check-double"></i>
+                        Select All
+                    </button>
+                    <button class="btn btn-warning" onclick="clearSelection()">
+                        <i class="fas fa-times"></i>
+                        Clear Selection
+                    </button>
+                    <span id="selectedCount" style="font-weight: 600; color: var(--primary);">
+                        0 customers selected
+                    </span>
+                </div>
+            </div>
+
+            <!-- Customers Table -->
+            <div class="customers-section">
+                <div class="table-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 class="section-title">
+                        <i class="fas fa-users"></i>
+                        Customer Database
+                    </h3>
+                    <div class="table-actions">
+                        <input type="text" class="search-box" placeholder="Search customers..."
+                            onkeyup="searchCustomers(this.value)">
+                        <button class="btn btn-success">
+                            <i class="fas fa-download"></i>
+                            Export Data
+                        </button>
+                    </div>
+                </div>
+
+                <table class="customers-table">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell">
+                                <input type="checkbox" class="custom-checkbox" id="selectAll"
+                                    onchange="toggleSelectAll()">
+                            </th>
+                            <th>Customer</th>
+                            <th>Contact Number</th>
+                            <th>City</th>
+                            <th>Address</th>
+                            <th>Orders</th>
+                            <th>Send Message</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customersTableBody">
+                        {% if customers and customers|length > 0 %}
+                        {% for customer in customers %}
+                        <tr class="customer-row">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="custom-checkbox customer-select"
+                                    value="{{ customer.phone or customer.contact }}" onchange="updateSelectedCount()">
+                            </td>
+                            <td>
+                                <div class="customer-info">
+                                    <div class="customer-avatar">
+                                        {{ (customer.name or customer.first_name or 'U')[0].upper() }}
+                                    </div>
+                                    <div class="customer-details">
+                                        <h4>{{ customer.name or (customer.first_name + ' ' + (customer.last_name or ''))
+                                            or 'Unknown' }}</h4>
+                                        <p>{{ customer.email or 'No email' }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="contact-info">
+                                <i class="fas fa-phone"></i>
+                                {{ customer.phone or customer.contact or 'N/A' }}
+                            </td>
+                            <td class="contact-info">
+                                <i class="fas fa-map-marker-alt"></i>
+                                {{ customer.city or 'N/A' }}
+                            </td>
+                            <td class="contact-info">
+                                {{ customer.address or 'No address provided' }}
+                            </td>
+                            <td>
+                                <span
+                                    style="background: var(--info); display: flex; color: white; padding: 4px 10px; border-radius: 15px; font-size: 0.6rem;">
+                                    {{ customer.orders_count or 0 }} orders
+                                </span>
+                            </td>
+                            <td>
+                                <div class="message-cell">
+                                    <select class="message-input-small" style="width: 100px; margin-right: 5px;"
+                                        onchange="loadIndividualTemplate(this, '{{ loop.index }}')">
+                                        <option value="">Template</option>
+                                        <option value="reorder">Reorder</option>
+                                        <option value="newProduct">New Item</option>
+                                        <option value="thanks">Thank You</option>
+                                    </select>
+                                    <input type="text" class="message-input-small" placeholder="Quick message..."
+                                        id="message_{{ loop.index }}" style="width: 140px;">
+                                    <button class="btn btn-success btn-small"
+                                        onclick="sendIndividualMessage('{{ customer.phone or customer.contact }}', '{{ loop.index }}')">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 2rem; color: #6c757d;">
+                                <i class="fas fa-users" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                                <br>
+                                No customers found. Start by adding some customers to your database.
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/admin/markketing.js"></script>
+</body>
+
+</html>

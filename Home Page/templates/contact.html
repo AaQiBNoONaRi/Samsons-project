@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfume | E-Commerce</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/contact.css')}}">
+</head>
+
+<body>
+    {% include 'header.html' %}
+    <!-- Add this between your header and footer -->
+    <div class="contact-page">
+        <div class="contact-hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1>Connect With Us</h1>
+                <p>We'd love to hear from you! Whether you have a question about our fragrances, need assistance with an
+                    order, or just want to share your perfume story, our team is here to help.</p>
+            </div>
+        </div>
+
+        <div class="contact-container">
+            <div class="contact-form-wrapper">
+                <div class="form-header">
+                    <h2>Send Us a Message</h2>
+                    <p>Fill out the form below and we'll get back to you within 24 hours</p>
+                </div>
+
+                <form class="perfume-contact-form">
+                    <div class="form-group dual-inputs">
+                        <div class="input-wrapper">
+                            <input type="text" id="first-name" required>
+                            <label for="first-name">First Name</label>
+                            <span class="focus-border"></span>
+                        </div>
+                        <div class="input-wrapper">
+                            <input type="text" id="last-name" required>
+                            <label for="last-name">Last Name</label>
+                            <span class="focus-border"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <input type="email" id="email" required>
+                            <label for="email">Email Address</label>
+                            <span class="focus-border"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <input type="tel" id="phone">
+                            <label for="phone">Phone Number (Optional)</label>
+                            <span class="focus-border"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="select-wrapper">
+                            <select id="subject" required>
+                                <option value="" disabled selected></option>
+                                <option value="product">Product Inquiry</option>
+                                <option value="order">Order Assistance</option>
+                                <option value="wholesale">Wholesale Inquiry</option>
+                                <option value="feedback">Feedback/Suggestion</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <label for="subject">Subject</label>
+                            <span class="focus-border"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="textarea-wrapper">
+                            <textarea id="message" rows="5" required></textarea>
+                            <label for="message">Your Message</label>
+                            <span class="focus-border"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-submit">
+                        <button type="submit" class="perfume-btn">
+                            <span>Send Message</span>
+                            <i class="fa fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="contact-info-wrapper">
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fa fa-map-marker"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3>Our Boutique</h3>
+                        <p>International Business Center<br>Vesu, Surat<br>Gujarat, India</p>
+                        <a href="#" class="map-link">View on Map <i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fa fa-envelope"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3>Email Us</h3>
+                        <p>General Inquiries: <a href="mailto:info@deo.com">info@deo.com</a></p>
+                        <p>Customer Support: <a href="mailto:support@deo.com">support@deo.com</a></p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fa fa-phone"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3>Call Us</h3>
+                        <p>Customer Service: <a href="tel:+918888884444">+91 8888884444</a></p>
+                        <p>Wholesale Inquiries: <a href="tel:+919999994444">+91 9999994444</a></p>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fa fa-facebook"></i></a>
+                        <a href="#" class="social-icon"><i class="fa fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fa fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fa fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       <div class="contact-map">
+    <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d21801.5623306437!2d68.3480896!3d25.3961129!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x393b33c8a5dfb3f3%3A0x3ea19b0b5e16cd2c!2sHyderabad%2C%20Sindh%2C%20Pakistan!5e0!3m2!1sen!2s!4v1720000000000!5m2!1sen!2s"
+        width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy">
+    </iframe>
+</div>
+
+
+
+    </div>
+    <!-- *********************************************************** -->
+    <footer class="footer_widgets color_two">
+        <div class="footer_top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-7">
+                        <div class="widgets_container contact_us">
+                            <div class="footer_logo">
+                                <a href="#"><img src="images/logo.png" alt="Logo"></a>
+                            </div>
+                            <div class="footer_desc">
+                                <p>Get all types of perfume from us within 2 day delivery. We can even order the
+                                    perfumes which are not in our database. To do that kindly send a E-mail to the
+                                    company's mail id.</p>
+                            </div>
+                            <p>
+                                <span>Address :</span> International Business Center, Vesu, Surat, Gujarat
+                            </p>
+                            <p><span>Email :</span> <a href="#">deo@gmail.com</a></p>
+                            <p><span>Phone :</span> <a href="tel: +91 8888884444">+91 8888884444</a> </p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-6 col-sm-5">
+                        <div class="widgets_container widget_menu">
+                            <h3>Information</h3>
+                            <div class="footer_menu">
+                                <ul>
+                                    <li><a href="#">About Us</a></li>
+                                    <li><a href="#">Prices Drop</a></li>
+                                    <li><a href="#">New Products</a></li>
+                                    <li><a href="#">Best Sales</a></li>
+                                    <li><a href="#">Terms & Conditions</a></li>
+                                    <li><a href="#">Gift Certificate</a></li>
+                                    <li><a href="#">My Account</a></li>
+                                    <li><a href="#">Order History</a></li>
+                                    <li><a href="#">Wish List</a></li>
+                                    <li><a href="#">Specials</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-5">
+                        <div class="widgets_container widget_menu">
+                            <h3>Men</h3>
+                            <div class="footer_menu">
+                                <ul>
+                                    <li><a href="#">Versace</a></li>
+                                    <li><a href="#">Hugo Boss</a></li>
+                                    <li><a href="#">Jaguar</a></li>
+                                    <li><a href="#">Armani</a></li>
+                                    <li><a href="#">Paco Rabbane</a></li>
+                                    <li><a href="#">Ralph Lauren</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-5">
+                        <div class="widgets_container widget_menu">
+                            <h3>Women</h3>
+                            <div class="footer_menu">
+                                <ul>
+                                    <li><a href="#">Bvlgari</a></li>
+                                    <li><a href="#">Coach</a></li>
+                                    <li><a href="#">Kenzo</a></li>
+                                    <li><a href="#">D&G</a></li>
+                                    <li><a href="#">Jean Paul Gaultier</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-5">
+                        <div class="widgets_container widget_menu">
+                            <h3>Unisex</h3>
+                            <div class="footer_menu">
+                                <ul>
+                                    <li><a href="#">Ajmal</a></li>
+                                    <li><a href="#">Calvin Klein</a></li>
+                                    <li><a href="#">The Body Shop</a></li>
+                                    <li><a href="#">Lattafa</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="footer_link">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">About us</a></li>
+                            <li><a href="#">Blogs</a></li>
+                            <li><a href="#">Contact us</a></li>
+                            <li><a href="#">User </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         {% include 'footer.html' %}
+
+
+
+    <!-- modal section ends -->
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
+    <script src="{{url_for('static', filename='js/countdown.js')}}.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+    <script src="{{url_for('static', filename='js/contact.js')}}"></script>
+
+</body>
+
+</html>

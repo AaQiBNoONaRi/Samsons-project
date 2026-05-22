@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/admin/orders.css')}}">
+    <title>Order Management - SAMSONS Admin</title>
+    <style>
+        :root {
+            --primary: #1b2992;
+            --secondary: #667eea;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --purple: #6f42c1;
+            --orange: #fd7e14;
+            --cyan: #20c997;
+        }
+
+        /* Status Card Colors */
+        .stat-card.total { border-left-color: var(--info); }
+        .stat-card.pending { border-left-color: var(--warning); }
+        .stat-card.confirmed { border-left-color: var(--primary); }
+        .stat-card.shipped { border-left-color: var(--orange); }
+        .stat-card.delivered { border-left-color: var(--success); }
+        .stat-card.cancelled { border-left-color: var(--danger); }
+        .stat-card.complete { border-left-color: var(--purple); }
+
+        /* Status Badge Colors */
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .status-confirmed {
+            background: #cce7ff;
+            color: #0056b3;
+            border: 1px solid #74b9ff;
+        }
+
+        .status-shipped {
+            background: #ffe0b3;
+            color: #cc5500;
+            border: 1px solid #fd7e14;
+        }
+
+        .status-delivered {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #00b894;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #dc3545;
+        }
+
+        .status-complete {
+            background: #e2d9f3;
+            color: #4a1a5c;
+            border: 1px solid #6f42c1;
+        }
+
+        /* Filter Button Status Colors */
+        .filter-btn[data-status="pending"]:hover,
+        .filter-btn[data-status="pending"].active {
+            background: var(--warning);
+            border-color: var(--warning);
+            color: white;
+        }
+
+        .filter-btn[data-status="confirmed"]:hover,
+        .filter-btn[data-status="confirmed"].active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .filter-btn[data-status="shipped"]:hover,
+        .filter-btn[data-status="shipped"].active {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: white;
+        }
+
+        .filter-btn[data-status="delivered"]:hover,
+        .filter-btn[data-status="delivered"].active {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .filter-btn[data-status="cancelled"]:hover,
+        .filter-btn[data-status="cancelled"].active {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+
+        .filter-btn[data-status="complete"]:hover,
+        .filter-btn[data-status="complete"].active {
+            background: var(--purple);
+            border-color: var(--purple);
+            color: white;
+        }
+
+        /* Status Badge Styles */
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Responsive Stats Grid */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .stats-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-overview {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% include 'admin/sidebar.html' %}
+    
+    <div class="main-content">
+        <!-- Enhanced Page Header -->
+        <div class="page-header">
+            <h1><i class="fas fa-shopping-cart"></i> Order Management</h1>
+            <p>Manage and track all customer orders efficiently</p>
+        </div>
+
+        <!-- Statistics Overview -->
+        <div class="stats-overview">
+            <div class="stat-card total">
+                <h3>Total Orders</h3>
+                <div class="value">{{ total_orders }}</div>
+                <i class="fas fa-chart-bar icon"></i>
+            </div>
+            <div class="stat-card pending">
+                <h3>Pending Orders</h3>
+                <div class="value">{{ pending_orders or 0 }}</div>
+                <i class="fas fa-clock icon"></i>
+            </div>
+            <div class="stat-card confirmed">
+                <h3>Confirmed Orders</h3>
+                <div class="value">{{ confirmed_orders or 0 }}</div>
+                <i class="fas fa-check-circle icon"></i>
+            </div>
+            <div class="stat-card shipped">
+                <h3>Shipped Orders</h3>
+                <div class="value">{{ shipped_orders or 0 }}</div>
+                <i class="fas fa-shipping-fast icon"></i>
+            </div>
+            <div class="stat-card delivered">
+                <h3>Delivered Orders</h3>
+                <div class="value">{{ delivered_orders or 0 }}</div>
+                <i class="fas fa-truck icon"></i>
+            </div>
+            <div class="stat-card cancelled">
+                <h3>Cancelled Orders</h3>
+                <div class="value">{{ cancelled_orders or 0 }}</div>
+                <i class="fas fa-times-circle icon"></i>
+            </div>
+            <div class="stat-card complete">
+                <h3>Complete Orders</h3>
+                <div class="value">{{ complete_orders or 0 }}</div>
+                <i class="fas fa-check-double icon"></i>
+            </div>
+        </div>
+
+        <!-- Enhanced Filters -->
+        <div class="enhanced-filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <button class="filter-btn active" data-status="all">
+                        <i class="fas fa-list"></i> All Orders
+                    </button>
+                    <button class="filter-btn" data-status="pending">
+                        <i class="fas fa-clock"></i> Pending
+                    </button>
+                    <button class="filter-btn" data-status="confirmed">
+                        <i class="fas fa-check"></i> Confirmed
+                    </button>
+                    <button class="filter-btn" data-status="shipped">
+                        <i class="fas fa-shipping-fast"></i> Shipped
+                    </button>
+                    <button class="filter-btn" data-status="delivered">
+                        <i class="fas fa-truck"></i> Delivered
+                    </button>
+                    <button class="filter-btn" data-status="cancelled">
+                        <i class="fas fa-times-circle"></i> Cancelled
+                    </button>
+                    <button class="filter-btn" data-status="complete">
+                        <i class="fas fa-check-double"></i> Complete
+                    </button>
+                </div>
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="search" placeholder="Search orders, customers, products..." id="search-input">
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Table Container -->
+        <div class="enhanced-table-container">
+            <div class="table-header">
+                <h2 class="table-title">Order Details</h2>
+            </div>
+
+            <table class="enhanced-table" id="orders-table">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-hashtag"></i> ID</th>
+                        <th><i class="fas fa-receipt"></i> Order ID</th>
+                        <th><i class="fas fa-user"></i> Customer</th>
+                        <th><i class="fas fa-map-marker-alt"></i> Address</th>
+                        <th><i class="fas fa-phone"></i> Contact</th>
+                        <th><i class="fas fa-spray-can"></i> Product</th>
+                        <th><i class="fas fa-flask"></i> Volume</th>
+                        <th><i class="fas fa-calendar"></i> Date</th>
+                        <th><i class="fas fa-sort-numeric-up"></i> Qty</th>
+                        <th><i class="fas fa-tags"></i> Category</th>
+                        <th><i class="fas fa-city"></i> City</th>
+                        <th><i class="fas fa-info-circle"></i> Status</th>
+                        <th><i class="fas fa-cogs"></i> Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-body">
+                    {% set row_counter = namespace(value=0) %}
+                    {% for order in orders %}
+                        {% for product in order.products %}
+                        {% set row_counter.value = row_counter.value + 1 %}
+                        <tr data-status="{{ order.status.lower() }}">
+                            <td><strong>#{{ row_counter.value }}</strong></td>
+                            <td>
+                                <div style="font-weight: 600; color: var(--primary);">
+                                    {{ order.order_id }}
+                                </div>
+                            </td>
+                            <td>
+                                <div style="font-weight: 500;">
+                                    {{ order.details.first_name }} {{ order.details.last_name }}
+                                </div>
+                            </td>
+                            <td>
+                                <div style="max-width: 150px; overflow: hidden; text-overflow: ellipsis;">
+                                    {{ order.details.address }}
+                                </div>
+                            </td>
+                            <td>
+                                <div style="font-family: monospace; color: var(--info);">
+                                    {{ order.details.phone }}
+                                </div>
+                            </td>
+                            <td>
+                                <div style="font-weight: 500;">
+                                    {{ product.product_name }}
+                                </div>
+                            </td>
+                            <td>
+                                <span style="background: #e9ecef; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">
+                                    {{ product.bottle_size }}
+                                </span>
+                            </td>
+                            <td>
+                                <div style="font-size: 0.85rem; color: #666;">
+                                    {% if order.created_at %}
+                                        {% if order.created_at.strftime is defined %}
+                                            {{ order.created_at.strftime('%d %b %Y') }}
+                                        {% else %}
+                                            {{ order.created_at }}
+                                        {% endif %}
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                <span style="background: var(--info); color: white; padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">
+                                    {{ product.quantity }}
+                                </span>
+                            </td>
+                            <td>
+                                <span style="background: #f8f9fa; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">
+                                    {{ product.gender }}
+                                </span>
+                            </td>
+                            <td>
+                                <div style="font-weight: 500;">
+                                    {{ order.details.city }}
+                                </div>
+                            </td>
+                            <td>
+                               <select name="status" data-order-id="{{ order._id }}" 
+        class="status-badge status-{{ order.status.lower() }}">
+    {% for status in status_options %}
+        <option value="{{ status }}" {% if order.status == status %}selected{% endif %}>{{ status }}</option>
+    {% endfor %}
+</select>
+
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn btn-view" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <a href="{{ url_for('admin.edit_order', order_id=order._id) }}" 
+                                       class="action-btn btn-edit" title="Edit Order">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="{{ url_for('admin.delete_order', order_id=order._id) }}" 
+                                       class="action-btn btn-delete" title="Delete Order">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="pagination-enhanced">
+                <div class="pagination-info">
+                    <span>Showing <strong>1-10</strong> of <strong>{{ total_orders }}</strong> orders</span>
+                </div>
+                <div class="pagination-controls">
+                    <label for="rowsPerPage" style="margin-right: 0.5rem;">Rows:</label>
+                    <select id="rowsPerPage" style="margin-right: 1rem; padding: 0.3rem; border-radius: 4px;">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                    </select>
+                    <button id="prevPage"><i class="fas fa-chevron-left"></i></button>
+                    <span id="pageNumbers"></span>
+                    <button id="nextPage"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    // Enhanced Mobile Menu Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.createElement('button');
+        menuToggle.className = 'menu-toggle';
+        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        menuToggle.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(27, 41, 146, 0.3);
+            display: none;
+            transition: all 0.3s ease;
+        `;
+        
+        menuToggle.addEventListener('click', function() {
+            document.body.classList.toggle('sidebar-open');
+            this.style.transform = document.body.classList.contains('sidebar-open') ? 'rotate(90deg)' : 'rotate(0deg)';
+        });
+        
+        document.body.appendChild(menuToggle);
+
+        // Show menu toggle on mobile
+        function handleResize() {
+            if (window.innerWidth <= 768) {
+                menuToggle.style.display = 'flex';
+                menuToggle.style.alignItems = 'center';
+                menuToggle.style.justifyContent = 'center';
+            } else {
+                menuToggle.style.display = 'none';
+                document.body.classList.remove('sidebar-open');
+            }
+        }
+        
+        handleResize();
+        window.addEventListener('resize', handleResize);
+    });
+
+    // Enhanced Filter Functionality
+    document.addEventListener("DOMContentLoaded", () => {
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                const status = this.dataset.status;
+                const rows = document.querySelectorAll('#orders-body tr');
+                
+                rows.forEach(row => {
+                    if (status === 'all' || row.dataset.status === status) {
+                        row.style.display = '';
+                        row.style.animation = 'fadeIn 0.3s ease';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Enhanced Search Functionality
+        const searchInput = document.getElementById('search-input');
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#orders-body tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                    row.style.animation = 'fadeIn 0.3s ease';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Enhanced Status Change
+        document.querySelectorAll("select[name='status']").forEach(select => {
+            select.addEventListener("change", async function () {
+                const orderId = this.dataset.orderId;
+                const newStatus = this.value;
+                const row = this.closest('tr');
+
+                // Show loading state
+                this.style.opacity = '0.6';
+                this.disabled = true;
+
+                const confirmed = confirm(`Are you sure you want to change the status to "${newStatus}"?`);
+                if (!confirmed) {
+                    this.style.opacity = '1';
+                    this.disabled = false;
+                    window.location.reload();
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/viaadmin/update-status/${orderId}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ status: newStatus }),
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        // Update visual status
+                        this.className = `status-badge status-${newStatus.toLowerCase()}`;
+                        row.dataset.status = newStatus.toLowerCase();
+                        
+                        // Show success animation
+                        row.style.background = '#d4edda';
+                        setTimeout(() => {
+                            row.style.background = '';
+                        }, 1000);
+                        
+                        // Show toast notification
+                        showToast("Status updated successfully!", 'success');
+                    } else {
+                        showToast("Failed to update status.", 'error');
+                    }
+                } catch (error) {
+                    showToast("Error updating status.", 'error');
+                }
+
+                this.style.opacity = '1';
+                this.disabled = false;
+            });
+        });
+
+        // Enhanced Delete Functionality
+        document.querySelectorAll(".btn-delete").forEach(button => {
+            button.addEventListener("click", function (e) {
+                e.preventDefault();
+                const url = this.getAttribute("href");
+                const row = this.closest('tr');
+
+                const confirmed = confirm("Are you sure you want to delete this order? This action cannot be undone.");
+                if (confirmed) {
+                    // Show loading state
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    this.style.opacity = '0.6';
+
+                    fetch(url, { method: "POST" })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Animate row removal
+                                row.style.animation = 'fadeOut 0.5s ease';
+                                setTimeout(() => {
+                                    row.remove();
+                                }, 500);
+                                showToast("Order deleted successfully.", 'success');
+                            } else {
+                                showToast("Failed to delete order.", 'error');
+                                this.innerHTML = '<i class="fas fa-trash"></i>';
+                                this.style.opacity = '1';
+                            }
+                        })
+                        .catch(error => {
+                            showToast("Error deleting order.", 'error');
+                            this.innerHTML = '<i class="fas fa-trash"></i>';
+                            this.style.opacity = '1';
+                        });
+                }
+            });
+        });
+
+        // View Details Functionality
+        document.querySelectorAll('.btn-view').forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr');
+                showOrderDetails(row);
+            });
+        });
+    });
+
+    // Toast Notification Function
+    function showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease;
+            background: ${type === 'success' ? 'var(--success)' : type === 'error' ? 'var(--danger)' : 'var(--info)'};
+        `;
+
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    // Order Details Modal Function
+    function showOrderDetails(row) {
+        const cells = row.querySelectorAll('td');
+        const orderData = {
+            id: cells[0].textContent,
+            orderId: cells[1].textContent,
+            customer: cells[2].textContent,
+            address: cells[3].textContent,
+            contact: cells[4].textContent,
+            product: cells[5].textContent,
+            volume: cells[6].textContent,
+            date: cells[7].textContent,
+            quantity: cells[8].textContent,
+            category: cells[9].textContent,
+            city: cells[10].textContent,
+            status: cells[11].querySelector('select').value
+        };
+
+        // Create modal (simplified for demo)
+        alert(`Order Details:\n\nOrder ID: ${orderData.orderId}\nCustomer: ${orderData.customer}\nProduct: ${orderData.product}\nStatus: ${orderData.status}`);
+    }
+
+    // Add CSS animations
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+    </script>
+
+    <!-- Enhanced Pagination Script -->
+    <script src="{{ url_for('static', filename='js/admin/pagination.js') }}">// Add this to handle dynamic resizing
+window.addEventListener('resize', function() {
+    if (window.innerWidth < 768) {
+        document.body.classList.add('mobile-view');
+    } else {
+        document.body.classList.remove('mobile-view');
+    }
+});
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.innerWidth < 768) {
+        document.body.classList.add('mobile-view');
+    }
+});</script>
+
+</body>
+</html>

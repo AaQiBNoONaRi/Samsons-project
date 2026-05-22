@@ -1,0 +1,14 @@
+{
+  "questions": [
+    "what is ai",
+    "what is python"
+  ],
+  "answers": [
+    "Artificial Intelligence is the ability of machines to think.",
+    "Python is a programming language."
+  ],
+  "rewards": {
+    "what is ai": 0,
+    "what is python": 0
+  }
+}

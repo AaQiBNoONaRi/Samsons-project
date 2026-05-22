@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Upload Perfume Images - Samsuns</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width:800px; margin:40px auto; padding:0 20px; }
+    h1 { color:#222; }
+    .box { margin:16px 0; padding:12px; border:1px solid #ddd; border-radius:8px; }
+    label { display:block; margin-bottom:6px; font-weight:600; }
+    input[type=file] { display:block; margin-bottom:8px; }
+    button { padding:10px 16px; border:none; border-radius:6px; background:#2b8; color:#fff; cursor:pointer; }
+    .note { font-size:0.9rem; color:#666; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <h1>Upload Perfume Images (30 / 50 / 100 ml)</h1>
+
+  <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+    <div class="box">
+      <label for="images_30">30 ml photos (select multiple)</label>
+      <input id="images_30" name="images_30" type="file" accept="image/*" multiple>
+    </div>
+
+    <div class="box">
+      <label for="images_50">50 ml photos (select multiple)</label>
+      <input id="images_50" name="images_50" type="file" accept="image/*" multiple>
+    </div>
+
+    <div class="box">
+      <label for="images_100">100 ml photos (select multiple)</label>
+      <input id="images_100" name="images_100" type="file" accept="image/*" multiple>
+    </div>
+
+    <button type="submit">Upload & Save to DB</button>
+
+    <p class="note">Files will be saved to: <code>D:\Samsuns\static\images\perfume-bottle\&lt;size&gt;\</code> and DB: <code>samsuns.perfume</code></p>
+  </form>
+
+</body>
+</html>

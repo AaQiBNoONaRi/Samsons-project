@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfume Blog | E-Commerce</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/about.css')}}">
+</head>
+
+<body>
+ {% include 'header.html' %}
+    <!-- About Us Hero Section -->
+   <!-- About Us Hero Section -->
+    <section class="about-hero">
+        <div class="hero-background">
+            <img src="{{url_for('static', filename='images/hero.jpg')}}" alt="Perfume bottles" class="hero-bg-image">
+        </div>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="hero-title">Our Fragrance Journey</h1>
+                    <p class="hero-subtitle">Discover the story behind your favorite scents</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="our-story">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Our Beginning</span>
+                <h2 class="section-title">Crafting Memories Through Scents</h2>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="story-content">
+                        <p>Founded in 2010, Perfume Store began as a small boutique in Surat, Gujarat, with a passion for bringing the world's finest fragrances to our customers. What started as a modest shop with just 50 fragrances has blossomed into one of India's premier online perfume destinations.</p>
+                        <p>Our founder, Rajesh Mehta, a certified perfumer with over 20 years of experience in the fragrance industry, envisioned a place where scent enthusiasts could discover both classic and contemporary fragrances with expert guidance.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="founder-image">
+                        <img src="images" alt="Founder Rajesh Mehta" class="img-fluid">
+                        <div class="founder-quote">
+                            <blockquote>"A fragrance should tell your story before you speak a word."</blockquote>
+                            <cite>- Rajesh Mehta, Founder</cite>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission-section">
+        <div class="container">
+            <div class="mission-card">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="mission-icon">
+                            <i class="fa fa-leaf"></i>
+                        </div>
+                        <h3>Our Mission</h3>
+                        <p>To curate the world's finest fragrances and make them accessible to everyone, while educating our customers about the art and science of perfumery.</p>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="mission-icon">
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <h3>Our Vision</h3>
+                        <p>To become India's most trusted fragrance destination, known for our expertise, authenticity, and exceptional customer service.</p>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="mission-icon">
+                            <i class="fa fa-heart"></i>
+                        </div>
+                        <h3>Our Promise</h3>
+                        <p>100% authentic perfumes, expert recommendations, and a seamless shopping experience from discovery to delivery.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Our Core Values</span>
+                <h2 class="section-title">What Guides Our Passion</h2>
+            </div>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-number">01</div>
+                    <h3>Authenticity</h3>
+                    <p>Every fragrance we sell is 100% authentic, sourced directly from brands or authorized distributors.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-number">02</div>
+                    <h3>Expertise</h3>
+                    <p>Our team includes certified fragrance experts who can guide you to your perfect scent.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-number">03</div>
+                    <h3>Diversity</h3>
+                    <p>We celebrate all scent preferences with offerings for every taste and occasion.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-number">04</div>
+                    <h3>Sustainability</h3>
+                    <p>We're committed to eco-friendly packaging and supporting cruelty-free brands.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Meet The Experts</span>
+                <h2 class="section-title">Our Fragrance Specialists</h2>
+            </div>
+            <div class="team-grid">
+                <div class="team-member">
+                    <img src="images/about/team1.jpg" alt="Priya Sharma" class="img-fluid">
+                    <h3>Priya Sharma</h3>
+                    <p class="position">Head Perfumer</p>
+                    <p class="bio">With 15 years in the industry, Priya creates our custom fragrance blends and hosts popular scent workshops.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa fa-instagram"></i></a>
+                        <a href="#"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="images/about/team2.jpg" alt="Amit Patel" class="img-fluid">
+                    <h3>Amit Patel</h3>
+                    <p class="position">Customer Experience</p>
+                    <p class="bio">Amit ensures every customer finds their signature scent through personalized consultations.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa fa-instagram"></i></a>
+                        <a href="#"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="images/about/team3.jpg" alt="Neha Gupta" class="img-fluid">
+                    <h3>Neha Gupta</h3>
+                    <p class="position">Brand Curator</p>
+                    <p class="bio">Neha travels the world to discover emerging fragrance brands for our collection.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa fa-instagram"></i></a>
+                        <a href="#"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Milestones Section -->
+    <section class="milestones-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Our Journey</span>
+                <h2 class="section-title">Key Milestones</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">2010</div>
+                    <div class="timeline-content">
+                        <h3>Founded in Surat</h3>
+                        <p>Opened our first boutique store with 50 carefully selected fragrances.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2014</div>
+                    <div class="timeline-content">
+                        <h3>Launched Online Store</h3>
+                        <p>Expanded our reach across India with e-commerce platform.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2017</div>
+                    <div class="timeline-content">
+                        <h3>1 Million Customers</h3>
+                        <p>Celebrated serving our one millionth customer nationwide.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2020</div>
+                    <div class="timeline-content">
+                        <h3>International Brands</h3>
+                        <p>Became authorized retailer for 50+ international luxury brands.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2023</div>
+                    <div class="timeline-content">
+                        <h3>Expanded Warehouse</h3>
+                        <p>Opened new 10,000 sq ft fulfillment center for faster deliveries.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Customer Love</span>
+                <h2 class="section-title">What Our Customers Say</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"The perfume recommendation quiz matched me perfectly with a scent I'd never have chosen myself but now can't live without!"</p>
+                    <div class="customer">
+                        <img src="images/about/customer1.jpg" alt="Ananya Reddy">
+                        <div class="customer-info">
+                            <h4>Ananya Reddy</h4>
+                            <p>Loyal Customer Since 2015</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"I appreciate how they explain the notes in each fragrance. It's like getting a mini perfume education with every purchase."</p>
+                    <div class="customer">
+                        <img src="images/about/customer2.jpg" alt="Rahul Verma">
+                        <div class="customer-info">
+                            <h4>Rahul Verma</h4>
+                            <p>First-time Buyer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <h2>Ready to Find Your Signature Scent?</h2>
+                <p>Let our fragrance experts guide you to your perfect match</p>
+                <div class="cta-buttons">
+                    <a href="shop.html" class="btn btn-primary">Shop Now</a>
+                    <a href="contact.html" class="btn btn-outline">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer_widgets color_two">
+        <div class="footer_top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-7">
+                        <div class="widgets_container contact_us">
+                            <div class="footer_logo">
+                                <a href="#"><img src="images/logo.png" alt="Logo"></a>
+                            </div>
+                            <div class="footer_desc">
+                                <p>Get all types of perfume from us within 2 day delivery. We can even order the
+                                    perfumes which are not in our database. To do that kindly send a E-mail to the
+                                    company's mail id.</p>
+                            </div>
+                            <p>
+                                <span>Address :</span> International Business Center, Vesu, Surat, Gujarat
+                            </p>
+                            <p><span>Email :</span> <a href="#">deo@gmail.com</a></p>
+                            <p><span>Phone :</span> <a href="tel: +91 8888884444">+91 8888884444</a> </p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-6 col-sm-5">
+                        <div class="widgets_container widget_menu">
+                            <h3>Information</h3>
+                            <div class="footer_menu">
+                                <ul>
+                                    <li><a href="#">About Us</a></li>
+                                    <li><a href="#">Prices Drop</a></li>
+                                    <li><a href="#">New Products</a></li>
+                                    <li><a href="#">Best Sales</a></li>
+                                    <li><a href="#">Terms & Conditions</a></li>
+                                    <li><a href="#">Gift Certificate</a></li>
+                                    <li><a href="#">My Account</a></li>
+                                    <li><a href="#">Order History</a></li>
+                                    <li><a href="#">Wish List</a></li>
+                                    <li><a href="#">Specials</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-5">
+                        <div class="widgets_container widget_menu">
+                            <h3>Men</h3>
+                            <div class="footer_menu">
+                                <ul>
+                                    <li><a href="#">Versace</a></li>
+                                    <li><a href="#">Hugo Boss</a></li>
+                                    <li><a href="#">Jaguar</a></li>
+                                    <li><a href="#">Armani</a></li>
+                                    <li><a href="#">Paco Rabbane</a></li>
+                                    <li><a href="#">Ralph Lauren</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-5">
+                        <div class="widgets_container widget_menu">
+                            <h3>Women</h3>
+                            <div class="footer_menu">
+                                <ul>
+                                    <li><a href="#">Bvlgari</a></li>
+                                    <li><a href="#">Coach</a></li>
+                                    <li><a href="#">Kenzo</a></li>
+                                    <li><a href="#">D&G</a></li>
+                                    <li><a href="#">Jean Paul Gaultier</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-5">
+                        <div class="widgets_container widget_menu">
+                            <h3>Unisex</h3>
+                            <div class="footer_menu">
+                                <ul>
+                                    <li><a href="#">Ajmal</a></li>
+                                    <li><a href="#">Calvin Klein</a></li>
+                                    <li><a href="#">The Body Shop</a></li>
+                                    <li><a href="#">Lattafa</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="footer_link">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">About us</a></li>
+                            <li><a href="#">Blogs</a></li>
+                            <li><a href="#">Contact us</a></li>
+                            <li><a href="#">User </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- footer section starts  -->
+
+    {% include 'footer.html' %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+    <script src="{{url_for('static', filename='js/contact.js')}}"></script>
+
+</body>
+
+</html>

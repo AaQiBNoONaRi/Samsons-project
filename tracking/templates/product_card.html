@@ -1,0 +1,31 @@
+<div class="product-card"
+     data-category="{{ product.get('category', 'unknown') }}"
+     data-price="{{ product.get('price', 0) }}"
+     data-date="{{ product.get('date', '') }}"
+     data-types="{{ product.get('types', '') }}"
+     data-id="{{ product.get('_id', '') }}">
+
+    <div class="quick-view-icon" onclick="window.location.href='product.html?id={{ product.get('_id', '') }}'">
+        <i class="fas fa-eye"></i>
+    </div>
+
+    <img src="{{ product.thumbnails[0] if product.get('thumbnails') else url_for('static', filename='images/placeholder.png') }}"
+         alt="{{ product.get('name', 'No Name') }}">
+
+    <h3>{{ product.get('name', 'No Name') }}</h3>
+    <p class="brand">{{ product.get('brand', 'Unknown Brand') }}</p>
+
+    <div class="price-container">
+        <div class="price-row">
+            <span class="price">Rs {{ "{:,.0f}".format(product.get('discount_price') or product.get('price', 0)) }}</span>
+            {% if product.get('discount_price') %}
+                <span class="original-price">Rs {{ "{:,.0f}".format(product.get('price', 0)) }}</span>
+                <span class="discount">
+                    {{ ((1 - product.discount_price / product.price) * 100) | round(0) }}% OFF
+                </span>
+            {% endif %}
+        </div>
+    </div>
+
+    <button class="add-to-cart-btn">Add to Cart</button>
+</div>

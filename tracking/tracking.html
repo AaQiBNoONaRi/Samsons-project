@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Print Your Name with a Loop</h2>
+
+
+    <label for="nameInput">Enter your name:</label>
+    <input type="text" id="nameInput" placeholder="Your Name">
+
+    <label for="countInput">Enter number of times to print:</label>
+    <input type="number" id="countInput" placeholder="Number of times" min="1">
+    <button onclick="printName()">Print Name</button>
+    <div id="output"></div>
+    <script>
+        function printName() {
+            const name = document.getElementById('nameInput').value;
+            const count = parseInt(document.getElementById('countInput').value);
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = ''; // Clear previous output
+
+            if (!name) {
+                outputDiv.innerHTML = '<p style="color:red;">Please enter your name.</p>';
+                return;
+            }
+            if (isNaN(count) || count < 1) {
+                outputDiv.innerHTML = '<p style="color:red;">Please enter a valid number greater than 0.</p>';
+                return;
+            }
+
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('p');
+                p.textContent = name;
+                outputDiv.appendChild(p);
+            }
+        }
+    </script>
+</body>
+</html>

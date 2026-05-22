@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfume Blog | E-Commerce</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/blog.css') }}">
+</head>
+
+<body>
+    {% include 'header.html' %}
+    <!-- Main Blog Content -->
+    <main class="blog-main">
+        <section class="blog-hero-section"
+            style="position: relative; height: 400px; display: flex; align-items: center; justify-content: center; margin-bottom: 60px; overflow: hidden; text-align: center; color: #fff;">
+
+            <!-- Full-width hero image -->
+            <img src="images/e4ae3b0e389eaedb18b004b55be34e91.jpg" alt="Hero Image"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+
+            <!-- Dark overlay -->
+            <div class="overlay"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2;">
+            </div>
+
+            <!-- Text content -->
+            <div class="container" style="position: relative; z-index: 3;">
+                <h1 class="display-4" style="font-weight: 700;">Fragrance Stories &amp; Trends</h1>
+                <p class="lead">Discover the latest in perfumes, scent tips, and behind-the-scenes stories from the
+                    world of fragrance.</p>
+            </div>
+        </section>
+
+        <section class="blog-posts-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Latest Articles</h2>
+                    <p class="section-description">Explore our collection of insightful perfume articles</p>
+                </div>
+
+                <div class="blog-grid">
+                    <!-- Featured Post -->
+                    <div class="blog-card featured-post">
+                        <div class="blog-card-image">
+                            <img src="images/13750a06a59388703fe345b2cb22c0d3.jpg" alt="Featured Post">
+                            <div class="post-category">Featured</div>
+                        </div>
+                        <div class="blog-card-content">
+                            <h3 class="blog-card-title">How to Find Your Signature Scent</h3>
+                            <p class="blog-card-excerpt">Choosing a signature scent is a personal journey. Learn how to
+                                select a fragrance that truly represents you and matches your personality.</p>
+                            <div class="blog-card-footer">
+                                <a href="#" class="read-more-btn">Read More <i class="fa fa-arrow-right"></i></a>
+                                <span class="post-date">June 15, 2023</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Regular Posts -->
+                    <div class="blog-card">
+                        <div class="blog-card-image">
+                            <img src="images/blog/blog2.jpg" alt="Summer Scents">
+                            <div class="post-category">Seasonal</div>
+                        </div>
+                        <div class="blog-card-content">
+                            <h3 class="blog-card-title">Top 5 Summer Scents for 2023</h3>
+                            <p class="blog-card-excerpt">Explore the freshest and most vibrant perfumes to keep you cool
+                                and confident all summer long.</p>
+                            <div class="blog-card-footer">
+                                <a href="#" class="read-more-btn">Read More <i class="fa fa-arrow-right"></i></a>
+                                <span class="post-date">May 28, 2023</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="blog-card">
+                        <div class="blog-card-image">
+                            <img src="images/blog/blog3.jpg" alt="Unisex Fragrances">
+                            <div class="post-category">Trends</div>
+                        </div>
+                        <div class="blog-card-content">
+                            <h3 class="blog-card-title">Unisex Fragrances: Breaking the Scent Barrier</h3>
+                            <p class="blog-card-excerpt">Discover why gender-neutral perfumes are the hottest trend and
+                                our top picks for everyone.</p>
+                            <div class="blog-card-footer">
+                                <a href="#" class="read-more-btn">Read More <i class="fa fa-arrow-right"></i></a>
+                                <span class="post-date">May 15, 2023</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="blog-card">
+                        <div class="blog-card-image">
+                            <img src="images/blog/blog4.jpg" alt="Perfume Layering">
+                            <div class="post-category">Tips</div>
+                        </div>
+                        <div class="blog-card-content">
+                            <h3 class="blog-card-title">How to Layer Perfumes Like a Pro</h3>
+                            <p class="blog-card-excerpt">Tips and tricks to create your own signature scent by mixing
+                                and matching fragrances for unique combinations.</p>
+                            <div class="blog-card-footer">
+                                <a href="#" class="read-more-btn">Read More <i class="fa fa-arrow-right"></i></a>
+                                <span class="post-date">April 30, 2023</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="blog-card">
+                        <div class="blog-card-image">
+                            <img src="images/blog/blog5.jpg" alt="History of Perfume">
+                            <div class="post-category">History</div>
+                        </div>
+                        <div class="blog-card-content">
+                            <h3 class="blog-card-title">The History of Perfume: From Ancient to Modern</h3>
+                            <p class="blog-card-excerpt">Take a journey through time and discover how fragrances have
+                                evolved from ancient rituals to modern luxury.</p>
+                            <div class="blog-card-footer">
+                                <a href="#" class="read-more-btn">Read More <i class="fa fa-arrow-right"></i></a>
+                                <span class="post-date">April 18, 2023</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="blog-card">
+                        <div class="blog-card-image">
+                            <img src="images/blog/blog6.jpg" alt="Best Perfume Gifts">
+                            <div class="post-category">Gifts</div>
+                        </div>
+                        <div class="blog-card-content">
+                            <h3 class="blog-card-title">Best Perfume Gifts for Every Occasion</h3>
+                            <p class="blog-card-excerpt">Find the perfect fragrance gift for birthdays, anniversaries,
+                                and special celebrations with our curated guide.</p>
+                            <div class="blog-card-footer">
+                                <a href="#" class="read-more-btn">Read More <i class="fa fa-arrow-right"></i></a>
+                                <span class="post-date">April 5, 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="blog-pagination">
+                    <a href="#" class="pagination-btn prev-btn disabled"><i class="fa fa-chevron-left"></i> Previous</a>
+                    <a href="#" class="pagination-btn active">1</a>
+                    <a href="#" class="pagination-btn">2</a>
+                    <a href="#" class="pagination-btn">3</a>
+                    <a href="#" class="pagination-btn next-btn">Next <i class="fa fa-chevron-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <section class="newsletter-section">
+            <div class="container">
+                <div class="newsletter-container">
+                    <div class="newsletter-content">
+                        <h3 class="newsletter-title">Subscribe to Our Newsletter</h3>
+                        <p class="newsletter-description">Get the latest perfume trends, exclusive offers, and fragrance
+                            tips delivered to your inbox.</p>
+                    </div>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit" class="subscribe-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+ {% include 'footer.html' %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
+    <script src="{{url_for('static', filename='js/countdown.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+    <script src="{{url_for('static', filename='js/blog.js')}}"></script>
+</body>
+
+</html>

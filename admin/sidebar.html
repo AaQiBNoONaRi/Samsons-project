@@ -1,0 +1,102 @@
+<!-- <div class="sidebar">
+    <div class="sidebar-header">
+        <h2>Admin Panel</h2>
+    </div>
+    <div class="sidebar-menu">
+        <a href="{{ url_for('admin.admin_dashboard') }}"
+            class="menu-item{% if request.path == '/viaadmin/dashboard' %} active{% endif %}"
+            style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="{{ url_for('admin.products') }}" class="menu-item"
+            style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+            <i class="fas fa-shopping-bag"></i>
+            <span>Products</span>
+        </a>
+
+        <div class="menu-item dropdown" style="display: flex; flex-direction: column; gap: 0;">
+            <div style="display: flex; align-items: center; gap: 10px; cursor: pointer;" onclick="toggleDropdown()">
+                <i class="fas fa-sliders-h"></i>
+                <span>Custom</span>
+                <i class="fas fa-caret-down" style="margin-left:auto;"></i>
+            </div>
+            <div id="customDropdown" style="display: none; flex-direction: column; margin-left: 30px;">
+                <a href="" class="dropdown-link"
+                    style="text-decoration: none; color: inherit; padding: 5px 0;">List</a>
+                <a href="" class="dropdown-link"
+                    style="text-decoration: none; color: inherit; padding: 5px 0;">Perfume</a>
+                <a href="" class="dropdown-link"
+                    style="text-decoration: none; color: inherit; padding: 5px 0;">Testers</a>
+            </div>
+        </div>
+
+        <a href="{{ url_for('admin.marketing') }}"
+            class="menu-item{% if request.path == '/viaadmin/marketing' %} active{% endif %}"
+            style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+            <i class="fas fa-bullhorn"></i>
+            <span>Marketing</span>
+        </a>
+
+        <a href="{{ url_for('admin.costumers') }}"
+            class="menu-item{% if request.path == '/viaadmin/costumers' %} active{% endif %}"
+            style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+            <i class="fas fa-users"></i>
+            <span>Customers</span>
+        </a>
+
+        <a href="{{ url_for('admin.orders') }}"
+            class="menu-item{% if request.path == '/viaadmin/orders' %} active{% endif %}"
+            style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+            <i class="fas fa-list-alt"></i>
+            <span>Orders</span>
+        </a>
+
+        <a href="{{ url_for('admin.analytics') }}"
+            class="menu-item{% if request.path == '/viaadmin/analytics' %} active{% endif %}"
+            style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+            <i class="fas fa-chart-line"></i>
+            <span>Analytics</span>
+        </a>
+
+        <div class="menu-item" style="display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </div>
+    </div>
+</div> -->
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <!-- Hamburger menu for closing sidebar on mobile -->
+        <button id="hamburgerMenuClose" class="hamburger-menu" aria-label="Close Sidebar">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <h2>Admin Panel</h2>
+    </div>
+
+    <div class="sidebar-menu">
+        <a href="{{ url_for('admin.admin_dashboard') }}" class="menu-item"><i class="fas fa-home"></i>
+            <span>Dashboard</span></a>
+        <a href="{{ url_for('admin.products') }}" class="menu-item"><i class="fas fa-shopping-bag"></i>
+            <span>Products</span></a>
+        <a href="{{ url_for('admin.list') }}" class="menu-item"><i class="fas fa-list"></i>
+            <span>List</span></a>
+        <a href="{{ url_for('admin.marketing') }}" class="menu-item"><i class="fas fa-bullhorn"></i>
+            <span>Marketing</span></a>
+        <a href="{{ url_for('admin.costumers') }}" class="menu-item"><i class="fas fa-users"></i>
+            <span>Customers</span></a>
+        <a href="{{ url_for('admin.orders') }}" class="menu-item"><i class="fas fa-list-alt"></i>
+            <span>Orders</span></a>
+        <a href="{{ url_for('admin.analytics') }}" class="menu-item"><i class="fas fa-chart-line"></i>
+            <span>Analytics</span></a>
+        <a href="{{ url_for('admin.tracking') }}" class="menu-item"><i class="fas fa-shipping-fast"></i>
+            <span>Tracking</span></a>
+
+        <div class="menu-item"><i class="fas fa-cog"></i> <span>Settings</span></div>
+    </div>
+</div>

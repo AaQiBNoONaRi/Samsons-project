@@ -1,0 +1,53 @@
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h2>Admin Panel</h2>
+    </div>
+    <div class="sidebar-menu">
+        <a href="{{ url_for('admin.admin_dashboard') }}" 
+           class="menu-item{% if request.path == '/viaadmin/dashboard' %} active{% endif %}" 
+           style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="{{ url_for('admin.products') }}" 
+           class="menu-item" 
+           style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+            <i class="fas fa-shopping-bag"></i>
+            <span>Products</span>
+        </a>
+
+        <a href="{{ url_for('admin.marketing') }}" 
+           class="menu-item{% if request.path == '/viaadmin/marketing' %} active{% endif %}" 
+           style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+            <i class="fas fa-bullhorn"></i>
+            <span>Marketing</span>
+        </a>
+
+        <a href="{{ url_for('admin.costumers') }}" 
+           class="menu-item{% if request.path == '/viaadmin/costumers' %} active{% endif %}" 
+           style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+            <i class="fas fa-users"></i>
+            <span>Customers</span>
+        </a>
+
+        <a href="{{ url_for('admin.orders') }}" 
+           class="menu-item{% if request.path == '/viaadmin/orders' %} active{% endif %}" 
+           style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+            <i class="fas fa-list-alt"></i>
+            <span>Orders</span>
+        </a>
+
+        <a href="{{ url_for('admin.analytics') }}" 
+           class="menu-item{% if request.path == '/viaadmin/analytics' %} active{% endif %}" 
+           style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+            <i class="fas fa-chart-line"></i>
+            <span>Analytics</span>
+        </a>
+
+        <div class="menu-item" style="display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </div>
+    </div>
+</div>

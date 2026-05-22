@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brooks - Checkout</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+
+</head>
+
+<body>
+  <header class="nav">
+    <div class="logo">
+      <img
+        src="https://www.brooksrunning.com/on/demandware.static/Sites-BrooksRunning-Site/-/default/dw5a0b4b96/images/svg-icons/logo-brooks-running.svg  "
+        alt="Brooks Running">
+    </div>
+  </header>
+
+  <div class="main-content">
+    <div class="checkout-section">
+      <div class="heading">
+        <h1>Checkout</h1>
+        
+        
+      </div>
+      <!-- Vertical Stepper -->
+      <div class="vertical-stepper-container">
+        <div class="vertical-stepper">
+          <div class="stepper-step" data-step="1">
+            <div class="stepper-circle">1</div>
+            <div class="stepper-line"></div>
+          </div>
+          <div class="stepper-step" data-step="3">
+            <div class="stepper-circle">2</div>
+            <div class="stepper-line"></div>
+          </div>
+          <div class="stepper-step" data-step="4">
+            <div class="stepper-circle">3</div>
+          </div>
+        </div>
+      </div>
+
+     <!-- ✅ OUTER FORM (final submission) -->
+<form method="POST" action="{{ url_for('routes.save_data') }}" class="shipping-form" id="shippingForm" novalidate>
+  <div class="checkout-steps">
+
+    <!-- STEP 1: Shipping Address -->
+    <div class="step active" data-step="1">
+      <div class="step-header">
+        <h2>Shipping address</h2>
+        <p><em>*Indicates required field</em></p>
+      </div>
+
+      <div class="step-content">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="firstName">First name *</label>
+        <input type="text" id="firstName" name="firstName" required>
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last name *</label>
+        <input type="text" id="lastName" name="lastName" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="address1">Address 1 - Street or P.O. Box *</label>
+      <input type="text" id="address1" name="address1" required>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone *</label>
+        <input type="tel" id="phone" name="phone" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="city">City *</label>
+        <input type="text" id="city" name="city" required>
+      </div>
+      <div class="form-group">
+        <label for="state">State *</label>
+        <select id="state" name="state" required>
+          <option value="">Select...</option>
+          <option value="Punjab">Punjab</option>
+          <option value="Sindh">Sindh</option>
+          <option value="Khyber Pakhtunkhwa">Khyber Pakhtunkhwa</option>
+          <option value="Balochistan">Balochistan</option>
+          <option value="Islamabad Capital Territory">Islamabad Capital Territory</option>
+          <option value="Gilgit-Baltistan">Gilgit-Baltistan</option>
+          <option value="Azad Kashmir">Azad Kashmir</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="zip">Zip code *</label>
+        <input type="text" id="zip" name="zip" required>
+      </div>
+    </div>
+
+    <div id="form-error-message"
+      style="display:none;color:#b00020;background:#fff3f3;padding:10px 14px;margin-bottom:10px;border-radius:4px;font-size:14px;font-weight:600;">
+    </div>
+
+    <button type="button" class="btn-continue" data-next="3" id="continueShipping" disabled>Continue to payment</button>
+  </div>
+    </div>
+
+    <!-- STEP 3: Payment -->
+     <div class="step" data-step="3">
+    <div class="step-header">
+      <h2>Payment</h2>
+    </div>
+    <div class="step-content">
+      <div class="payment-methods-modern">
+        <div class="payment-method-card" id="cod-method">
+          <div class="payment-method-title">Cash on Delivery</div>
+          <div class="payment-method-desc">Pay with cash when your order arrives at your doorstep.</div>
+        </div>
+        <div class="payment-method-card disabled">
+          <div class="payment-method-title">Credit Card <span class="coming-soon">(Coming Soon)</span></div>
+          <div class="payment-method-desc">Pay securely with Visa, MasterCard, or other credit cards.</div>
+        </div>
+        <div class="payment-method-card disabled">
+          <div class="payment-method-title">JazzCash / Easypaisa <span class="coming-soon">(Coming Soon)</span></div>
+          <div class="payment-method-desc">Pay using JazzCash or Easypaisa mobile wallet.</div>
+        </div>
+      </div>
+
+      <!-- Hidden input to hold selected payment -->
+      <input type="hidden" name="payment_method" id="paymentMethodInput" value="Cash on Delivery">
+
+      <button type="button" class="btn-continue" data-next="4" id="continuePayment" disabled>Review & place order</button>
+    </div>
+  </div>
+
+
+    <!-- STEP 4: Review & Place Order -->
+    <div class="step" data-step="4">
+      <div class="step-header">
+        <h2>Review & place order</h2>
+      </div>
+      <div class="step-content">
+        <div class="review-section">
+          <div class="review-block">
+            <h3>Shipping Information</h3>
+            <p id="review-shipping-info">John Doe<br>123 Main St<br>Apt 4B<br>New York, NY 10001<br>Pakistan</p>
+            <button type="button" class="edit-btn" data-step="1">Edit</button>
+          </div>
+
+          <div class="review-block">
+            <h3>Payment Method</h3>
+            <p id="review-payment-info">Cash on Delivery</p>
+            <button type="button" class="edit-btn" data-step="3">Edit</button>
+          </div>
+
+          <div class="review-block">
+            <h3>Billing Address</h3>
+            <p>Same as shipping address</p>
+          </div>
+        </div>
+
+        <div class="order-summary">
+          <h3>Order Summary</h3>
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span class="price-dynamic" id="subtotal-price">Rs {{ "{:,.0f}".format(quantity * price) }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span>FREE</span>
+          </div>
+        </div>
+
+        <div class="terms-agreement">
+          <div class="form-group terms-modern">
+            <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+            <label for="agreeTerms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+          </div>
+        </div>
+
+        <!-- ✅ PLACE ORDER BUTTON -->
+<button type="submit"  class="btn-place-order" disabled >Place Order</button>
+
+        <!-- ✅ Hidden Fields (copied from #shippingForm) -->
+        <input type="hidden" name="firstName">
+        <input type="hidden" name="lastName">
+        <input type="hidden" name="email">
+        <input type="hidden" name="product_thumbnail" value="{{ thumbnail }}">
+        
+        <input type="hidden" name="phone">
+        <!-- ✅ Hidden Inputs for quantity and subtotal -->
+<input type="hidden" name="product_quantity" id="product_quantity" value="{{ quantity }}">
+<input type="hidden" name="product_subtotal" id="subtotal-value" value="{{ quantity * price }}">
+<input type="hidden" name="product_id" value="{{ product_id }}">
+<input type="hidden" name="price" value="{{ price }}">
+<input type="hidden" name="final_price" value="{{ price }}">  <!-- already discounted -->
+<input type="hidden" name="stock" value="{{ stock }}">
+<input type="hidden" name="description" value="{{ description }}">
+
+        <input type="hidden" name="address1">
+        <input type="hidden" name="city">
+        <input type="hidden" name="product_name" value="{{ product_name }}">
+<input type="hidden" name="size" value="{{ size }}">
+<input type="hidden" name="gender" value="{{ gender }}">
+        <input type="hidden" name="state">
+        <input type="hidden" name="zip">
+      </div>
+    </div>
+  </div>
+</form>
+
+    </div>
+
+    <div class="summary-section">
+      <div class="promo-code">
+        <p><strong>Promo code 3 per order maximum</strong></p>
+        <input type="text" placeholder="Enter code">
+      </div>
+
+      <div class="price-summary">
+        <div class="price-row">
+          <span>Price</span>
+<p> Rs 
+  <span id="price">
+    {% if price %}
+      {{ "{:,.0f}".format(price) }}
+    {% else %}
+      0
+    {% endif %}
+  </span>
+</p>
+        </div>
+        <div class="price-row">
+          <span>Quantity</span>
+<p><strong>Quantity:</strong> <span id="display-quantity">{{ quantity }}</span></p>
+        </div>
+        <div class="price-row">
+          <span>Shipping</span>
+          <span>FREE</span>
+        </div>
+       
+        <div class="price-row total">
+  <span>Total</span>
+  <span class="price-dynamic" id="summary-subtotal">Rs {{ "{:,.0f}".format(quantity * price) }}</span>
+</div>
+      </div>
+{% for item in cart %}
+      <div class="cart-items">
+        <h2>Cart ( {{Product_count}} Items)</h2>
+        <div class="item">
+          <div class="item-img">
+    <img src="{{ thumbnail }}" alt="Product Thumbnail" style="width: 100px;">
+</div>
+
+
+            <div class="item-details">
+           <h2>{{ product_name }}</h2>
+
+           <p><strong>stock left:</strong> {{ stock }}</p>
+            
+            <p><strong>Size:</strong> {{size}}</p>
+            <p><strong>For:</strong>{{gender}} </p>
+            
+            <div class="item-price">
+              <p><strong>Rs {{ "{:,.0f}".format(price) }}</strong></p>
+            </div>
+            <div class="item-actions">
+  <div class="quantity-control">
+  <button class="quantity-btn minus">−</button>
+  <input type="number" class="quantity-input" value="{{ quantity }}" min="1" max="{{ stock }}">
+  <button class="quantity-btn plus">+</button>
+</div>
+  
+  <button class="delete-btn">Remove</button>
+</div>
+
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+      <div class="help-section">
+        <h3>Need help?</h3>
+        <a href="#">Visit our Help Center</a>
+        <p>Call us</p>
+        <p>855-427-6657</p>
+        <p>Mon-Fri 6am-5pm PST</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#">Your Privacy Choices</a>
+        <a href="#">Accessibility Statement</a>
+        <a href="#">Supply Chain Transparency</a>
+        <a href="#">Fraud Protection</a>
+        <a href="#">Terms</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Sitemap</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/checkout.js')}}"></script>
+</body>
+
+</html>

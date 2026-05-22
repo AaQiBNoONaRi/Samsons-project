@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tester Checkout</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+</head>
+
+<body>
+  <header class="nav">
+    <div class="logo">
+      <img
+        src="https://www.brooksrunning.com/on/demandware.static/Sites-BrooksRunning-Site/-/default/dw5a0b4b96/images/svg-icons/logo-brooks-running.svg"
+        alt="Brooks Running">
+    </div>
+  </header>
+
+  <div class="main-content">
+    <div class="checkout-section">
+      <h1>Tester Checkout</h1>
+      <div class="order-summary">
+        <h2>Order Summary</h2>
+        <div class="summary-row">
+          <span>Product Name:</span>
+          <span>{{ product_name }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Packet Size:</span>
+          <span>{{ packet_size }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Quantity:</span>
+          <span>{{ quantity }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Price per Packet:</span>
+          <span>Rs {{ product_price }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Total Price:</span>
+          <span>Rs {{ total_price }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Selected Fragrances:</span>
+          <ul>
+            {% for box in boxes %}
+            <li>Box {{ loop.index }}: {{ box|join(', ') }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <a href="{{ redirect_url }}" class="btn-place-order">Place Order</a>
+    </div>
+  </div>
+
+  <script src="demo-checkout.js"></script>
+</body>
+
+</html>

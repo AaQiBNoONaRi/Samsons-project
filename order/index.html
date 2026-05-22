@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+   
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+        <!-- <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>PAGE</h2>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-item">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </div>
+            <div class="menu-item active">
+                <i class="fas fa-shopping-bag"></i>
+                <span>Products</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-list"></i>
+                <span>Categories</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>Customers</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-truck"></i>
+                <span>Orders</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Analytics</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </div>
+        </div>
+    </div> -->
+    <div class="main-content">
+        <div class="header">
+            <h1>Products</h1>
+            <div class="user-info">
+                <img src="" alt="admin">
+                <span>Admin</span>
+            </div>
+        </div>
+    <!-- main product container -->
+        <div class="main-container">
+            <div class="content-header">
+                <h1>All Orders</h1>
+                <div class="header-buttons">
+                    <button>Export</button>
+                    <button>Import</button>
+                    <button>create order</button>
+                </div>
+            </div>
+            <div class="products-container">
+                <div class="product-table-container">
+                    <div class="product-filters">
+                        <button>All Orders</button>
+                        <button>Delivered</button>
+                        <button>Confirmed</button>
+                        <button>Pending</button>
+                    </div>
+                    <div class="products-sorting">
+                        <div class="product-count">
+                            <h2>0 Products</h2>
+                        </div>
+                        <div class="product-search">
+                            <input type="search" placeholder="Search...">
+                        </div>
+                    </div>
+                    <div class="product-table">
+                        <table>
+                            <tr>
+                                <th>SNo#</th>
+                                <th>Order ID</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Contact</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Category</th>
+                                <th>City</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>ORD-1001</td>
+                                <td>Ali Raza</td>
+                                <td>123 Main St</td>
+                                <td>0300-1234567</td>
+                                <td>Perfume X</td>
+                                <td>2</td>
+                                <td>Men</td>
+                                <td>Lahore</td>
+                                <td>
+                                    <select>
+                                        <option value="confirm">Confirm</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="delivered">Delivered</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-edit" title="Edit"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="btn btn-delete" title="Delete"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>ORD-1002</td>
+                                <td>Sara Khan</td>
+                                <td>456 Park Ave</td>
+                                <td>0321-9876543</td>
+                                <td>Perfume Y</td>
+                                <td>1</td>
+                                <td>Women</td>
+                                <td>Karachi</td>
+                                <td>
+                                    <select>
+                                        <option value="confirm">Confirm</option>
+                                        <option value="pending" selected>Pending</option>
+                                        <option value="delivered">Delivered</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-edit" title="Edit"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="btn btn-delete" title="Delete"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>ORD-1003</td>
+                                <td>Usman Ali</td>
+                                <td>789 Market Rd</td>
+                                <td>0345-1122334</td>
+                                <td>Perfume Z</td>
+                                <td>3</td>
+                                <td>Unisex</td>
+                                <td>Islamabad</td>
+                                <td>
+                                    <select>
+                                        <option value="confirm">Confirm</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="delivered" selected>Delivered</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-edit" title="Edit"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="btn btn-delete" title="Delete"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="pagination-info">
+                        <div>Showing 1 - 10 of 1824</div>
+                        <div class="pagination-controls">
+                            <button><i class="fas fa-chevron-left"></i></button>
+                            <button class="active">1</button>
+                            <button>2</button>
+                            <button>3</button>
+                            <button>...</button>
+                            <button><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    // Toggle sidebar on mobile
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.createElement('button');
+        menuToggle.className = 'menu-toggle';
+        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        menuToggle.addEventListener('click', function() {
+            document.body.classList.toggle('sidebar-open');
+        });
+        document.body.appendChild(menuToggle);
+    });
+</script>
+</body>
+</html>

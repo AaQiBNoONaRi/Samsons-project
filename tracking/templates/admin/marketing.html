@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing - Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #28a745;
+            --info: #17a2b8;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --dark: #343a40;
+            --light: #f8f9fa;
+            --white: #ffffff;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f6fa;
+            color: #333;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(135deg, #1b2992 0%, #2c3e50 100%);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            gap: 15px;
+            cursor: pointer;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            border-left-color: #667eea;
+        }
+
+        .menu-item i {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            min-height: 100vh;
+            background: #f5f6fa;
+        }
+
+        /* Header */
+        .page-header {
+            background: var(--gradient);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-title p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card .number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-card .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Content Container */
+        .content-container {
+            padding: 2rem;
+        }
+
+        /* Bulk Messaging Section */
+        .bulk-messaging {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .message-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            resize: vertical;
+            min-height: 80px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .message-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Template Selection Styles */
+        .template-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: var(--dark);
+        }
+
+        select.message-input {
+            min-height: auto;
+            padding: 12px 15px;
+            cursor: pointer;
+        }
+
+        select.message-input option {
+            padding: 8px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-info {
+            background: var(--info);
+            color: white;
+        }
+
+        /* Customers Table */
+        .customers-section {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .search-box {
+            padding: 10px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            width: 250px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .customers-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .customers-table th {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .customers-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #f1f3f4;
+            vertical-align: middle;
+        }
+
+        .customers-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .customer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .customer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .customer-details h4 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .customer-details p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .contact-info {
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+
+        .message-cell {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .message-input-small {
+            padding: 6px 10px;
+            border: 1px solid #e1e8ed;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            width: 120px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+
+        .checkbox-cell {
+            text-align: center;
+        }
+
+        .custom-checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .header-stats {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .message-form {
+                flex-direction: column;
+            }
+
+            .table-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .customers-table {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    {% include 'admin/sidebar.html' %}
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="header-content">
+                <div class="header-title">
+                    <h1><i class="fas fa-bullhorn"></i> Marketing Dashboard</h1>
+                    <p>Manage customer communications and marketing campaigns</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <div class="number">{{ total_customers or 0 }}</div>
+                        <div class="label">Total Customers</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">{{ active_customers or 0 }}</div>
+                        <div class="label">Active Customers</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">{{ messages_sent or 0 }}</div>
+                        <div class="label">Messages Sent</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Container -->
+        <div class="content-container">
+            <!-- Bulk Messaging Section -->
+            <div class="bulk-messaging">
+                <h3 class="section-title">
+                    <i class="fas fa-paper-plane"></i>
+                    Bulk Messaging
+                </h3>
+                
+                <!-- Message Templates -->
+                <div style="margin-bottom: 1rem;">
+                    <label for="messageTemplate" style="font-weight: 600; margin-bottom: 0.5rem; display: block;">
+                        <i class="fas fa-clipboard-list"></i> Quick Templates:
+                    </label>
+                    <select id="messageTemplate" class="message-input" style="height: auto; padding: 12px 15px;" onchange="loadTemplate()">
+                        <option value="">Select a template...</option>
+                        <option value="reorder">Perfume Reorder Reminder</option>
+                        <option value="newCollection">New Collection Launch</option>
+                        <option value="discount">Special Discount Offer</option>
+                        <option value="custom">Write Custom Message</option>
+                    </select>
+                </div>
+
+                <div class="message-form">
+                    <textarea 
+                        class="message-input" 
+                        id="bulkMessage" 
+                        placeholder="Type your bulk message here or select a template above..."
+                        rows="4"></textarea>
+                    <button class="btn btn-primary" onclick="sendBulkMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                        Send to Selected
+                    </button>
+                </div>
+                <div class="table-actions">
+                    <button class="btn btn-info" onclick="selectAllCustomers()">
+                        <i class="fas fa-check-double"></i>
+                        Select All
+                    </button>
+                    <button class="btn btn-warning" onclick="clearSelection()">
+                        <i class="fas fa-times"></i>
+                        Clear Selection
+                    </button>
+                    <span id="selectedCount" style="font-weight: 600; color: var(--primary);">
+                        0 customers selected
+                    </span>
+                </div>
+            </div>
+
+            <!-- Customers Table -->
+            <div class="customers-section">
+                <div class="table-header">
+                    <h3 class="section-title">
+                        <i class="fas fa-users"></i>
+                        Customer Database
+                    </h3>
+                    <div class="table-actions">
+                        <input type="text" class="search-box" placeholder="Search customers..." 
+                               onkeyup="searchCustomers(this.value)">
+                        <button class="btn btn-success">
+                            <i class="fas fa-download"></i>
+                            Export Data
+                        </button>
+                    </div>
+                </div>
+
+                <table class="customers-table">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell">
+                                <input type="checkbox" class="custom-checkbox" id="selectAll" 
+                                       onchange="toggleSelectAll()">
+                            </th>
+                            <th>Customer</th>
+                            <th>Contact Number</th>
+                            <th>City</th>
+                            <th>Address</th>
+                            <th>Orders</th>
+                            <th>Send Message</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customersTableBody">
+                        {% if customers and customers|length > 0 %}
+                            {% for customer in customers %}
+                            <tr class="customer-row">
+                                <td class="checkbox-cell">
+                                    <input type="checkbox" class="custom-checkbox customer-select" 
+                                           value="{{ customer.phone or customer.contact }}" 
+                                           onchange="updateSelectedCount()">
+                                </td>
+                                <td>
+                                    <div class="customer-info">
+                                        <div class="customer-avatar">
+                                            {{ (customer.name or customer.first_name or 'U')[0].upper() }}
+                                        </div>
+                                        <div class="customer-details">
+                                            <h4>{{ customer.name or (customer.first_name + ' ' + (customer.last_name or '')) or 'Unknown' }}</h4>
+                                            <p>{{ customer.email or 'No email' }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="contact-info">
+                                    <i class="fas fa-phone"></i>
+                                    {{ customer.phone or customer.contact or 'N/A' }}
+                                </td>
+                                <td class="contact-info">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    {{ customer.city or 'N/A' }}
+                                </td>
+                                <td class="contact-info">
+                                    {{ customer.address or 'No address provided' }}
+                                </td>
+                                <td>
+                                    <span style="background: var(--info); color: white; padding: 4px 8px; border-radius: 15px; font-size: 0.8rem;">
+                                        {{ customer.orders_count or 0 }} orders
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="message-cell">
+                                        <select class="message-input-small" style="width: 100px; margin-right: 5px;" 
+                                                onchange="loadIndividualTemplate(this, '{{ loop.index }}')">
+                                            <option value="">Template</option>
+                                            <option value="reorder">Reorder</option>
+                                            <option value="newProduct">New Item</option>
+                                            <option value="thanks">Thank You</option>
+                                        </select>
+                                        <input type="text" class="message-input-small" 
+                                               placeholder="Quick message..." 
+                                               id="message_{{ loop.index }}"
+                                               style="width: 140px;">
+                                        <button class="btn btn-success btn-small" 
+                                                onclick="sendIndividualMessage('{{ customer.phone or customer.contact }}', '{{ loop.index }}')">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 2rem; color: #6c757d;">
+                                    <i class="fas fa-users" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                                    <br>
+                                    No customers found. Start by adding some customers to your database.
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Message Templates
+        const messageTemplates = {
+            reorder: "Hi {name}! 🌟 It's been a month since your last perfume purchase. Your favorite fragrance might be running low. Visit our website to reorder and get 10% off your next purchase!",
+            newCollection: "🎉 NEW ARRIVAL ALERT! {name}, discover our latest perfume collection with exclusive scents just for you. Shop now at our website and be the first to experience luxury!",
+            discount: "Special offer for you, {name}! 💫 Get 15% OFF on all perfumes this week only. Don't miss out on your favorite fragrances. Use code SAVE15 on our website!",
+            newProduct: "Hi {name}! Check out our new perfume that just arrived - perfect for your style! 🌸",
+            thanks: "Thank you {name} for your recent purchase! We hope you love your new fragrance. 💖"
+        };
+
+        // Load bulk message template
+        function loadTemplate() {
+            const select = document.getElementById('messageTemplate');
+            const messageArea = document.getElementById('bulkMessage');
+            const template = select.value;
+            
+            if (template && messageTemplates[template]) {
+                messageArea.value = messageTemplates[template].replace('{name}', '[Customer Name]');
+            } else if (template === 'custom') {
+                messageArea.value = '';
+                messageArea.focus();
+            }
+        }
+
+        // Load individual message template
+        function loadIndividualTemplate(selectElement, index) {
+            const template = selectElement.value;
+            const messageInput = document.getElementById(`message_${index}`);
+            
+            if (template && messageTemplates[template]) {
+                // Get customer name from the row
+                const row = selectElement.closest('tr');
+                const customerName = row.querySelector('.customer-details h4').textContent.trim();
+                const firstName = customerName.split(' ')[0];
+                
+                messageInput.value = messageTemplates[template].replace('{name}', firstName);
+            }
+        }
+
+        // Update selected count
+        function updateSelectedCount() {
+            const selected = document.querySelectorAll('.customer-select:checked');
+            const count = selected.length;
+            document.getElementById('selectedCount').textContent = `${count} customers selected`;
+        }
+
+        // Toggle select all
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAll');
+            const customerSelects = document.querySelectorAll('.customer-select');
+            
+            customerSelects.forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+            });
+            
+            updateSelectedCount();
+        }
+
+        // Select all customers
+        function selectAllCustomers() {
+            const customerSelects = document.querySelectorAll('.customer-select');
+            const selectAll = document.getElementById('selectAll');
+            
+            customerSelects.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            selectAll.checked = true;
+            
+            updateSelectedCount();
+        }
+
+        // Clear selection
+        function clearSelection() {
+            const customerSelects = document.querySelectorAll('.customer-select');
+            const selectAll = document.getElementById('selectAll');
+            
+            customerSelects.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            selectAll.checked = false;
+            
+            updateSelectedCount();
+        }
+
+        // Send bulk message
+        function sendBulkMessage() {
+            const message = document.getElementById('bulkMessage').value.trim();
+            const selected = document.querySelectorAll('.customer-select:checked');
+            
+            if (!message) {
+                alert('Please enter a message to send.');
+                return;
+            }
+            
+            if (selected.length === 0) {
+                alert('Please select at least one customer.');
+                return;
+            }
+            
+            const numbers = Array.from(selected).map(cb => cb.value).filter(num => num);
+            
+            // Create personalized messages for each customer
+            const personalizedMessages = [];
+            selected.forEach(checkbox => {
+                const row = checkbox.closest('tr');
+                const customerName = row.querySelector('.customer-details h4').textContent.trim();
+                const firstName = customerName.split(' ')[0];
+                const phoneNumber = checkbox.value;
+                
+                const personalizedMessage = message.replace(/\[Customer Name\]/g, firstName);
+                personalizedMessages.push({
+                    number: phoneNumber,
+                    message: personalizedMessage,
+                    name: firstName
+                });
+            });
+            
+            if (confirm(`Send personalized messages to ${numbers.length} customers?`)) {
+                // Here you would implement the actual message sending logic
+                fetch('/viaadmin/send-bulk-message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        numbers: numbers,
+                        personalizedMessages: personalizedMessages
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(`Messages sent successfully to ${numbers.length} customers!`);
+                        document.getElementById('bulkMessage').value = '';
+                        document.getElementById('messageTemplate').value = '';
+                        clearSelection();
+                    } else {
+                        alert('Failed to send messages: ' + (data.error || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error sending messages. Please try again.');
+                });
+            }
+        }
+
+        // Send individual message
+        function sendIndividualMessage(phoneNumber, index) {
+            const messageInput = document.getElementById(`message_${index}`);
+            const message = messageInput.value.trim();
+            
+            if (!message) {
+                alert('Please enter a message to send.');
+                return;
+            }
+            
+            if (!phoneNumber || phoneNumber === 'N/A') {
+                alert('No valid phone number for this customer.');
+                return;
+            }
+            
+            if (confirm(`Send message to ${phoneNumber}?`)) {
+                // Here you would implement the actual message sending logic
+                fetch('/viaadmin/send-individual-message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        number: phoneNumber
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Message sent successfully!');
+                        messageInput.value = '';
+                    } else {
+                        alert('Failed to send message: ' + (data.error || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error sending message. Please try again.');
+                });
+            }
+        }
+
+        // Search customers
+        function searchCustomers(searchTerm) {
+            const rows = document.querySelectorAll('.customer-row');
+            const term = searchTerm.toLowerCase();
+            
+            rows.forEach(row => {
+                const name = row.querySelector('.customer-details h4').textContent.toLowerCase();
+                const phone = row.querySelector('.contact-info').textContent.toLowerCase();
+                const city = row.querySelectorAll('.contact-info')[1].textContent.toLowerCase();
+                
+                if (name.includes(term) || phone.includes(term) || city.includes(term)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSelectedCount();
+        });
+    </script>
+</body>
+</html>

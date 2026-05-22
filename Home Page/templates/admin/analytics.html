@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/admin/analytics.css')}}">
+    <style>
+      
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+           {% include 'admin/sidebar.html' %}
+        
+
+        <div class="main-content">
+            <div class="page-header">
+                <h1><i class="fas fa-chart-line"></i> Analytics Dashboard</h1>
+                <p>Key metrics and performance indicators</p>
+            </div>
+
+            <!-- Key Metrics -->
+            <div class="metrics-grid">
+    <div class="metric-card" style="border-left-color: green;">
+        <h3>Total Revenue</h3>
+        <div class="value">Rs.{{ metrics.revenue_last_30_days | round(0) }}</div>
+
+        <div class="change positive">
+            <i class="fas fa-arrow-up"></i> Rs.{{ (metrics.sales_monthly_change * 0.01 * metrics.total_revenue) | round(0) }} last 30 days
+        </div>
+    </div>
+
+    <div class="metric-card" style="border-left-color: blue;">
+        <h3>Total Orders</h3>
+        <div class="value">{{ metrics.total_orders }}</div>
+        <div class="change positive">
+            <i class="fas fa-arrow-up"></i> {{ metrics.orders_monthly_change }}% growth
+        </div>
+    </div>
+
+    <div class="metric-card" style="border-left-color: orange;">
+        <h3>Total Customers</h3>
+        <div class="value">{{ metrics.total_customers }}</div>
+        <div class="change positive">
+            <i class="fas fa-arrow-up"></i> {{ metrics.customers_monthly_change | round(0) }}% new
+        </div>
+    </div>
+
+    <div class="metric-card" style="border-left-color: red;">
+        <h3>Low Stock Items</h3>
+        <div class="value">{{ inventory_alerts | length }}</div>
+        <div class="change negative">
+            <i class="fas fa-exclamation-triangle"></i> Need attention
+        </div>
+    </div>
+</div>
+
+
+            <!-- Charts Section -->
+           <div class="charts-row">
+    <div class="chart-container">
+        <h2>Sales Trend (Last 7 Days)</h2>
+        <div class="chart-wrapper">
+            <canvas id="salesChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <h2>Order Status Distribution</h2>
+        <div class="chart-wrapper chart-small">
+            <canvas id="statusChart"></canvas>
+        </div>
+    </div>
+</div>
+
+            <!-- Top Selling Products Table -->
+            <div class="chart-container">
+    <h2>Top Selling Products</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Units Sold</th>
+                <th>Revenue</th>
+                <th>Orders</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in top_products %}
+            <tr>
+                <td>{{ product.product_name }}</td>
+                <td>{{ product.total_quantity }}</td>
+                <td>Rs.{{ product.total_revenue }}</td>
+                <td>{{ product.order_count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+            <!-- Low Stock Alerts Table -->
+           <div class="chart-container">
+    <h2>Low Stock Alerts</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th>Last Updated</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for alert in inventory_alerts %}
+                <tr>
+                    <td>
+                        {% if 'Low Stock:' in alert.title %}
+                            {{ alert.title.replace('Low Stock: ', '') }}
+                        {% elif 'Out of Stock:' in alert.title %}
+                            {{ alert.title.replace('Out of Stock: ', '') }}
+                        {% else %}
+                            {{ alert.title }}
+                        {% endif %}
+                    </td>
+                    
+                    <td>
+                        {% if alert.type == 'danger' %}
+                            0
+                        {% else %}
+                            {{ alert.description.split(' ')[1] }}
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if alert.type == 'danger' %}
+                            <span class="badge badge-dark">Out of Stock</span>
+                        {% else %}
+                            <span class="badge badge-danger">Low Stock</span>
+                        {% endif %}
+                    </td>
+
+                    <td>{{ alert.time }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+        </div>
+    </div>
+
+    <!-- Chart Scripts -->
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Chart Rendering Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    fetch("{{ url_for('admin.get_chart_data') }}")
+        .then(response => response.json())
+        .then(data => {
+            // Sales Chart
+            const salesCtx = document.getElementById('salesChart').getContext('2d');
+            new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: data.sales.labels,
+                    datasets: [{
+                        label: 'Revenue (Rs.)',
+                        data: data.sales.data,
+                        borderColor: '#1b2992',
+                        backgroundColor: 'rgba(27, 41, 146, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#1b2992',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true, position: 'top' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f1f1f1' }
+                        },
+                        x: {
+                            grid: { color: '#f1f1f1' }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
+
+            // Status Doughnut Chart
+            const statusCtx = document.getElementById('statusChart').getContext('2d');
+            new Chart(statusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.status.labels,
+                    datasets: [{
+                        data: data.status.data,
+                       backgroundColor: [
+  '#ffc107',  // Pending
+  '#20c997',  // Confirm
+  '#17a2b8',  // Shipped
+  '#28a745',  // Delivered
+  '#dc3545',  // Cancelled
+  '#6f42c1'   // Complete
+],
+
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        })
+        .catch(err => console.error('Chart data fetch error:', err));
+});
+</script>
+</body>
+
+</html>
