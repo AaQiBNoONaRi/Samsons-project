@@ -998,6 +998,49 @@ def about():
 
 @routes_bp.route('/contact', methods=['GET', 'POST'])
 def contact():
+    if request.method == 'POST':
+        if request.is_json:
+            data = request.get_json()
+            first_name = data.get('first_name')
+            last_name = data.get('last_name')
+            email = data.get('email')
+            phone = data.get('phone')
+            subject = data.get('subject')
+            message = data.get('message')
+        else:
+            first_name = request.form.get('first_name')
+            last_name = request.form.get('last_name')
+            email = request.form.get('email')
+            phone = request.form.get('phone')
+            subject = request.form.get('subject')
+            message = request.form.get('message')
+            
+        if not first_name or not last_name or not email or not subject or not message:
+            if request.is_json:
+                return jsonify({'success': False, 'message': 'All required fields must be filled.'}), 400
+            else:
+                flash('All required fields must be filled.', 'danger')
+                return redirect(url_for('routes.contact'))
+                
+        from app.database import queries_collection
+        query_doc = {
+            'first_name': first_name,
+            'last_name': last_name,
+            'email': email,
+            'phone': phone,
+            'subject': subject,
+            'message': message,
+            'status': 'pending',
+            'created_at': datetime.utcnow()
+        }
+        queries_collection.insert_one(query_doc)
+        
+        if request.is_json:
+            return jsonify({'success': True, 'message': 'Your message has been sent successfully!'})
+            
+        flash('Your message has been sent successfully!', 'success')
+        return redirect(url_for('routes.contact'))
+
     return render_template("contact.html")
 
 @routes_bp.route('/blog', methods=['GET', 'POST'])

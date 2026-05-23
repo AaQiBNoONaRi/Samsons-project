@@ -11,3 +11,4 @@ class Config:
     testers_collection = "testers"
     list_collection = "List"
     perfume_collection = "perfume"
+    queries_collection = "queries"
