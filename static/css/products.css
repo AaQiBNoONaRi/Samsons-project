@@ -12,8 +12,16 @@ body {
     line-height: 1.6;
 }
 
+
+/* Shop Layout Wrapper */
+.shop-layout-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
 /* Filter Container */
-.container {
+.filter-sidebar-container {
     display: flex;
     transition: transform 0.3s ease;
 }
@@ -50,14 +58,14 @@ body {
     /* cursor: pointer; */
 }
 
-.sidebar.closed~.container .filter-header {
+.sidebar.closed~.filter-sidebar-container .filter-header {
     position: static;
     /* Only becomes static when sidebar is closed */
     width: auto;
 }
 
 /* When sidebar is closed - hide the text */
-body:has(.sidebar.closed)~.container .filter-container .filter-header h3 {
+body:has(.sidebar.closed)~.filter-sidebar-container .filter-container .filter-header h3 {
     opacity: 0;
     width: 0;
     margin-left: -20px;
@@ -353,7 +361,7 @@ body:has(.sidebar:not(.closed)) .product-grid .products {
         transform: rotate(180deg);
     }
 
-    .sidebar.collapsed~.container {
+    .sidebar.collapsed~.filter-sidebar-container {
         margin-left: 0;
     }
 } */
@@ -581,7 +589,7 @@ body:has(.sidebar:not(.closed)) .product-grid .products {
         grid-template-columns: 1fr !important;
     }
 
-    .sidebar.active~.container {
+    .sidebar.active~.filter-sidebar-container {
         transform: translateX(260px);
     }
 
@@ -839,7 +847,7 @@ body:has(.sidebar:not(.closed)) .product-grid .products {
     }
 }
 
-@media (min-width: 993px) {
+@media (min-width: 992px) {
 
     .filter-group input[type="checkbox"],
     .filter-group input[type="radio"] {
@@ -895,8 +903,8 @@ body:has(.sidebar:not(.closed)) .product-grid .products {
 }
 
 /* Mobile First Styling (up to 992px) */
-@media (max-width: 992px) {
-    .container {
+@media (max-width: 991px) {
+    .filter-sidebar-container {
         flex-direction: column;
         width: 100%;
     }
@@ -967,6 +975,37 @@ body:has(.sidebar:not(.closed)) .product-grid .products {
         margin-left: 0;
         width: 100%;
         /* padding: 15px; */
+    }
+
+    /* Responsive custom perfume CTA banner */
+    .custom-perfume-cta-banner {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        text-align: center;
+        padding: 2.5rem 1.5rem !important;
+    }
+
+    .cta-banner-content {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cta-banner-content h2 br {
+        display: none;
+    }
+
+    .cta-banner-stats {
+        flex-direction: row !important;
+        justify-content: center;
+        width: 100%;
+        gap: 1rem;
+    }
+
+    .cta-banner-stats > div {
+        flex: 1;
+        min-width: unset !important;
     }
 
     .products {
@@ -1050,7 +1089,7 @@ body:has(.sidebar:not(.closed)) .product-grid .products {
 
 
     /* Keep arrow in header */
-    .container .toggle-arrow {
+    .filter-sidebar-container .toggle-arrow {
         margin-left: 360px;
     }
 
@@ -1160,7 +1199,7 @@ body:has(.sidebar:not(.closed)) .product-grid .products {
     }
 
     /* Keep arrow in header */
-    .container .toggle-arrow {
+    .filter-sidebar-container .toggle-arrow {
         margin-left: 160px;
     }
 }
@@ -1175,7 +1214,7 @@ body:has(.sidebar:not(.closed)) .product-grid .products {
     }
 
     /* Keep arrow in header */
-    .container .toggle-arrow {
+    .filter-sidebar-container .toggle-arrow {
         margin-left: 300px;
     }
 }
@@ -1193,7 +1232,7 @@ body:has(.sidebar:not(.closed)) .product-grid .products {
     }
 
     /* Keep arrow in header */
-    .container .toggle-arrow {
+    .filter-sidebar-container .toggle-arrow {
         margin-left: 240px;
         transition: .3s all ease;
     }
@@ -1211,7 +1250,7 @@ body:has(.sidebar:not(.closed)) .product-grid .products {
     }
 
     /* Keep arrow in header */
-    .container .toggle-arrow {
+    .filter-sidebar-container .toggle-arrow {
         margin-left: 160px;
         transition: .3s all ease;
     }
@@ -1228,7 +1267,7 @@ body:has(.sidebar:not(.closed)) .product-grid .products {
     }
 
     /* Keep arrow in header */
-    .container .toggle-arrow {
+    .filter-sidebar-container .toggle-arrow {
         margin-left: 130px;
     }
 }
@@ -1242,7 +1281,7 @@ body:has(.sidebar:not(.closed)) .product-grid .products {
     }
 
     /* Keep arrow in header */
-    .container .toggle-arrow {
+    .filter-sidebar-container .toggle-arrow {
         margin-left: 100px;
     }
 }
@@ -1257,7 +1296,7 @@ body:has(.sidebar:not(.closed)) .product-grid .products {
     }
 
     /* Keep arrow in header */
-    .container .toggle-arrow {
+    .filter-sidebar-container .toggle-arrow {
         margin-left: 60px;
     }
 }
@@ -1271,7 +1310,7 @@ body:has(.sidebar:not(.closed)) .product-grid .products {
     }
 
     /* Keep arrow in header */
-    .container .toggle-arrow {
+    .filter-sidebar-container .toggle-arrow {
         margin-left: 50px;
     }
 }
@@ -1284,13 +1323,129 @@ body:has(.sidebar:not(.closed)) .product-grid .products {
 }
 
 /* Desktop behavior */
-@media (min-width: 993px) {
+@media (min-width: 992px) {
+    /* 1. Header Overrides */
+    header {
+        margin-bottom: 0 !important;
+    }
+    
+    .header_transparent {
+        position: relative !important;
+        background: #1c1d22 !important;
+    }
+    
+    .header_transparent .header_container {
+        background: #1c1d22 !important;
+    }
+    
+    /* Make the sticky state solid dark as well to ensure readability when scrolling */
+    .header_transparent .sticky-header.sticky {
+        background: #1c1d22 !important;
+        position: fixed !important;
+        top: 0 !important;
+    }
+
+    /* 2. Shop Layout Wrapper Flexbox Flow */
+    .shop-layout-wrapper {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .filter-sidebar-container {
+        width: 280px;
+        flex-shrink: 0;
+        transition: width 0.3s ease;
+        align-self: stretch;
+        border-right: 1px solid #e1e1e1;
+        background: #f8f8f8;
+        margin-top: 0;
+    }
+
+    .filter-sidebar-container:has(.sidebar.closed) {
+        width: 80px;
+    }
+
+    .filter-container {
+        height: 100%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Modern Sticky Sidebar */
+    .sidebar {
+        position: sticky !important;
+        top: 94px !important;
+        height: calc(100vh - 94px) !important;
+        left: 0 !important;
+        width: 280px !important;
+        padding: 25px !important;
+        padding-top: 25px !important;
+        background: #f8f8f8 !important;
+        border-right: none !important;
+        overflow-y: auto !important;
+        z-index: 10 !important;
+        transition: all 0.3s ease !important;
+        transform: none !important; /* Reset absolute translate */
+    }
+
+    .sidebar.closed {
+        transform: translateX(-100%) !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        height: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+    }
+
+    /* When the header is sticky, adjust the sidebar top to 66px */
+    body:has(.sticky-header.sticky) .sidebar {
+        top: 66px !important;
+        height: calc(100vh - 66px) !important;
+    }
+
     .sidebar:not(.closed) .filter-header-inside {
         display: flex;
     }
 
     .sidebar:not(.closed)~.filter-header {
         display: none;
+    }
+
+    /* Adjust filter headers when closed */
+    .filter-sidebar-container:has(.sidebar.closed) .filter-header {
+        width: 80px;
+        justify-content: center;
+        padding: 25px 0;
+    }
+
+    .filter-sidebar-container:has(.sidebar.closed) .filter-header h3 {
+        display: none;
+    }
+
+    .filter-sidebar-container:has(.sidebar.closed) .toggle-arrow {
+        position: static;
+        transform: none;
+    }
+
+    /* 3. Product Grid Flex Item (No hardcoded margin or width) */
+    .product-grid {
+        flex: 1 !important;
+        margin-left: 0 !important;
+        width: auto !important;
+        margin-top: 0 !important;
+        padding: 30px !important;
+    }
+
+    .sidebar.closed~.product-grid {
+        margin-left: 0 !important;
+        width: auto !important;
+    }
+
+    body:has(.sidebar.closed) .product-grid {
+        margin-left: 0 !important;
+        width: auto !important;
     }
 }
 .stock-text{

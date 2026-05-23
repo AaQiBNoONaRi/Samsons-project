@@ -5,11 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Perfume Page</title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom-perfume.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom-perfume.css') }}?v=1.5">
+    <style>
+        .back-to-shop {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0 0 40px;
+            color: #ff6a00;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+        .back-to-shop:hover {
+            color: #e55d00;
+            text-decoration: none;
+            transform: translateX(-4px);
+        }
+        @media (max-width: 900px) {
+            .back-to-shop {
+                margin: 20px 0 0 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
+    {% include 'header.html' %}
+    <div class="custom-perfume-container">
         <div class="left">
             <div id="selectedBottlePreview"></div>
             <!-- <img src="default-bottle.jpg" alt=""> -->
@@ -21,11 +51,11 @@
             <div class="social">
                 <span>FOLLOW US ON</span>
                 <div class="social-icons">
-                    <a href="#" class="fa fa-facebook" title="Facebook"></a>
-                    <a href="#" class="fa fa-twitter" title="Twitter"></a>
-                    <a href="#" class="fa fa-pinterest" title="Pinterest"></a>
-                    <a href="#" class="fa fa-google-plus" title="Google+"></a>
-                    <a href="#" class="fa fa-linkedin" title="LinkedIn"></a>
+                    <a href="#" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" title="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+                    <a href="#" title="Google+"><i class="fa-brands fa-google"></i></a>
+                    <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
                 </div>
             </div>
             <div class="product-desc">
@@ -54,6 +84,7 @@
             </form>
         </div>
     </div>
+    {% include 'footer.html' %}
 
     <!-- Pass Flask data to JavaScript -->
     <script>
@@ -65,6 +96,12 @@
         console.log('Sample fragrance:', fragranceOptions[0]);
         console.log('Bottle images:', bottleImages);
     </script>
-    <script src="{{ url_for('static', filename='js/custom-perfume.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+    <script src="{{ url_for('static', filename='js/header.js') }}?v=1.1"></script>
+    <script src="{{ url_for('static', filename='js/custom-perfume.js') }}?v=1.5"></script>
 </body>
 </html>

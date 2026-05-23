@@ -13,10 +13,30 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css">
      <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
 
-     <style>
-      
-
-        </style>
+      <style>
+         @keyframes floatAnim {
+             0% { transform: translateY(0) rotate(-15deg); }
+             50% { transform: translateY(-12px) rotate(-10deg); }
+             100% { transform: translateY(0) rotate(-15deg); }
+         }
+         @media (max-width: 768px) {
+             .custom-promo-card {
+                 padding: 2rem 1.5rem !important;
+                 text-align: center !important;
+             }
+             .custom-promo-card h2 {
+                 font-size: 1.8rem !important;
+             }
+             .custom-promo-card p {
+                 font-size: 0.95rem !important;
+                 margin-bottom: 1.5rem !important;
+             }
+             .custom-promo-card a {
+                 padding: 0.8rem 1.8rem !important;
+                 font-size: 0.95rem !important;
+             }
+         }
+      </style>
 </head>
 
 
@@ -298,6 +318,75 @@
         </div>
     </div>
     <!-- banner area ends -->
+
+    <!-- ✨ Custom Perfume Promotion Banner -->
+    <div class="custom_perfume_promo_banner mb-70">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="custom-promo-card" style="
+                        background: linear-gradient(135deg, #160826 0%, #291245 50%, #441666 100%);
+                        border-radius: 16px;
+                        padding: 3.5rem 3rem;
+                        position: relative;
+                        overflow: hidden;
+                        display: flex;
+                        align-items: center;
+                        box-shadow: 0 15px 45px rgba(41, 18, 69, 0.4);
+                    ">
+                        <!-- Decorative ambient glows -->
+                        <div style="position: absolute; top: -50px; right: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(248, 156, 51, 0.25) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+                        <div style="position: absolute; bottom: -80px; left: 10%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+                        
+                        <div class="row w-100 align-items-center">
+                            <div class="col-lg-8 col-md-12 text-white">
+                                <span style="background: rgba(248, 156, 51, 0.2); color: #f89c33; border: 1px solid rgba(248, 156, 51, 0.4); padding: 5px 15px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display: inline-block; margin-bottom: 1.25rem;">
+                                    Bespoke Fragrance Experience
+                                </span>
+                                <h2 style="font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 1rem; font-family: 'Poppins', sans-serif;">
+                                    Craft Your Own <span style="background: linear-gradient(90deg, #f89c33, #f6692a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Signature Scent</span>
+                                </h2>
+                                <p style="font-size: 1.05rem; color: rgba(255, 255, 255, 0.8); max-width: 600px; margin-bottom: 2rem; line-height: 1.6;">
+                                    Why wear someone else's creation? Select your favorite fragrance base, adjust the volume, choose a luxurious custom bottle design, and print a custom label to make it truly yours.
+                                </p>
+                                <a href="{{ url_for('routes.custom_perfume') }}" style="
+                                    display: inline-flex;
+                                    align-items: center;
+                                    gap: 10px;
+                                    background: linear-gradient(135deg, #f89c33, #f6692a);
+                                    color: white !important;
+                                    text-decoration: none;
+                                    padding: 0.9rem 2.2rem;
+                                    border-radius: 50px;
+                                    font-weight: 700;
+                                    font-size: 1rem;
+                                    box-shadow: 0 8px 24px rgba(248, 156, 51, 0.45);
+                                    transition: all 0.3s ease;
+                                    border: none;
+                                    cursor: pointer;
+                                " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 14px 32px rgba(248,156,51,0.6)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(248,156,51,0.45)';">
+                                    <i class="fa fa-flask"></i> Create Custom Perfume <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </div>
+                            
+                            <div class="col-lg-4 d-none d-lg-block text-center position-relative">
+                                <div style="
+                                    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+                                    width: 100%;
+                                    height: 250px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                ">
+                                    <i class="fa fa-flask" style="font-size: 8rem; color: rgba(248, 156, 51, 0.7); filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); transform: rotate(-15deg); animation: floatAnim 4s ease-in-out infinite;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- home section area starts  -->
 

@@ -89,8 +89,12 @@ window.addEventListener('DOMContentLoaded', function() {
         } else {
             // Fallback to default bottles if no database images
             const defaultBottles = [
-                '3(2).png', '3(3).png', '5(2).png', '5(3).png', 
-                '5(4).png', '6(2).png', '6(3).png', '6(5).png', '7(1).png'
+                '/static/images/perfume-bottle/pic-1/image1.png',
+                '/static/images/perfume-bottle/pic-1/image2.png',
+                '/static/images/perfume-bottle/50/0_3-1.png',
+                '/static/images/perfume-bottle/50/Untitled_design_12.png',
+                '/static/images/perfume-bottle/30/ChatGPT_Image_Aug_28_2025_07_59_09_PM.png',
+                '/static/images/perfume-bottle/100/Untitled_design.png'
             ];
 
             defaultBottles.forEach((src, idx) => {
@@ -541,13 +545,17 @@ window.addEventListener('DOMContentLoaded', function() {
     // ✅ Function to initialize bottle slider
     function initializeBottleSlider(boxElement) {
         const bottleRow = boxElement.querySelector('.bottle-row');
+        const bottleSlider = boxElement.querySelector('.bottle-slider');
         const prevBtn = boxElement.querySelector('.bottle-nav-prev');
         const nextBtn = boxElement.querySelector('.bottle-nav-next');
         
-        if (!bottleRow || !prevBtn || !nextBtn) return;
+        if (!bottleRow || !bottleSlider || !prevBtn || !nextBtn) return;
 
         let currentSlide = 0;
-        const visibleItems = 4;
+        const bottleWidth = 100;
+        const gap = 15;
+        const sliderWidth = bottleSlider.clientWidth || 450;
+        const visibleItems = Math.max(1, Math.floor((sliderWidth + gap) / (bottleWidth + gap)));
         const bottleOptions = bottleRow.querySelectorAll('.bottle-option');
         const totalItems = bottleOptions.length;
         const maxSlide = Math.max(0, totalItems - visibleItems);
@@ -610,13 +618,20 @@ window.addEventListener('DOMContentLoaded', function() {
         if (!staticSliderContainer) return;
 
         const bottleRow = staticSliderContainer.querySelector('.bottle-row');
+        const bottleSlider = staticSliderContainer.querySelector('.bottle-slider');
         const prevBtn = staticSliderContainer.querySelector('.bottle-nav-prev');
         const nextBtn = staticSliderContainer.querySelector('.bottle-nav-next');
+        
+        if (!bottleRow || !bottleSlider || !prevBtn || !nextBtn) return;
+        
         const bottleOptions = bottleRow.querySelectorAll('.bottle-option');
 
         // FIXED STATIC SLIDER FUNCTIONALITY
         let currentSlide = 0;
-        const visibleItems = 4;
+        const bottleWidth = 100;
+        const gap = 15;
+        const sliderWidth = bottleSlider.clientWidth || 450;
+        const visibleItems = Math.max(1, Math.floor((sliderWidth + gap) / (bottleWidth + gap)));
         const totalItems = bottleOptions.length;
         const maxSlide = Math.max(0, totalItems - visibleItems);
 
@@ -680,24 +695,14 @@ window.addEventListener('DOMContentLoaded', function() {
         perfumeBoxes.forEach((box, idx) => {
             if (idx % 2 === 0) {
                 rowDiv = document.createElement('div');
-                rowDiv.style.display = 'flex';
-                rowDiv.style.justifyContent = 'center';
-                rowDiv.style.gap = '24px';
-                rowDiv.style.marginBottom = '18px';
+                rowDiv.className = 'selected-bottles-row';
                 preview.appendChild(rowDiv);
             }
             const selected = box.querySelector('.bottle-option.selected img');
             const bottleDiv = document.createElement('div');
-            bottleDiv.style.display = 'flex';
-            bottleDiv.style.flexDirection = 'column';
-            bottleDiv.style.alignItems = 'center';
-            bottleDiv.style.border = 'None';
-            bottleDiv.style.borderRadius = '12px';
-            bottleDiv.style.background = 'transparent';
-            // bottleDiv.style.boxShadow = '0 2px 8px rgba(0,0,0,0.07)';
-            bottleDiv.style.padding = '8px';
-            bottleDiv.style.width = '150px';
-            bottleDiv.style.minHeight = '150px';
+            bottleDiv.className = 'selected-bottle-card';
+            
+            // Apply CSS transition animations
             bottleDiv.style.opacity = '0';
             bottleDiv.style.transform = 'translateY(20px)';
             bottleDiv.style.transition = 'opacity 0.5s cubic-bezier(0.4,0,0.2,1), transform 0.5s cubic-bezier(0.4,0,0.2,1)';
@@ -705,23 +710,16 @@ window.addEventListener('DOMContentLoaded', function() {
                 bottleDiv.style.opacity = '1';
                 bottleDiv.style.transform = 'translateY(0)';
             }, 10);
-            const label = document.createElement('div');
+            
+            const label = document.createElement('label');
             label.textContent = `Perfume ${idx + 1}`;
-            label.style.fontWeight = 'bold';
-            label.style.marginBottom = '6px';
-            label.style.fontSize = '1rem';
             bottleDiv.appendChild(label);
+            
             if (selected) {
                 const img = document.createElement('img');
                 img.src = selected.src;
                 img.alt = selected.alt;
-                img.style.width = '250px';
-                img.style.height = '250px';
-                img.style.objectFit = 'contain';
-                img.style.borderRadius = '10px';
-                // img.style.boxShadow = '0 1px 8px rgba(0,0,0,0.10)';
-                img.style.background = 'transparent';
-
+                img.className = 'selected-bottle-img';
                 bottleDiv.appendChild(img);
             }
             rowDiv.appendChild(bottleDiv);

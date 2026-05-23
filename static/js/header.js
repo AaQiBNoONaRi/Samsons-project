@@ -46,7 +46,7 @@ function updateMiniCart() {
                       <span class="quantity">Rs ${item.price.toFixed(2)}</span>
                   </div>
                   <div class="cart_remove">
-                      <a href="#" onclick="removeFromCart('${item.id}')"><i class="fa fa-trash-o"></i></a>
+                      <a href="#" onclick="removeFromCart('${item.id}')"><i class="fa-solid fa-trash-can"></i></a>
                   </div>
               </div>`;
         }
@@ -81,7 +81,7 @@ function removeFromCart(id) {
 
     // canvas menu activation
     $(".canvas_open").on("click", function () {
-        $(".offcanvas_menu_wrapper,.off_canvars_overlay").addClass("active");
+        $(".offcanvas_menu_wrapper,.off_canvars_overlay").toggleClass("active");
     });
 
     $(".canvas_close,.off_canvars_overlay").on("click", function () {

@@ -1997,3 +1997,7 @@ h6 {
   height: 30px;
   line-height: 29px;
 }
+
+.offcanvas_main_menu li a.active {
+  color: #f6692a !important;
+}

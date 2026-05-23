@@ -969,10 +969,10 @@ def blog():
 @routes_bp.route('/testers')
 def testers():
     # Unpack list products (fragrances)
-    list_products = get_list_products()
+    list_products, _ = get_list_products()
 
     # Get only tester products
-    testers = get_tester_products()
+    testers, _ = get_tester_products()
 
     # ✅ For fragrances: use ID + Name (not Mongo _id)
     fragrances = [

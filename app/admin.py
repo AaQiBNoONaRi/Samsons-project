@@ -370,24 +370,38 @@ def edit_product(product_id):
         # --- Thumbnail images: replace slots at correct indices, never append ---
         # Start from the existing thumbnails in the DB (already updated to new folder paths above)
         existing_product = db.products.find_one({"_id": ObjectId(product_id)})
-        updated_thumbnails = list(existing_product.get("thumbnails", []))
-        # Ensure we have exactly 2 slots
-        while len(updated_thumbnails) < 2:
-            updated_thumbnails.append(None)
-        # Only keep the first 2 (in case of previous push-bug accumulation)
-        updated_thumbnails = updated_thumbnails[:2]
+        existing_thumbnails = existing_product.get("thumbnails", [])
+
+        # Map existing thumbnails to their correct slot (0 or 1) based on their prefix filename
+        updated_thumbnails = [None, None]
+        for path in existing_thumbnails:
+            filename_part = os.path.basename(path)
+            if filename_part.startswith("0_"):
+                updated_thumbnails[0] = path
+            elif filename_part.startswith("1_"):
+                updated_thumbnails[1] = path
+            else:
+                if updated_thumbnails[0] is None:
+                    updated_thumbnails[0] = path
+                else:
+                    updated_thumbnails[1] = path
 
         new_thumb_files = request.files.getlist("thumbnail_images[]")
-        for i, file in enumerate(new_thumb_files):
-            if i >= 2:
-                break  # Only allow slots 0 and 1
+        for file in new_thumb_files:
             if file and file.filename:
-                filename = secure_filename(f"{i}_{file.filename}")
+                # Find the first available empty slot
+                slot_idx = 0
+                if updated_thumbnails[0] is not None:
+                    slot_idx = 1
+                if slot_idx == 1 and updated_thumbnails[1] is not None:
+                    slot_idx = 0 # Fallback overwrite first slot if both filled
+
+                filename = secure_filename(f"{slot_idx}_{file.filename}")
                 new_file_path = os.path.join(thumb_path, filename)
                 new_db_path = f"/static/products/{new_folder}/thumbnail/{filename}"
 
                 # Delete old thumbnail file at this slot if it exists
-                old_db_path = updated_thumbnails[i]
+                old_db_path = updated_thumbnails[slot_idx]
                 if old_db_path:
                     old_abs_path = os.path.join(
                         os.path.abspath(os.path.join(os.path.dirname(current_app.root_path), '')),
@@ -400,8 +414,8 @@ def edit_product(product_id):
                             print(f"⚠️ Could not remove old thumbnail: {e}")
 
                 file.save(new_file_path)
-                updated_thumbnails[i] = new_db_path
-                print(f"✅ Replaced thumbnail slot {i}: {new_db_path}")
+                updated_thumbnails[slot_idx] = new_db_path
+                print(f"✅ Replaced thumbnail slot {slot_idx}: {new_db_path}")
 
         # Remove any None placeholders
         final_thumbnails = [t for t in updated_thumbnails if t is not None]

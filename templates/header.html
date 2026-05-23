@@ -38,17 +38,17 @@
 
     <div class="offcanvas_menu offcanvas_two">
         <div class="canvas_open">
-            <a href="javascript:void(0)"><i class="fa fa-bars"></i></a>
+            <a href="javascript:void(0)"><i class="fa-solid fa-bars"></i></a>
         </div>
         <div class="offcanvas_menu_wrapper">
             <div class="canvas_close">
-                <a href="javascript:void(0)"><i class="fa fa-times"></i></a>
+                <a href="javascript:void(0)"><i class="fa-solid fa-xmark"></i></a>
             </div>
             <div class="header_account">
                 <ul>
                     <li class="language">
-                        <a href="#"><img src="images/icon/language.png" alt="English"> EN <i
-                                class="fa fa-angle-down"></i></a>
+                        <a href="#"><img src="{{ url_for('static', filename='images/icon/language.png') }}" alt="English"> EN <i
+                                class="fa-solid fa-chevron-down"></i></a>
                         <ul class="dropdown_language">
                             <li><a href="#">English</a></li>
                             <li><a href="#">Germany</a></li>
@@ -56,7 +56,7 @@
                         </ul>
                     </li>
                     <li class="currency">
-                        <a href="#">INR <i class="fa fa-angle-down"></i></a>
+                        <a href="#">INR <i class="fa-solid fa-chevron-down"></i></a>
                         <ul class="dropdown_currency">
                             <li><a href="#">EUR - EURO</a></li>
                             <li><a href="#">GBP - British Pound</a></li>
@@ -64,7 +64,7 @@
                         </ul>
                     </li>
                     <li class="top_links">
-                        <a href="#">My Account <i class="fa fa-angle-down"></i></a>
+                        <a href="#">My Account <i class="fa-solid fa-chevron-down"></i></a>
                         <ul class="dropdown_links">
                             <li><a href="#">Checkout</a></li>
                             <li><a href="#">My Account</a></li>
@@ -78,22 +78,22 @@
             <div class="header_right_info">
                 <ul>
                     <li class="search_box">
-                        <a href="javascript:void(0)"><i class="fa fa-search"></i></a>
+                        <a href="javascript:void(0)"><i class="fa-solid fa-magnifying-glass"></i></a>
                         <div class="search_widget">
                             <form action="#">
                                 <input type="text" placeholder="Search Your Perfume">
-                                <button type="submit"><i class="fa fa-search"></i></button>
+                                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </form>
                         </div>
                     </li>
                     <li class="header_wishlist">
-                        <a href="#"><i class="fa fa-heart-o"></i>
+                        <a href="#"><i class="fa-regular fa-heart"></i>
                             <span class="item_count"></span>
                         </a>
                     </li>
                     <li class="mini_cart_wrapper">
     <a href="javascript:void(0)">
-        <i class="fa fa-shopping-cart"></i>
+        <i class="fa-solid fa-cart-shopping"></i>
         <span class="item_count cart_count">{{ cart_count }}</span>
     </a>
     <div class="mini_cart mini_cart2">
@@ -128,26 +128,23 @@
 
             <div id="menu" class="text-left">
                 <ul class="offcanvas_main_menu">
-                    <li class="menu-item-has-children active">
-                        <a href="{{ url_for('routes.home') }}">Home</a>
-                        
+                    <li class="menu-item-has-children {% if request.endpoint == 'routes.home' %}active{% endif %}">
+                        <a href="{{ url_for('routes.home') }}" class="{% if request.endpoint == 'routes.home' %}active{% endif %}">Home</a>
                     </li>
-                    <li class="menu-item-has-children">
-                        <a href="{{ url_for('routes.products') }}">Shop</a>
-                        
+                    <li class="menu-item-has-children {% if request.endpoint == 'routes.products' %}active{% endif %}">
+                        <a href="{{ url_for('routes.products') }}" class="{% if request.endpoint == 'routes.products' %}active{% endif %}">Shop</a>
                     </li>
-                    <li class="menu-item-has-children">
-                        <a href="{{ url_for('routes.custom_perfume') }}">Custom Perfume</a>
+                    <li class="menu-item-has-children {% if request.endpoint == 'routes.custom_perfume' %}active{% endif %}">
+                        <a href="{{ url_for('routes.custom_perfume') }}" class="{% if request.endpoint == 'routes.custom_perfume' %}active{% endif %}">Custom Perfume</a>
                     </li>
-                    <li class="menu-item-has-children">
-                      <a href="{{ url_for('routes.blog') }}">Blog</a>
-                        
+                    <li class="menu-item-has-children {% if request.endpoint == 'routes.blog' %}active{% endif %}">
+                       <a href="{{ url_for('routes.blog') }}" class="{% if request.endpoint == 'routes.blog' %}active{% endif %}">Blog</a>
                     </li>
-                    <li class="menu-item-has-children">
-                        <a href="{{ url_for('routes.contact') }}        ">Contact Us</a>
+                    <li class="menu-item-has-children {% if request.endpoint == 'routes.contact' %}active{% endif %}">
+                        <a href="{{ url_for('routes.contact') }}" class="{% if request.endpoint == 'routes.contact' %}active{% endif %}">Contact Us</a>
                     </li>
-                    <li class="menu-item-has-children">
-                     <li><a href="{{ url_for('routes.about') }}">About Us</a></li>
+                    <li class="menu-item-has-children {% if request.endpoint == 'routes.about' %}active{% endif %}">
+                        <a href="{{ url_for('routes.about') }}" class="{% if request.endpoint == 'routes.about' %}active{% endif %}">About Us</a>
                     </li>
                     {% if not session.get('user') %}
 <li class="menu-item-has-children">
@@ -163,13 +160,13 @@
             </div>
 
             <div class="offcanvas_footer">
-                <span><a href="#"><i class="fa fa-envelope-0"></i>deo@gmail.com</a></span>
+                <span><a href="#"><i class="fa-solid fa-envelope"></i>deo@gmail.com</a></span>
                 <ul>
-                    <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
-                    <li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                    <li class="pinterest"><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
-                    <li class="linkedin"><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                    <li class="google-plus"><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                    <li class="facebook"><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
+                    <li class="twitter"><a href="#"><i class="fa-brands fa-x-twitter"></i></a></li>
+                    <li class="pinterest"><a href="#"><i class="fa-brands fa-pinterest-p"></i></a></li>
+                    <li class="linkedin"><a href="#"><i class="fa-brands fa-linkedin-in"></i></a></li>
+                    <li class="google-plus"><a href="#"><i class="fa-brands fa-google-plus-g"></i></a></li>
                 </ul>
             </div>
         </div>
@@ -182,7 +179,7 @@
                     <div class="row align-items-center">
                         <div class="col-lg-2">
                             <div class="logo">
-                                <a href="index.html"><img src="images/logo.png" alt=""></a>
+                                <a href="{{ url_for('routes.home') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo"></a>
                             </div>
                         </div>
 
@@ -192,27 +189,27 @@
                                 <nav>
                                     <ul>
                                         <li>
-                                            <a href="{{ url_for('routes.home') }}" class="active">Home <i
-                                                    class="fa fa-angle-down" hidden></i></a>
+                                            <a href="{{ url_for('routes.home') }}" class="{% if request.endpoint == 'routes.home' %}active{% endif %}">Home <i
+                                                    class="fa-solid fa-chevron-down" hidden></i></a>
                                           
                                         </li>
-
+ 
                                         <li class="mega_items">
-                                            <a href="{{ url_for('routes.products') }}">Shop <i class="fa fa-angle-down" hidden></i></a>
+                                            <a href="{{ url_for('routes.products') }}" class="{% if request.endpoint == 'routes.products' %}active{% endif %}">Shop <i class="fa-solid fa-chevron-down" hidden></i></a>
                                            
                                         </li>
                                         <li>
-                                            <a href="{{ url_for('routes.custom_perfume') }}" style="color: #f89c33; font-weight: 600;">✨ Custom Perfume</a>
+                                            <a href="{{ url_for('routes.custom_perfume') }}" class="{% if request.endpoint == 'routes.custom_perfume' %}active{% endif %}">Custom Perfume</a>
                                         </li>
                                         <li>
-                                           <a href="{{ url_for('routes.blog') }}">Blog</a>
+                                           <a href="{{ url_for('routes.blog') }}" class="{% if request.endpoint == 'routes.blog' %}active{% endif %}">Blog</a>
                                             
                                         </li>
-                                        <li><a href="{{ url_for('routes.about') }}">About Us</a></li>
-<li><a href="{{ url_for('routes.contact') }}">Contact Us</a></li>
+                                        <li><a href="{{ url_for('routes.about') }}" class="{% if request.endpoint == 'routes.about' %}active{% endif %}">About Us</a></li>
+                                        <li><a href="{{ url_for('routes.contact') }}" class="{% if request.endpoint == 'routes.contact' %}active{% endif %}">Contact Us</a></li>
                                         {% if not session.get('user') %}
 <li>
-    <a href="#">User <i class="fa fa-angle-down"></i></a>
+    <a href="#">User <i class="fa-solid fa-chevron-down"></i></a>
     <ul class="sub_menu pages">
         <li><a href="{{ url_for('routes.login') }}">Log In</a></li>
         <li><a href="{{ url_for('routes.login') }}">Sign Up</a></li>
@@ -232,24 +229,24 @@
                                     <ul>
                                         <li class="search_box">
                                             <a href="javascript:void(0)">
-                                                <i class="fa fa-search"></i>
+                                                <i class="fa-solid fa-magnifying-glass"></i>
                                             </a>
                                             <div class="search_widget">
                                                 <form action="#">
                                                     <input type="text" placeholder="Search your perfume">
-                                                    <button type="submit"><i class="fa fa-search"></i></button>
+                                                    <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                                                 </form>
                                             </div>
                                         </li>
                                         <li class="header_wishlist">
                                             <a href="#">
-                                                <i class="fa fa-heart-o"></i>
+                                                <i class="fa-regular fa-heart"></i>
                                                 <span class="item_count">4</span>
                                             </a>
                                         </li>
                                         <li class="mini_cart_wrapper">
                                             <a href="javascript:void(0)">
-                                                <i class="fa fa-shopping-cart"></i>
+                                                <i class="fa-solid fa-cart-shopping"></i>
 <span class="item_count cart_count">{{ cart_count }}</span>                                            </a>
                                             <div class="mini_cart mini_cart2">
                                                 <div class="cart_gallery mini_cart_inner">
@@ -288,7 +285,7 @@
                                     <ul>
                                         <li class="top_links">
                                             <a href="#">
-                                                <i class="fa fa-cog"></i>
+                                                <i class="fa-solid fa-gear"></i>
                                             </a>
                                             <ul class="dropdown_links">
                                                 <li><a href="#">Checkout</a></li>
