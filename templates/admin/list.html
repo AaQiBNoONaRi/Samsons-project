@@ -13,12 +13,12 @@
 
         /* Page Header */
         .page-header {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 60%, #4f46e5 100%);
+            background: linear-gradient(135deg, #1b2992 0%, #667eea 100%);
             color: white;
             padding: 1.4rem 2rem;
             border-radius: 14px;
             margin-bottom: 1.5rem;
-            box-shadow: 0 8px 32px rgba(79, 70, 229, 0.25);
+            box-shadow: 0 8px 32px rgba(27, 41, 146, 0.25);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -710,10 +710,16 @@
     </style>
 </head>
 <body>
+    <!-- Hamburger menu button (visible on mobile, for opening sidebar) -->
+    <button id="hamburgerMenuOpen" class="hamburger-menu" aria-label="Open Sidebar">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
 
     {% include 'admin/sidebar.html' %}
 
-    <div class="main-content">
+    <div class="main-content" id="mainContent">
 
         <!-- Page Header -->
         <div class="page-header">

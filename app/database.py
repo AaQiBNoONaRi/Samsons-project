@@ -18,6 +18,7 @@ testimonials_collection = db[Config.testimonials_collection]
 list_collection = db[Config.list_collection]
 testers_collection = db[Config.testers_collection]
 perfume_collection = db[Config.perfume_collection]
+queries_collection = db[Config.queries_collection]
 
 def get_admin_data():
     admins = list(users_collection.find())
@@ -232,3 +233,24 @@ def get_perfume_products():
 
     total_perfumes = len(formatted_perfumes)
     return formatted_perfumes, total_perfumes
+
+def get_queries_details():
+    queries = list(queries_collection.find().sort("created_at", -1))
+    formatted_queries = []
+    for q in queries:
+        created_at = q.get("created_at")
+        formatted_queries.append({
+            "_id": str(q.get("_id")),
+            "first_name": q.get("first_name", "N/A"),
+            "last_name": q.get("last_name", "N/A"),
+            "email": q.get("email", "N/A"),
+            "phone": q.get("phone", "N/A") or "Not provided",
+            "subject": q.get("subject", "other"),
+            "message": q.get("message", "N/A"),
+            "status": q.get("status", "pending"),
+            "created_at": format_datetime(created_at) if created_at else "N/A",
+            "response_subject": q.get("response_subject", ""),
+            "response_message": q.get("response_message", "")
+        })
+    total_queries = len(formatted_queries)
+    return formatted_queries, total_queries

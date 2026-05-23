@@ -56,7 +56,51 @@ def admin_dashboard():
 @admin_bp.route("/queries", methods=["GET"])
 @admin_login_required
 def admin_queries():
-    return render_template("admin/queries.html")
+    from app.database import get_queries_details
+    queries, total_queries = get_queries_details()
+    
+    pending_queries = sum(1 for q in queries if q['status'] == 'pending')
+    responded_queries = sum(1 for q in queries if q['status'] == 'responded')
+    
+    return render_template(
+        "admin/queries.html", 
+        queries=queries, 
+        total_queries=total_queries,
+        pending_queries=pending_queries,
+        responded_queries=responded_queries
+    )
+
+@admin_bp.route("/queries/<query_id>/mark_responded", methods=["POST"])
+@admin_login_required
+def mark_query_responded(query_id):
+    from app.database import db
+    db.queries.update_one({"_id": ObjectId(query_id)}, {"$set": {"status": "responded"}})
+    return jsonify({"success": True, "message": "Query marked as responded."})
+
+@admin_bp.route("/queries/<query_id>/delete", methods=["POST", "DELETE"])
+@admin_login_required
+def delete_query(query_id):
+    from app.database import db
+    db.queries.delete_one({"_id": ObjectId(query_id)})
+    return jsonify({"success": True, "message": "Query deleted successfully."})
+
+@admin_bp.route("/queries/<query_id>/respond", methods=["POST"])
+@admin_login_required
+def respond_query(query_id):
+    from app.database import db
+    data = request.get_json() or {}
+    response_subject = data.get("subject", "Response to your inquiry")
+    response_message = data.get("message", "")
+    
+    db.queries.update_one(
+        {"_id": ObjectId(query_id)},
+        {"$set": {
+            "status": "responded",
+            "response_subject": response_subject,
+            "response_message": response_message
+        }}
+    )
+    return jsonify({"success": True, "message": "Response saved successfully."})
 
 @admin_bp.route("/costumers", methods=["GET"])
 @admin_login_required

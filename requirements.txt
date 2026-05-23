@@ -6,3 +6,5 @@ python-barcode
 Pillow  
 Werkzeug
 flask-session
+bcrypt
+pytz

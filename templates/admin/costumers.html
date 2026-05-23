@@ -6,54 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/admin/products.css')}}">
-    <title>Products</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/admin/users.css')}}">
+    <title>Customers - SAMSONS Admin</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/sidebar.css') }}">
-
-    <style>
-        /* === SHARED ADMIN HEADER === */
-        .page-header {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 60%, #4f46e5 100%);
-            color: white;
-            padding: 1.4rem 2rem;
-            border-radius: 14px;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 8px 32px rgba(79, 70, 229, 0.25);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .page-header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0;
-            letter-spacing: 0.5px;
-        }
-        .page-header p {
-            margin: 2px 0 0 0;
-            opacity: 0.75;
-            font-size: 0.85rem;
-        }
-        .page-header-left {}
-        .header-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .header-user img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.3);
-        }
-        .header-user span {
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-    </style>
 </head>
 
 <body>
@@ -64,7 +20,7 @@
         <span></span>
     </button>
     {% include 'admin/sidebar.html' %}
-    <div class="main-content">
+    <div class="main-content" id="mainContent">
         <!-- Shared Admin Page Header -->
         <div class="page-header">
             <div>
@@ -79,13 +35,10 @@
         <!-- main product container -->
         <div class="main-container">
             <div class="content-header">
-                <h1>costumers</h1>
+                <h1>Customers Log</h1>
                 <div class="header-buttons">
-                    <button>Export</button>
-                    <button>Import</button>
-                    <a href="{{ url_for('admin.add_product') }}">
-                        <button type="button">Add products</button>
-                    </a>
+                    <button id="export-btn"><i class="fas fa-file-export me-1"></i> Export</button>
+                    <button id="import-btn"><i class="fas fa-file-import me-1"></i> Import</button>
                 </div>
             </div>
             <div class="products-container">
