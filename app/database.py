@@ -127,6 +127,8 @@ def get_orders_details():
                 "thumbnail": product.get("thumbnail"),
                 "bottle_size": product.get("bottle_size") or product.get("bottleSize"),
                 "gender": product.get("gender"),
+                "is_tester": product.get("is_tester", False),
+                "boxes": product.get("boxes", [])
             })
 
         formatted_orders.append(formatted_order)
@@ -205,7 +207,8 @@ def get_tester_products():
             "packets": [
                 {
                     "size": packet.get("size"),
-                    "price": packet.get("price")
+                    "price": packet.get("price"),
+                    "image": packet.get("image")
                 } for packet in tester.get("packets", [])
             ],
             "created_at": format_datetime(created_at),

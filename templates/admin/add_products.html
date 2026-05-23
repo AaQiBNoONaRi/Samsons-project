@@ -251,6 +251,10 @@
                         <input type="date" name="discount_end_date" placeholder="End Date"
                                value="{{ product.discount_end if product else '' }}">
                     </div>
+                    <p class="field-helper" style="font-size: 0.78rem; color: #64748b; margin-top: 6px; line-height: 1.4; display: flex; align-items: flex-start; gap: 4px;">
+                        <i class="fas fa-info-circle" style="color: #6366f1; margin-top: 2px;"></i>
+                        <span>Setting a discount price automatically places this product in the <strong>"On Sale"</strong> section on the homepage.</span>
+                    </p>
                 </div>
             </div>
 
@@ -273,6 +277,14 @@
        value="{{ product.tags | join(',') if product and product.tags else '' }}">
 
                 </div>
+                <p class="field-helper" style="font-size: 0.78rem; color: #64748b; margin-top: 10px; line-height: 1.4; display: flex; align-items: flex-start; gap: 4px; border-top: 1px dashed #cbd5e1; padding-top: 10px;">
+                    <i class="fas fa-info-circle" style="color: #6366f1; margin-top: 2px;"></i>
+                    <span>
+                        To display this product in Home page sections, add these tags:
+                        <br>• <strong>"Hot Deal"</strong> (or "Hot") to place in <em>Hot Deals</em>.
+                        <br>• <strong>"Best Seller"</strong> (or "Best") to place in <em>Best Sellers</em>.
+                    </span>
+                </p>
             </div>
 
             <button type="submit" class="publish-btn">

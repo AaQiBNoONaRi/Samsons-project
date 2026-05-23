@@ -49,8 +49,7 @@
 {% for product in order.products %}
 <div class="order-item-content">
   {% if 'packet_size' in product %}
-    <!-- Tester item - use default tester image -->
-    <img src="{{ url_for('static', filename='images/images.jpeg') }}" alt="{{ product.product_name }}" class="order-item-img">
+    <img src="{{ product.thumbnail or url_for('static', filename='images/images.jpeg') }}" alt="{{ product.product_name }}" class="order-item-img">
   {% else %}
     <!-- Regular product - use thumbnail -->
     <img src="{{ product.thumbnail }}" alt="{{ product.product_name }}" class="order-item-img">

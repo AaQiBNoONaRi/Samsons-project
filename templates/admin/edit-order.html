@@ -351,6 +351,24 @@
                     </div>
                 </div>
 
+                {% if prod.boxes %}
+                <div class="form-section animate-fade-in">
+                    <h3 class="section-title"><i class="fas fa-flask" style="color: var(--secondary); margin-right: 6px;"></i> Tester Selection Details</h3>
+                    <div style="background-color: #f8f9fd; border: 1px solid #e0e3ed; padding: 15px; border-radius: 6px; display: flex; flex-direction: column; gap: 10px;">
+                        {% for box in prod.boxes %}
+                        <div style="border-bottom: 1px solid #edf1f9; padding-bottom: 8px;">
+                            <strong style="color: var(--primary); font-size: 0.85rem;">Box {{ loop.index }}:</strong>
+                            <ul style="margin-left: 20px; margin-top: 4px; color: #555; font-size: 0.8rem;">
+                                {% for item in box %}
+                                <li style="list-style-type: square; margin-bottom: 2px;">{{ item.Name if item is mapping else item }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
                 <!-- Order Status -->
                 <div class="form-section">
                     <h3 class="section-title">Order Status</h3>

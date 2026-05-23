@@ -324,7 +324,7 @@
             {% for product in order.products %}
                 <div class="product-item">
                     <div class="product-image">
-                        <img src="{{ product.thumbnail }}" alt="{{ product.name }}">
+                        <img src="{{ product.thumbnail or url_for('static', filename='images/images.jpeg') }}" alt="{{ product.product_name or product.name }}">
                     </div>
                     <div class="product-details">
                     <h4>{{ product.product_name }}</h4>

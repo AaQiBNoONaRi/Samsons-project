@@ -74,6 +74,7 @@
                                         <th>Category</th>
                                         <th>Price</th>
                                         <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="custom-perfume-details">
@@ -89,6 +90,11 @@
                                             <button class="status-btn active">Active</button>
                                             <button class="status-btn inactive">Inactive</button>
                                         </td>
+                                        <td>
+                                            <button class="delete-item-btn" title="Delete Fragrance">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td style="padding-right:2px; width:28px;"><input type="checkbox"
@@ -101,6 +107,11 @@
                                         <td>
                                             <button class="status-btn active">Active</button>
                                             <button class="status-btn inactive">Inactive</button>
+                                        </td>
+                                        <td>
+                                            <button class="delete-item-btn" title="Delete Fragrance">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -115,6 +126,11 @@
                                             <button class="status-btn active">Active</button>
                                             <button class="status-btn inactive">Inactive</button>
                                         </td>
+                                        <td>
+                                            <button class="delete-item-btn" title="Delete Fragrance">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td style="padding-right:2px; width:28px;"><input type="checkbox"
@@ -127,6 +143,11 @@
                                         <td>
                                             <button class="status-btn active">Active</button>
                                             <button class="status-btn inactive">Inactive</button>
+                                        </td>
+                                        <td>
+                                            <button class="delete-item-btn" title="Delete Fragrance">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -243,7 +264,22 @@
             </form>
         </div>
     </div>
-      <script src="/static/js/admin/list.js"></script>
+    <!-- Custom Confirm Delete Modal -->
+    <div id="deleteConfirmModal" class="custom-confirm-modal" style="display:none;">
+        <div class="confirm-modal-box">
+            <div class="confirm-modal-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3>Delete Fragrance</h3>
+            <p>Are you sure you want to delete this fragrance from the catalog? This action cannot be undone.</p>
+            <div class="confirm-modal-actions">
+                <button id="cancelDeleteBtn" class="confirm-btn btn-cancel">Cancel</button>
+                <button id="confirmDeleteBtn" class="confirm-btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/admin/list.js"></script>
 </body>
 
 </html>

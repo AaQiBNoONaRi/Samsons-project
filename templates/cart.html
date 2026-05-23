@@ -280,7 +280,7 @@
       <div class="item">
         <div class="item-img">
           {% if 'packet_size' in item %}
-            <img src="{{ url_for('static', filename='images/images.jpeg') }}" alt="{{ item.product_name }}">
+            <img src="{{ item.thumbnail or url_for('static', filename='images/images.jpeg') }}" alt="{{ item.product_name }}">
           {% else %}
             <img src="{{ item.thumbnail }}" alt="{{ item.product_name }}">
           {% endif %}

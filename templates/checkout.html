@@ -299,7 +299,7 @@
         <h2>Tester Pack ({{ quantity }} Pack of {{ packet_size }})</h2>
         <div class="item">
           <div class="item-img">
-            <img src="{{ url_for('static', filename='images/images.jpeg') }}" alt="{{ product_name }}">
+            <img src="{{ thumbnail or url_for('static', filename='images/images.jpeg') }}" alt="{{ product_name }}">
           </div>
           <div class="item-details">
             <h3>{{ product_name }}</h3>

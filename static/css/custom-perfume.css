@@ -15,7 +15,7 @@ body {
 .custom-perfume-container {
     display: flex;
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 50px auto !important;
     background: #ffffff;
     border: 1px solid #e3e6ec;
     box-shadow: 0 15px 50px rgba(0, 0, 0, 0.05);
@@ -734,94 +734,18 @@ body {
     }
 }
 
-/* ==========================================================================
-   Header Overrides (Premium Light Header)
-   ========================================================================== */
-header {
-    margin-bottom: 0 !important;
-}
-
+/* Custom Perfume Page Solid Dark Header Styling (to match other pages) */
 .header_transparent {
     position: relative !important;
-    background: #ffffff !important;
-    border-bottom: 1px solid #e3e6ec !important;
 }
 
 .header_transparent .header_container {
-    background: #ffffff !important;
-    padding: 17px 0 !important;
+    background: #1c1d22 !important;
 }
 
 .header_transparent .sticky-header.sticky {
-    background: #ffffff !important;
+    background: #1c1d22 !important;
     position: fixed !important;
     top: 0 !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
-    border-bottom: 1px solid #e3e6ec !important;
 }
 
-/* Nav links color overrides (Dark text on White header) */
-.main_menu nav>ul>li>a {
-    color: #333333 !important;
-    font-weight: 500 !important;
-    transition: color 0.3s ease !important;
-}
-
-.main_menu nav>ul>li>a:hover,
-.main_menu nav>ul>li>a.active {
-    color: #f6692a !important;
-}
-
-/* Icons & Info links color overrides (Dark on White header) */
-.header_top_right .header_right_info>ul>li>a {
-    color: #333333 !important;
-    transition: color 0.3s ease !important;
-}
-
-.header_top_right .header_right_info>ul>li:hover>a {
-    color: #f6692a !important;
-}
-
-/* Account/Cog/User links overrides */
-.header_top_right .header_account>ul>li>a {
-    color: #333333 !important;
-    transition: color 0.3s ease !important;
-}
-
-.header_top_right .header_account>ul>li:hover>a {
-    color: #f6692a !important;
-}
-
-/* User profile circle font color adjustment if needed */
-.header_account .profile-circle {
-    color: #ffffff !important;
-}
-
-/* Mobile Canvas Menu Bar button */
-.canvas_open {
-    z-index: 9999 !important;
-}
-
-.canvas_open a,
-.canvas_open a i,
-.offcanvas_two .canvas_open a,
-.offcanvas_two .canvas_open a i {
-    color: #333333 !important;
-    border-color: #333333 !important;
-}
-
-.canvas_open a:hover,
-.canvas_open a:hover i {
-    color: #f6692a !important;
-    border-color: #f6692a !important;
-}
-
-/* Make white logo visible on white header background */
-.logo a img {
-    filter: brightness(0.1) !important;
-}
-
-/* Ensure the footer logo remains original (since footer has dark background) */
-.footer_widgets .logo a img {
-    filter: none !important;
-}

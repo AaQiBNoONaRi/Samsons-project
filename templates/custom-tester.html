@@ -3,103 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Tester Fragrance Page</title>
+    <title>Samsons Custom Tester Pack Builder</title>
 
-    <!-- Styles -->
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Standard Library Stylesheets -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Application Styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom-tester.css') }}">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom-tester.css') }}?v=1.8">
 </head>
 <body>
-    <div class="container">
-        <!-- Left Section -->
-        <div class="left">
-            <img src="{{ url_for('static', filename='images/images.jpeg') }}" alt="Product Image">
+    {% include 'header.html' %}
 
-            <!-- Related Products -->
-            <div class="related-products">
-                <div class="related-products-title">RELATED PRODUCTS</div>
-                <div class="related-list">
-                    <div class="related-item"></div>
-                    <div class="related-item"></div>
-                </div>
-                <div class="related-list">
-                    <div class="related-item"></div>
-                    <div class="related-item"></div>
-                </div>
+    <div class="custom-tester-container">
+        <!-- Left Section - Showcase -->
+        <div class="left animate-fade-in">
+            <div id="selectedBottlePreview">
+                <img src="{{ url_for('static', filename='images/images.jpeg') }}" alt="Samsons Custom Tester Pack" class="selected-bottle-img">
             </div>
+
         </div>
 
-        <!-- Right Section -->
+        <!-- Right Section - Selection Form -->
         {% for t in testers %}
-        <div class="right">
-            <!-- Product Title and Price -->
-            <div class="product-title">{{ t.name }} </div>
-<div id="testerId-{{ loop.index }}" class="testerId" style="display:none;">{{ t._id }}</div>
+        <div class="right animate-slide-up">
+            <!-- Tester Metadata -->
+            <div id="testerId-{{ loop.index }}" class="testerId" style="display:none;">{{ t._id }}</div>
+            
+            <div class="product-title">{{ t.name }}</div>
+            
+            <div class="price-container">
+                <span class="product-price" id="productPrice">Rs. {{ t.packets[0].price }}</span>
+                <span class="product-old-price" id="productOldPrice"></span>
+            </div>
 
-            <span class="product-price" id="productPrice">Rs. {{ t.packets[0].price }}</span>
-            <span class="product-old-price" id="productOldPrice"></span>
-
-            <!-- ✅ Pass packets to JS -->
-            <script id="packetsData" type="application/json">
-                {{ t.packets | tojson }}
-            </script>
-
-            <!-- Social Links -->
+            <!-- Follow us -->
             <div class="social">
                 <span>FOLLOW US ON</span>
                 <div class="social-icons">
-                    <a href="#" title="Facebook">&#xf09a;</a>
-                    <a href="#" title="Twitter">&#xf099;</a>
-                    <a href="#" title="Pinterest">&#xf0d2;</a>
-                    <a href="#" title="Google+">&#xf0d5;</a>
-                    <a href="#" title="LinkedIn">&#xf0e1;</a>
+                    <a href="#" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" title="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+                    <a href="#" title="Google+"><i class="fa-brands fa-google"></i></a>
+                    <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
                 </div>
             </div>
 
-            <!-- Product Description -->
+            <!-- Description -->
             <div class="product-desc">
-                <div class="product-desc-title">Samsons Signature Tester Pack (6ml each)</div>
-                <p>
-                    Explore premium fragrances of your choice with the <strong>Samsons Signature Tester Pack</strong>. 
-                    Each tester contains 6ml of fragrance - perfect for sampling, gifting, or traveling with your favorite scents.
-                </p>
-
-                <div class="product-desc-title">Why You'll Love It</div>
-                <ul>
-                    <li><span class="product-desc-highlight">Customizable –</span> Choose any fragrances from our collection.</li>
-                    <li><span class="product-desc-highlight">Premium Quality –</span> Same formula as full-size bottles.</li>
-                    <li><span class="product-desc-highlight">Perfect Size –</span> 6ml per tester, travel-friendly and long-lasting.</li>
-                    <li><span class="product-desc-highlight">Great Value –</span> Try multiple scents without full-size commitment.</li>
-                </ul>
-
-                <div class="product-desc-title">Ideal For</div>
-                <ul>
-                    <li>Testing scents before a full purchase (6ml lasts 2-3 weeks with daily use)</li>
-                    <li>Creating a mini fragrance wardrobe for different occasions</li>
-                    <li>Personalized, thoughtful gifting</li>
-                    <li>Travel companions - TSA-friendly size</li>
-                </ul>
+                Explore premium fragrances of your choice with the <strong>Samsons Signature Tester Pack</strong>. Each tester contains 6ml of fragrance - perfect for sampling, gifting, or traveling with your favorite scents.
             </div>
 
             <!-- Form Section -->
-            <form id="testerForm">
+            <form id="testerForm" class="selection-form">
+                <!-- JSON Packets Data for JS -->
+                <script id="packetsData" type="application/json">
+                    {{ t.packets | tojson }}
+                </script>
+
                 <div class="form-section">
-                    <label class="form-label" for="packetSize">TESTER PACKET SIZE (6ml per tester)</label>
+                    <label class="form-label" for="packetSize">
+                        TESTER PACKET SIZE (6ml per tester)
+                    </label>
                     <div id="packetSizeDropdown"></div>
                 </div>
 
-                <!-- Fragrances List -->
-                <div class="form-section tester-list" id="testerList">
-                    {% for frag in t.fragrances %}
-                        <label>
-                            <input type="checkbox" name="fragrances" value="{{ frag }}"> {{ frag }} (6ml)
-                        </label>
-                    {% endfor %}
+                <!-- Dynamic Fragrances Slots Grid -->
+                <div class="form-section">
+                    <label class="form-label">
+                        SELECT YOUR FRAGRANCES
+                    </label>
+                    <div class="tester-list" id="testerList">
+                        <!-- Populated Dynamically by JS -->
+                    </div>
                 </div>
 
-                <!-- Quantity and Actions -->
+                <!-- Quantity Section -->
                 <div class="quantity-section">
+                    <label for="quantity" class="form-label">Number of Packs:</label>
                     <div class="quantity-box">
                         <button type="button" class="quantity-btn" id="decreaseQty">-</button>
                         <span class="quantity-value">
@@ -107,21 +96,32 @@
                         </span>
                         <button type="button" class="quantity-btn" id="increaseQty">+</button>
                     </div>
-                    <button type="submit" class="add-cart-btn">ADD TO CART</button>
-                    <button type="button" class="buy-now-btn">BUY NOW</button>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button type="submit" class="add-cart-btn btn-add-cart">ADD TO CART</button>
+                    <button type="button" class="buy-now-btn btn-buy-now">BUY NOW</button>
                 </div>
             </form>
         </div>
         {% endfor %}
     </div>
 
+    {% include 'footer.html' %}
 
     <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+    
+    <script src="{{ url_for('static', filename='js/header.js') }}?v=1.1"></script>
+    
     <script>
-        // Get fragrances from Flask and make them available to JS
         const fragrances = {{ fragrances|tojson }};
     </script>
-    <script src="{{ url_for('static', filename='js/custom-tester.js') }}"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="{{ url_for('static', filename='js/custom-tester.js') }}?v=1.8"></script>
 </body>
 </html>

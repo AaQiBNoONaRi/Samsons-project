@@ -6,7 +6,7 @@ from bson import ObjectId
 from app.utils import get_dashboard_metrics, get_inventory_alerts, get_top_selling_products # print_all_product_stocks
 from werkzeug.utils import secure_filename
 from app.database import admin_collection, orders_collection
-from app.database import get_admin_data, get_products, get_orders_details, users_collection, products_collection, get_list_products, get_perfume_products # adjust the import path based on your structure
+from app.database import get_admin_data, get_products, get_orders_details, users_collection, products_collection, get_list_products, get_perfume_products, get_tester_products # adjust the import path based on your structure
 import os
 from app.utils import admin_login_required
 from datetime import datetime
@@ -601,6 +601,32 @@ def edit_order(order_id):
 @admin_login_required
 def update_order(order_id):
     from bson import ObjectId
+    
+    order = orders_collection.find_one({"_id": ObjectId(order_id)})
+    if not order:
+        return "Order not found", 404
+
+    # Keep existing products list and update the first item in-place
+    products = order.get("products", [])
+    if isinstance(products, list) and len(products) > 0:
+        first_product = products[0]
+        if isinstance(first_product, dict):
+            first_product["product_name"] = request.form.get("product_name")
+            if "bottleSize" in first_product:
+                first_product["bottleSize"] = request.form.get("size")
+            if "bottle_size" in first_product:
+                first_product["bottle_size"] = request.form.get("size")
+            first_product["gender"] = request.form.get("gender")
+            first_product["quantity"] = int(request.form.get("quantity") or 0)
+            
+            # Recalculate price totals safely
+            try:
+                price = float(first_product.get("price") or 0.0)
+            except (ValueError, TypeError):
+                price = 0.0
+            first_product["total_price"] = price * first_product["quantity"]
+            products[0] = first_product
+
     updated_data = {
         "status": request.form.get("status"),
         "details": {
@@ -618,12 +644,11 @@ def update_order(order_id):
             "name": request.form.get("product_name"),
             "size": request.form.get("size"),
             "gender": request.form.get("gender"),
-            "thumbnail": request.form.get("thumbnail"),
+            "thumbnail": request.form.get("thumbnail") or (products[0].get("thumbnail") if products and isinstance(products[0], dict) else ""),
             "quantity": int(request.form.get("quantity") or 0),
-
             "subtotal": float(request.form.get("subtotal") or 0.0),
-
-        }
+        },
+        "products": products
     }
 
     result = orders_collection.update_one(
@@ -631,10 +656,7 @@ def update_order(order_id):
         {"$set": updated_data}
     )
 
-    if result.modified_count == 1:
-        return redirect(url_for('admin.orders'))
-    else:
-        return "No changes made", 400
+    return redirect(url_for('admin.orders'))
 
 
 @admin_bp.route("/analytics", methods=["GET"])
@@ -1056,4 +1078,304 @@ def delete_bottle_image():
         return jsonify({'success': True, 'message': 'Bottle image deleted successfully!'})
     except Exception as e:
         print(f"❌ Error deleting bottle image: {e}")
-        return jsonify({'success': False, 'message': str(e)}), 500
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+
+@admin_bp.route('/import_list', methods=['POST'])
+@admin_login_required
+def import_list():
+    import csv
+    import io
+    from datetime import datetime
+    
+    if 'csv_file' not in request.files:
+        return jsonify({'success': False, 'message': 'No file uploaded'}), 400
+        
+    file = request.files['csv_file']
+    if not file or file.filename == '':
+        return jsonify({'success': False, 'message': 'Empty file selection'}), 400
+        
+    if not file.filename.endswith('.csv'):
+        return jsonify({'success': False, 'message': 'File must be a CSV (.csv)'}), 400
+        
+    try:
+        # Read the file content
+        stream = io.StringIO(file.stream.read().decode("utf-8"), newline=None)
+        csv_reader = csv.reader(stream)
+        
+        rows = list(csv_reader)
+        if not rows:
+            return jsonify({'success': False, 'message': 'CSV file is empty'}), 400
+            
+        # Determine if first row is a header
+        first_row = rows[0]
+        has_header = False
+        if len(first_row) > 0:
+            val = first_row[0].strip().lower()
+            if val in ['id', 'number', 'no', 's.no', 'sno'] or not val.isdigit():
+                has_header = True
+                
+        start_idx = 1 if has_header else 0
+        
+        inserted_items = []
+        
+        for row in rows[start_idx:]:
+            if not row or len(row) < 5:
+                # Skip empty rows or rows with insufficient columns
+                continue
+                
+            # Extract columns: ID, Name, Type, Category, Price
+            try:
+                item_id = str(row[0]).strip()
+                name = str(row[1]).strip()
+                type_val = str(row[2]).strip()
+                category = str(row[3]).strip()
+                price_str = str(row[4]).strip().replace('Rs.', '').replace('Rs', '').replace('$', '').replace(',', '').strip()
+                price = float(price_str) if price_str else 0.0
+            except Exception as parse_err:
+                print(f"⚠️ Parsing row error: {parse_err} on row {row}")
+                continue
+                
+            if not item_id or not name:
+                continue
+                
+            item_data = {
+                "ID": item_id,
+                "Name": name,
+                "Type": type_val,
+                "Category": category,
+                "Price": price,
+                "status": "Active",
+                "created_at": datetime.utcnow(),
+                "updated_at": datetime.utcnow()
+            }
+            inserted_items.append(item_data)
+            
+        if not inserted_items:
+            return jsonify({'success': False, 'message': 'No valid rows found to import'}), 400
+            
+        # Insert many into MongoDB list collection
+        result = db[Config.list_collection].insert_many(inserted_items)
+        count = len(result.inserted_ids)
+        
+        return jsonify({'success': True, 'count': count})
+        
+    except Exception as e:
+        print(f"❌ CSV Import error: {e}")
+        return jsonify({'success': False, 'message': f'Server error: {str(e)}'}), 500
+
+
+@admin_bp.route('/delete_list_item/<item_id>', methods=['POST'])
+@admin_login_required
+def delete_list_item(item_id):
+    from bson import ObjectId
+    try:
+        try:
+            oid = ObjectId(item_id)
+        except Exception:
+            return jsonify({'success': False, 'message': 'Invalid ID format'}), 400
+            
+        result = db[Config.list_collection].delete_one({"_id": oid})
+        
+        if result.deleted_count > 0:
+            return jsonify({'success': True, 'message': 'Fragrance deleted successfully!'})
+        else:
+            return jsonify({'success': False, 'message': 'Item not found in database'}), 404
+            
+    except Exception as e:
+        print(f"❌ Error deleting fragrance item: {e}")
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+
+# ==========================================
+# 🧪 ADMIN CUSTOM TESTER CRUD MANAGEMENT
+# ==========================================
+
+@admin_bp.route('/testers', methods=['GET'])
+@admin_login_required
+def testers():
+    testers_list, total_testers = get_tester_products()
+    
+    # If testers collection is completely empty, insert a default signature configuration
+    if total_testers == 0:
+        default_tester = {
+            "name": "Samsons Signature Tester",
+            "type": "tester",
+            "available": True,
+            "currency": "PKR",
+            "packets": [
+                {"size": 3, "price": 700},
+                {"size": 6, "price": 1000}
+            ],
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow()
+        }
+        db[Config.testers_collection].insert_one(default_tester)
+        testers_list, total_testers = get_tester_products()
+
+    return render_template(
+        'admin/testers.html',
+        testers=testers_list,
+        total_testers=total_testers
+    )
+
+
+@admin_bp.route('/add_tester', methods=['POST'])
+@admin_login_required
+def add_tester():
+    name = request.form.get('testerName')
+    if not name:
+        flash("Tester name is required", "warning")
+        return redirect(url_for('admin.testers'))
+        
+    tester_data = {
+        "name": name,
+        "type": "tester",
+        "available": True,
+        "currency": "PKR",
+        "packets": [],
+        "created_at": datetime.utcnow(),
+        "updated_at": datetime.utcnow()
+    }
+    
+    db[Config.testers_collection].insert_one(tester_data)
+    flash("Tester configuration added successfully!", "success")
+    return redirect(url_for('admin.testers'))
+
+
+@admin_bp.route('/add_tester_packet', methods=['POST'])
+@admin_login_required
+def add_tester_packet():
+    tester_id = request.form.get('testerId')
+    size_str = request.form.get('packetSize')
+    price_str = request.form.get('packetPrice')
+
+    if not tester_id or not size_str or not price_str:
+        flash("All packet fields are required", "warning")
+        return redirect(url_for('admin.testers'))
+
+    try:
+        size = int(size_str)
+        price = float(price_str)
+    except ValueError:
+        flash("Invalid packet size or price format", "danger")
+        return redirect(url_for('admin.testers'))
+
+    try:
+        oid = ObjectId(tester_id)
+    except Exception:
+        flash("Invalid Tester ID format", "danger")
+        return redirect(url_for('admin.testers'))
+
+    tester = db[Config.testers_collection].find_one({"_id": oid})
+    if not tester:
+        flash("Tester config not found", "danger")
+        return redirect(url_for('admin.testers'))
+
+    # Handle packet image upload if provided
+    image_url = None
+    if 'packetImage' in request.files:
+        file = request.files['packetImage']
+        if file and file.filename:
+            filename = secure_filename(f"tester_{tester_id}_{size}_{file.filename}")
+            # Ensure upload folder exists
+            upload_folder = os.path.abspath(os.path.join(current_app.root_path, 'static/uploads/testers'))
+            os.makedirs(upload_folder, exist_ok=True)
+            filepath = os.path.join(upload_folder, filename)
+            try:
+                file.save(filepath)
+                image_url = f"/static/uploads/testers/{filename}"
+                print(f"✅ Saved packet image: {filepath}")
+            except Exception as e:
+                print(f"❌ Failed to save packet image {filename}: {e}")
+
+    packets = tester.get('packets', [])
+    
+    # If packet size already exists, update price & image, else add new
+    existing_packet = next((p for p in packets if p.get('size') == size), None)
+    if existing_packet:
+        if not image_url:
+            image_url = existing_packet.get('image')
+            
+        db[Config.testers_collection].update_one(
+            {"_id": oid, "packets.size": size},
+            {"$set": {
+                "packets.$.price": price, 
+                "packets.$.image": image_url,
+                "updated_at": datetime.utcnow()
+            }}
+        )
+        flash(f"Updated configuration for {size}-tester packet to Rs. {price}", "success")
+    else:
+        db[Config.testers_collection].update_one(
+            {"_id": oid},
+            {
+                "$push": {
+                    "packets": {
+                        "size": size, 
+                        "price": price, 
+                        "image": image_url
+                    }
+                },
+                "$set": {"updated_at": datetime.utcnow()}
+            }
+        )
+        flash(f"Added {size}-tester packet configuration", "success")
+
+    return redirect(url_for('admin.testers'))
+
+
+@admin_bp.route('/delete_tester_packet/<tester_id>/<int:size>', methods=['POST'])
+@admin_login_required
+def delete_tester_packet(tester_id, size):
+    try:
+        oid = ObjectId(tester_id)
+    except Exception:
+        return jsonify({'success': False, 'message': 'Invalid ID'}), 400
+
+    result = db[Config.testers_collection].update_one(
+        {"_id": oid},
+        {
+            "$pull": {"packets": {"size": size}},
+            "$set": {"updated_at": datetime.utcnow()}
+        }
+    )
+
+    if result.modified_count > 0:
+        return jsonify({'success': True, 'message': f'Packet of size {size} deleted successfully!'})
+    return jsonify({'success': False, 'message': 'Packet configuration not found'}), 404
+
+
+@admin_bp.route('/toggle_tester_availability/<tester_id>', methods=['POST'])
+@admin_login_required
+def toggle_tester_availability(tester_id):
+    try:
+        oid = ObjectId(tester_id)
+    except Exception:
+        return jsonify({'success': False, 'message': 'Invalid ID'}), 400
+
+    tester = db[Config.testers_collection].find_one({"_id": oid})
+    if not tester:
+        return jsonify({'success': False, 'message': 'Tester not found'}), 404
+
+    new_val = not tester.get('available', False)
+    db[Config.testers_collection].update_one(
+        {"_id": oid},
+        {"$set": {"available": new_val, "updated_at": datetime.utcnow()}}
+    )
+
+    return jsonify({'success': True, 'available': new_val})
+
+
+@admin_bp.route('/delete_tester/<tester_id>', methods=['POST'])
+@admin_login_required
+def delete_tester(tester_id):
+    try:
+        oid = ObjectId(tester_id)
+    except Exception:
+        return jsonify({'success': False, 'message': 'Invalid ID'}), 400
+
+    result = db[Config.testers_collection].delete_one({"_id": oid})
+    if result.deleted_count > 0:
+        return jsonify({'success': True, 'message': 'Tester config deleted successfully!'})
+    return jsonify({'success': False, 'message': 'Tester config not found'}), 404

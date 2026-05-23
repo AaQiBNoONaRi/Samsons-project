@@ -2,6 +2,13 @@ import sys
 import site
 import os
 
+
+# Reconfigure stdout and stderr to use UTF-8 encoding
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8')
+
 # Ensure installed site-packages are searched before the project directory
 # This prevents a local `flask_session/` folder from shadowing the
 # installed `flask_session` package.

@@ -37,9 +37,6 @@
 <div class="off_canvars_overlay"></div>
 
     <div class="offcanvas_menu offcanvas_two">
-        <div class="canvas_open">
-            <a href="javascript:void(0)"><i class="fa-solid fa-bars"></i></a>
-        </div>
         <div class="offcanvas_menu_wrapper">
             <div class="canvas_close">
                 <a href="javascript:void(0)"><i class="fa-solid fa-xmark"></i></a>
@@ -86,11 +83,7 @@
                             </form>
                         </div>
                     </li>
-                    <li class="header_wishlist">
-                        <a href="#"><i class="fa-regular fa-heart"></i>
-                            <span class="item_count"></span>
-                        </a>
-                    </li>
+
                     <li class="mini_cart_wrapper">
     <a href="javascript:void(0)">
         <i class="fa-solid fa-cart-shopping"></i>
@@ -137,6 +130,9 @@
                     <li class="menu-item-has-children {% if request.endpoint == 'routes.custom_perfume' %}active{% endif %}">
                         <a href="{{ url_for('routes.custom_perfume') }}" class="{% if request.endpoint == 'routes.custom_perfume' %}active{% endif %}">Custom Perfume</a>
                     </li>
+                    <li class="menu-item-has-children {% if request.endpoint == 'routes.testers' %}active{% endif %}">
+                        <a href="{{ url_for('routes.testers') }}" class="{% if request.endpoint == 'routes.testers' %}active{% endif %}">Testers</a>
+                    </li>
                     <li class="menu-item-has-children {% if request.endpoint == 'routes.blog' %}active{% endif %}">
                        <a href="{{ url_for('routes.blog') }}" class="{% if request.endpoint == 'routes.blog' %}active{% endif %}">Blog</a>
                     </li>
@@ -175,6 +171,9 @@
     <header style="margin-bottom : -30px">
         <div class="main_header header_transparent header-mobile-m">
             <div class="header_container sticky-header">
+                <div class="canvas_open">
+                    <a href="javascript:void(0)"><i class="fa-solid fa-bars"></i></a>
+                </div>
                 <div class="container-fluid">
                     <div class="row align-items-center">
                         <div class="col-lg-2">
@@ -200,6 +199,9 @@
                                         </li>
                                         <li>
                                             <a href="{{ url_for('routes.custom_perfume') }}" class="{% if request.endpoint == 'routes.custom_perfume' %}active{% endif %}">Custom Perfume</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url_for('routes.testers') }}" class="{% if request.endpoint == 'routes.testers' %}active{% endif %}">Testers</a>
                                         </li>
                                         <li>
                                            <a href="{{ url_for('routes.blog') }}" class="{% if request.endpoint == 'routes.blog' %}active{% endif %}">Blog</a>
@@ -238,12 +240,7 @@
                                                 </form>
                                             </div>
                                         </li>
-                                        <li class="header_wishlist">
-                                            <a href="#">
-                                                <i class="fa-regular fa-heart"></i>
-                                                <span class="item_count">4</span>
-                                            </a>
-                                        </li>
+
                                         <li class="mini_cart_wrapper">
                                             <a href="javascript:void(0)">
                                                 <i class="fa-solid fa-cart-shopping"></i>

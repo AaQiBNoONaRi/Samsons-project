@@ -483,20 +483,23 @@ def checkout():
     checkout_data = session.get('checkout_data')
     if checkout_data:
         print("🟢 TESTER DATA FOUND IN SESSION")
+        unit_price = float(checkout_data.get('final_price', 0))
+        quantity = int(checkout_data.get('quantity', 1))
+        total_price = unit_price * quantity
         return render_template(
             'checkout.html',
             product_id=checkout_data.get('product_id'),
             product_name=checkout_data.get('product_name'),
-            price=checkout_data.get('final_price', 0),
-            quantity=checkout_data.get('quantity', 1),
-            total_price=checkout_data.get('final_price', 0),
+            price=unit_price,
+            quantity=quantity,
+            total_price=total_price,
             description="Custom Tester Pack",
             cart=[],
             gender="Unisex",
             stock=99,
             size=checkout_data.get('packet_size', ''),
             Product_count=1,
-            thumbnail="",
+            thumbnail=checkout_data.get('thumbnail') or url_for('static', filename='images/images.jpeg'),
             boxes=checkout_data.get('boxes', []),
             packet_size=checkout_data.get('packet_size', '')
         )
@@ -591,6 +594,30 @@ def remove_cart_item():
 
     print(f"🗑️ Remove request - product_id: {product_id}, bottle_size: {bottle_size}, "
           f"packet_size: {packet_size_str}, fragrance_id: {fragrance_id}, index: {item_index}")
+
+    # ✅ Handle removing a custom perfume from Buy Now direct checkout session first
+    if 'buy_now_item' in session:
+        buy_now_item = session['buy_now_item']
+        perfumes = buy_now_item.get('perfumes', [])
+        new_perfumes = [p for p in perfumes if p.get('fragrance_id') != fragrance_id]
+        print(f"[REMOVE] Removing custom perfume with fragrance_id: {fragrance_id} from buy_now_item. Remaining: {len(new_perfumes)}")
+        if len(new_perfumes) == 0:
+            session.pop('buy_now_item', None)
+        else:
+            buy_now_item['perfumes'] = new_perfumes
+            buy_now_item['quantity'] = len(new_perfumes)
+            total_price = 0.0
+            for p in new_perfumes:
+                price_str = p.get("price", "0")
+                try:
+                    perfume_price = float(price_str) if price_str and price_str != "—" else 0.0
+                except (ValueError, TypeError):
+                    perfume_price = 0.0
+                total_price += perfume_price
+            buy_now_item['total_price'] = total_price
+            session['buy_now_item'] = buy_now_item
+        session.modified = True
+        return redirect(url_for('routes.checkout'))
 
     if 'cart' in session:
         original_count = len(session['cart'])
@@ -750,22 +777,32 @@ def buy_now():
     
     if checkout_data:
         # Handle tester pack checkout
-        quantity = checkout_data.get('quantity', 1)
-        final_price = checkout_data.get('final_price', 0)
+        quantity = int(request.form.get("product_quantity") or checkout_data.get('quantity', 1))
+        final_price = float(request.form.get("price") or checkout_data.get('final_price', 0))
         total_price = final_price * quantity
+        
+        # Duplicate or truncate boxes selections to match quantity
+        boxes = checkout_data.get('boxes', [])
+        if boxes:
+            if len(boxes) < quantity:
+                last_box = boxes[-1]
+                while len(boxes) < quantity:
+                    boxes.append(last_box)
+            elif len(boxes) > quantity:
+                boxes = boxes[:quantity]
         
         cart = [{
             "product_id": checkout_data.get('product_id', 'tester_pack'),
             "product_name": checkout_data.get('product_name'),
             "packet_size": checkout_data.get('packet_size'),
             "quantity": quantity,
-            "boxes": checkout_data.get('boxes', []),
-            "price": checkout_data.get('final_price', 0),
-            "product_price": checkout_data.get('final_price', 0),
+            "boxes": boxes,
+            "price": final_price,
+            "product_price": final_price,
             "final_price": final_price,
             "total_price": total_price,
             "description": "Custom Tester Pack",
-            "thumbnail": "static/images/perfume.jpg",
+            "thumbnail": checkout_data.get('thumbnail') or url_for('static', filename='images/images.jpeg'),
             "bottleSize": checkout_data.get('packet_size', ''),
             "gender": "Unisex",
             "stock": 99,
@@ -871,26 +908,28 @@ def buy_now():
 
     inserted = orders_collection.insert_one(order_data)
 
-    # 🔁 Update stock (only for regular products, not testers)
+    # 🔁 Update stock (only for regular products, not testers or custom perfumes)
     if not checkout_data:  # Only update stock for regular products
         try:
-            product_oid = ObjectId(cart[0]['product_id'])
-            product = products_collection.find_one({'_id': product_oid})
-            if product:
-                current_stock = product.get('stock', 0)
-                updated_stock = current_stock - quantity
-                if updated_stock >= 0:
-                    products_collection.update_one(
-                        {'_id': product_oid},
-                        {'$set': {'stock': updated_stock, 'update_at': datetime.utcnow()}}
-                    )
+            p_id = cart[0].get('product_id')
+            if p_id and not p_id.startswith("custom_perfume"):
+                product_oid = ObjectId(p_id)
+                product = products_collection.find_one({'_id': product_oid})
+                if product:
+                    current_stock = product.get('stock', 0)
+                    updated_stock = current_stock - quantity
+                    if updated_stock >= 0:
+                        products_collection.update_one(
+                            {'_id': product_oid},
+                            {'$set': {'stock': updated_stock, 'update_at': datetime.utcnow()}}
+                        )
         except (InvalidId, TypeError) as e:
             print(f"❌ Error updating stock: {e}")
 
-    # 🧹 Clear checkout data if it was a tester
-    if checkout_data:
-        session.pop('checkout_data', None)
-        session.modified = True
+    # 🧹 Clear direct checkout data from session
+    session.pop('checkout_data', None)
+    session.pop('buy_now_item', None)
+    session.modified = True
 
     # 🔐 Encrypt and redirect
     encrypted_id = serializer.dumps(str(inserted.inserted_id))
@@ -997,6 +1036,19 @@ def add_to_cart():
     print("=== Incoming add_to_cart payload ===")
     print(data)
 
+    # ✅ Normalise keys & pricing for cart integration
+    data["is_tester"] = True
+    unit_price = float(data.get("price") or data.get("product_price", 0))
+    quantity = int(data.get("quantity", 1))
+    data["price"] = unit_price
+    data["product_price"] = unit_price
+    data["final_price"] = unit_price
+    data["total_price"] = unit_price * quantity
+    data["bottleSize"] = data.get("packet_size", "")
+    data["gender"] = "Unisex"
+    data["stock"] = 99
+    data["thumbnail"] = data.get("thumbnail") or url_for('static', filename='images/images.jpeg')
+
     # Store cart in session
     cart = session.get("cart", [])
     cart.append(data)
@@ -1006,6 +1058,7 @@ def add_to_cart():
     print(cart)
 
     session["cart"] = cart
+    session.modified = True
 
     return jsonify({
         "status": "success",
@@ -1027,7 +1080,11 @@ def tester_buy_now():
     # Calculate final price
     quantity = data.get("quantity", 1)
     product_price = data.get("product_price", 0)
-    final_price = quantity * product_price
+
+    # ✅ Clear any custom perfume buy now data first
+    if 'buy_now_item' in session:
+        session.pop('buy_now_item')
+        print("[CLEANUP] Cleared old buy_now_item from session")
 
     # Save to session (for checkout page)
     session["checkout_data"] = {
@@ -1036,14 +1093,17 @@ def tester_buy_now():
         "packet_size": data.get("packet_size"),
         "quantity": quantity,
         "boxes": data.get("boxes", []),
-        "final_price": final_price   # ✅ FIXED
+        "final_price": product_price,   # Store the unit price of one pack!
+        "thumbnail": data.get("thumbnail") or url_for('static', filename='images/images.jpeg')
     }
 
-    print(f"🟢 Final price received: {final_price}")
+    session.modified = True
+
+    print(f"[TESTER] Tester pack unit price: {product_price}, quantity: {quantity}")
     return jsonify({
         "status": "success",
         "message": "Proceeding to checkout...",
-        "final_price": final_price,
+        "final_price": product_price * quantity,
         "redirect_url": url_for("routes.checkout")  # redirect to checkout page
     })
 
@@ -1176,15 +1236,20 @@ def custom_add_to_cart():
             perfume_price = 0.0
             
         cart_item = {
-            "perfume_name": perfume.get("fragrance_name", "Custom Perfume"),
-            "perfume_image": perfume.get("bottle_image", ""),
-            "perfume_price": perfume_price,
-            "ml": int(perfume.get("size", "0").replace("ml", "")),
-            "quantity": total_quantity,  # Total quantity applies to all perfumes
-            "total_price": total_price,
-            "fragrance_id": perfume.get("fragrance_id"),
+            "product_id": f"custom_perfume_{perfume.get('fragrance_id', 'unknown')}",
+            "product_name": perfume.get("fragrance_name", "Custom Perfume"),
+            "price": perfume_price,
+            "product_price": perfume_price,
+            "final_price": perfume_price,
+            "quantity": total_quantity,
+            "total_price": perfume_price * total_quantity,
+            "description": "Custom Perfume",
+            "thumbnail": perfume.get("bottle_image") or url_for('static', filename='images/placeholder.png'),
             "bottleSize": perfume.get("size", ""),
-            "is_custom": True
+            "gender": "Unisex",
+            "stock": 99,
+            "is_custom_perfume": True,
+            "fragrance_id": perfume.get("fragrance_id")
         }
         session['cart'].append(cart_item)
 

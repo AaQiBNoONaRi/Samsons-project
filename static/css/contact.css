@@ -110,23 +110,28 @@
   }
 
   .canvas_open {
-    position: absolute;
-    right: 17px;
-    top: 34px;
-    z-index: 9;
+    display: none;
   }
 
-  @media only screen and (min-width: 768px) and (max-width: 991px) {
+  @media only screen and (max-width: 991px) {
     .canvas_open {
+      display: block;
+      position: absolute;
       right: 25px;
-      top: 26px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 9999;
     }
   }
 
   @media only screen and (max-width: 767px) {
     .canvas_open {
+      display: block;
+      position: absolute;
       right: 19px;
-      top: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 9999;
     }
   }
 
@@ -1056,11 +1061,13 @@
   .header_container {
     padding: 22px 0;
     background: #1c1d22;
+    position: relative;
   }
 
   @media only screen and (max-width: 767px) {
     .header_container {
       padding: 25px 0;
+      position: relative;
     }
   }
 
@@ -1086,23 +1093,27 @@
 
   @media only screen and (min-width: 768px) and (max-width: 991px) {
     .sticky-header.sticky {
-      position: inherit;
-      box-shadow: inherit;
-      animation-name: inherit;
-      padding: 0;
-      background: inherit;
-      opacity: inherit;
+      position: fixed;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.11);
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+      background: #1c1d22;
+      padding: 10px 0;
     }
   }
 
   @media only screen and (max-width: 767px) {
     .sticky-header.sticky {
-      position: inherit;
-      box-shadow: inherit;
-      animation-name: inherit;
-      padding: 0;
-      background: inherit;
-      opacity: inherit;
+      position: fixed;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.11);
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+      background: #1c1d22;
+      padding: 10px 0;
     }
   }
 

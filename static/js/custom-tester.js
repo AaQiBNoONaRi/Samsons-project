@@ -168,11 +168,20 @@ function renderPacketSizeDropdown() {
 
     packetSizeValue = defaultPacket.size.toString();
 
-    // ✅ Set default price
+    // ✅ Set default price and image
     const priceEl = document.getElementById('productPrice');
     priceEl.textContent = `Rs. ${defaultPacket.price}`;
     const oldPriceEl = document.getElementById('productOldPrice');
-    oldPriceEl.textContent = "";
+    if (oldPriceEl) oldPriceEl.textContent = "";
+    
+    const bottleImgEl = document.querySelector('.selected-bottle-img');
+    if (bottleImgEl) {
+        if (defaultPacket.image) {
+            bottleImgEl.src = defaultPacket.image;
+        } else {
+            bottleImgEl.src = '/static/images/images.jpeg';
+        }
+    }
 
     // Render tester boxes immediately
     renderTesterBoxes();
@@ -185,11 +194,19 @@ function renderPacketSizeDropdown() {
                 testerSelections = [];
                 renderTesterBoxes();
 
-                // ✅ Update price dynamically based on DB packets
+                // ✅ Update price and image dynamically based on DB packets
                 const selectedPacket = packets.find(p => p.size.toString() === packetSizeValue);
                 if (selectedPacket) {
                     priceEl.textContent = `Rs. ${selectedPacket.price}`;
-                    oldPriceEl.textContent = ""; // or maybe show discounted price logic later
+                    if (oldPriceEl) oldPriceEl.textContent = ""; 
+                    
+                    if (bottleImgEl) {
+                        if (selectedPacket.image) {
+                            bottleImgEl.src = selectedPacket.image;
+                        } else {
+                            bottleImgEl.src = '/static/images/images.jpeg';
+                        }
+                    }
                 }
             }
         }, 100);
@@ -223,9 +240,12 @@ function renderPacketSizeDropdown() {
         handleCartOrBuy('cart');
     });
 
-    document.querySelector('.buy-now-btn').addEventListener('click', function () {
-        handleCartOrBuy('buy');
-    });
+    const buyNowBtn = document.querySelector('.btn-buy-now') || document.querySelector('.buy-now-btn');
+    if (buyNowBtn) {
+        buyNowBtn.addEventListener('click', function () {
+            handleCartOrBuy('buy');
+        });
+    }
 
     // === Shared function for Cart and Buy Now ===
     // === Shared function for Cart and Buy Now ===
@@ -249,18 +269,31 @@ function handleCartOrBuy(type) {
         allBoxes.push(boxFragrances);
     }
 
-    // ✅ Extract price
+    // ✅ Extract price and thumbnail image
     const priceText = document.querySelector('.product-price')?.textContent || '';
     const priceInt = parseInt(priceText.replace(/[^0-9]/g, '')) || 0;
+
+    const bottleImgEl = document.querySelector('.selected-bottle-img');
+    const imageUrl = bottleImgEl ? bottleImgEl.src : '/static/images/images.jpeg';
+    
+    // Resolve absolute URL path to relative path
+    let relativeImageUrl = '/static/images/images.jpeg';
+    try {
+        const urlObj = new URL(imageUrl, window.location.origin);
+        relativeImageUrl = urlObj.pathname;
+    } catch(e) {
+        console.error(e);
+    }
 
     const payload = {
         product_id: productId,
         product_name: productName,
         packet_size: packetSize,
-        quantity: quantity,c:\Users\Abdul Rafay\Downloads\custom-perfume.js
+        quantity: quantity,
         boxes: allBoxes,
         price: priceInt,
-        product_price: priceInt
+        product_price: priceInt,
+        thumbnail: relativeImageUrl
     };
 
     const url = type === 'cart' ? '/tester/add_to_cart' : '/tester/buy_now';

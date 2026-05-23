@@ -661,6 +661,7 @@ textarea:disabled {
 /* Adjust the main content layout */
 .main-content {
     display: flex;
+    flex-direction: column;
     max-width: 1200px;
     margin: 20px auto;
     gap: 20px;
@@ -682,26 +683,11 @@ textarea:disabled {
 /* Responsive adjustments */
 @media (max-width: 900px) {
     .vertical-stepper-container {
-        /* display: none; */
+        display: none;
     }
 
     .checkout-steps {
-        margin-top: 100px;
-    }
-
-    .stepper-step {
-        min-height: 200px;
-        flex-direction: row;
-    }
-
-    .stepper-line {
-        min-height: 3px;
-        width: 100px;
-
-    }
-
-    .vertical-stepper {
-        flex-direction: row;
+        margin-top: 0px;
     }
 
     .checkout-section {

@@ -255,3 +255,216 @@
                 });
             }
         });
+
+// Toast Notification Utility
+function showToast(message, type = 'success') {
+    let toastContainer = document.getElementById('toast-container');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'toast-container';
+        toastContainer.style.position = 'fixed';
+        toastContainer.style.bottom = '24px';
+        toastContainer.style.right = '24px';
+        toastContainer.style.zIndex = '9999';
+        toastContainer.style.display = 'flex';
+        toastContainer.style.flexDirection = 'column';
+        toastContainer.style.gap = '8px';
+        document.body.appendChild(toastContainer);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `custom-toast ${type}`;
+    toast.style.background = type === 'success' ? 'linear-gradient(135deg, #10b981, #059669)' : 'linear-gradient(135deg, #ef4444, #dc2626)';
+    toast.style.color = '#ffffff';
+    toast.style.padding = '12px 24px';
+    toast.style.borderRadius = '8px';
+    toast.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
+    toast.style.fontSize = '14px';
+    toast.style.fontWeight = '500';
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(20px)';
+    toast.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+    toast.style.display = 'flex';
+    toast.style.alignItems = 'center';
+    toast.style.gap = '8px';
+
+    const icon = document.createElement('i');
+    icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+    toast.appendChild(icon);
+
+    const text = document.createElement('span');
+    text.textContent = message;
+    toast.appendChild(text);
+
+    toastContainer.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
+    }, 50);
+
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-20px)';
+        setTimeout(() => {
+            toast.remove();
+        }, 300);
+    }, 3500);
+}
+
+// CSV Import Trigger and Upload Logic
+document.addEventListener('DOMContentLoaded', function () {
+    const importCsvBtn = document.getElementById('importCsvBtn');
+    const csvFileInput = document.getElementById('csvFileInput');
+    
+    if (importCsvBtn && csvFileInput) {
+        importCsvBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            csvFileInput.click();
+        });
+        
+        csvFileInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (!file) return;
+            
+            const confirmImport = confirm(`Are you sure you want to import "${file.name}"? This will append the fragrances to your list.`);
+            if (!confirmImport) {
+                csvFileInput.value = '';
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('csv_file', file);
+            
+            const originalText = importCsvBtn.innerHTML;
+            importCsvBtn.disabled = true;
+            importCsvBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:5px;"></i>Importing...';
+            
+            fetch('/viaadmin/import_list', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showToast(`Success! Imported ${data.count} fragrances.`, 'success');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    showToast('Import failed: ' + (data.message || 'Unknown error'), 'error');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                showToast('Network error while importing CSV file', 'error');
+            })
+            .finally(() => {
+                importCsvBtn.disabled = false;
+                importCsvBtn.innerHTML = originalText;
+                csvFileInput.value = '';
+            });
+        });
+    }
+});
+
+// Delete fragrance catalog item (with custom confirmation modal)
+document.addEventListener('DOMContentLoaded', function () {
+    let activeDeleteBtn = null;
+    let activeDeleteId = null;
+
+    const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+
+    function showDeleteModal() {
+        if (deleteConfirmModal) {
+            deleteConfirmModal.style.display = 'flex';
+            setTimeout(() => {
+                deleteConfirmModal.classList.add('show');
+            }, 10);
+        }
+    }
+
+    function hideDeleteModal() {
+        if (deleteConfirmModal) {
+            deleteConfirmModal.classList.remove('show');
+            setTimeout(() => {
+                deleteConfirmModal.style.display = 'none';
+            }, 300);
+        }
+        activeDeleteBtn = null;
+        activeDeleteId = null;
+    }
+
+    document.addEventListener("click", function(e) {
+        const btn = e.target.closest(".delete-item-btn");
+        if (btn) {
+            activeDeleteBtn = btn;
+            activeDeleteId = btn.dataset.id;
+            showDeleteModal();
+        }
+    });
+
+    if (cancelDeleteBtn) {
+        cancelDeleteBtn.addEventListener('click', hideDeleteModal);
+    }
+
+    if (deleteConfirmModal) {
+        deleteConfirmModal.addEventListener('click', function(e) {
+            if (e.target === deleteConfirmModal) {
+                hideDeleteModal();
+            }
+        });
+    }
+
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', function() {
+            const btn = activeDeleteBtn;
+            const id = activeDeleteId;
+            
+            if (!btn) {
+                hideDeleteModal();
+                return;
+            }
+
+            if (id) {
+                confirmDeleteBtn.disabled = true;
+                confirmDeleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:5px;"></i>Deleting...';
+
+                fetch(`/viaadmin/delete_list_item/${id}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const row = btn.closest("tr");
+                        if (row) row.remove();
+                        
+                        const countLabel = document.querySelector('.stat-card:first-child .stat-value');
+                        if (countLabel) {
+                            const currentVal = parseInt(countLabel.textContent) || 0;
+                            countLabel.textContent = Math.max(0, currentVal - 1);
+                        }
+                        showToast('Fragrance deleted successfully!', 'success');
+                    } else {
+                        showToast('Failed to delete item: ' + (data.message || 'Unknown error'), 'error');
+                    }
+                })
+                .catch(() => showToast('Network error while deleting item', 'error'))
+                .finally(() => {
+                    confirmDeleteBtn.disabled = false;
+                    confirmDeleteBtn.innerHTML = 'Delete';
+                    hideDeleteModal();
+                });
+            } else {
+                // Static mockup local removal
+                const row = btn.closest("tr");
+                if (row) row.remove();
+                showToast('Fragrance deleted locally.', 'success');
+                hideDeleteModal();
+            }
+        });
+    }
+});
